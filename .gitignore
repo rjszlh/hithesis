@@ -72,3 +72,6 @@ hithesis.bst
 /.github/workflows/test_texlive_latest.yml
 test_texlive_latest.yml
 .github/workflows/test_texlive_latest.yml
+
+.codex-venv
+.codex-venv/

@@ -1,0 +1,159 @@
+% !Mode:: "TeX:UTF-8"
+
+\chapter{实验与结果分析}
+
+\section{两轮平衡车基本行驶性能的测试实验}
+
+为验证两轮平衡车底盘结构设计与平衡控制系统的可靠性，对车辆开展基本行驶性能测试。实验内容主要包括前进与后退运行、加减速响应、左右转向控制以及典型障碍越障能力等项目。
+
+在平整路面条件下，分别进行低速与中速行驶测试，分析车辆启动过程、速度变化特性及姿态稳定性；在转向测试中，通过不同操作幅度与不同运行速度组合，评估车辆转向灵敏度与角速度响应特性；在越障测试中，设置减速带与砖块等典型障碍物，并开展绕桩行驶实验，以验证车辆在复杂路径条件下的运动稳定性。图5-1展示了减速带越障、砖块越障以及绕桩实验的实际测试情况。
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-000.jpg}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-001.jpg}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-002.jpg}
+  \end{minipage}
+  \caption{行驶能力测试}
+\end{figure}
+\FloatBarrier
+
+实验结果表明，该双轮自平衡车启动过程平稳，无明显抖动或姿态超调；运行过程中加减速响应迅速，速度变化平顺，车辆整体平衡性良好。转向过程中，转向速度随操作幅度与当前运行速度变化而变化，响应连续且可控，能够顺利完成启动、前后运行、加减速、转向、原地回转及制动等基本动作。
+
+在越障实验中，车辆能够稳定通过减速带与砖块等小尺度障碍物，越障过程中未出现明显失衡或侧倾现象，表明底盘结构与平衡控制系统具备一定的地面适应能力。整体测试结果验证了车辆基本运动功能的完整性与可靠性。
+
+\section{双目视觉环境感知算法的测试实验}
+
+\subsection{嵌入式平台部署与加速效果}
+
+本节主要验证双目立体匹配与目标检测融合算法在嵌入式平台上的实时性与测距精度，并分析模型部署优化带来的性能提升。
+
+为评估模型在嵌入式平台上的推理性能，分别对YOLO11n目标检测网络与立体匹配网络（HAGVNet）进行了部署测试，对比了PyTorch原生推理与TensorRT加速推理两种方式的性能表现。其中，PyTorch推理作为功能验证与性能基线；TensorRT在模型导出与转换基础上，采用FP16精度模式，并结合算子融合与图优化策略进行端到端加速，从而提升嵌入式设备上的运行效率。
+
+实验结果如表5-1所示，相比PyTorch推理，TensorRT（FP16）显著降低了模型延迟：（1）HAGVNet单帧推理时间由194.3ms降至21.6ms，对应帧率提升至46.3FPS；（2）YOLO11n单帧推理时间由62.3ms降至6.9ms，对应帧率提升至144.9FPS。可以看出，在嵌入式平台上，TensorRT加速对两类模型均带来了数量级的性能提升，显著增强了系统实时运行能力，为整车在线部署提供了算力保障。
+
+在完整感知流程部署测试中（包含目标检测、立体匹配与基于ROI的深度融合测距），输入分辨率设置为640$\times$480。系统实测端到端刷新频率为30Hz，能够满足低速移动载具的实时感知需求。进一步分析各模块耗时构成可以发现，当前系统的主要时延瓶颈来自立体匹配阶段。由于立体匹配涉及高维代价体构建与特征聚合运算，其计算复杂度显著高于目标检测模块，是后续性能优化的重点方向。
+
+\begin{table}[!htbp]
+  \centering
+  \caption{不同部署方式下的模型推理性能对比}
+  \vspace{0.5em}\wuhao
+  \begin{tabularx}{0.85\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+    \toprule
+    模型 & PyTorch(ms) & TensorRT(ms) & TensorRT(FPS) \\
+    \midrule
+    HAGVNet & 194.3 & 21.6 & 46.3 \\
+    Yolo11n & 62.3 & 6.9 & 144.9 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+\FloatBarrier
+
+\subsection{端到端感知流程实时性测试}
+
+通过记录图像时间戳与最终目标距离发布时刻计算端到端延迟，统计平均延迟与帧率。
+
+\subsection{检测与测距性能分析}
+
+在实际公园环境中开展外场测试，测试场景包含具有代表性的障碍物类型，如行人、车辆、路灯杆及其他固定设施，并在不同距离条件下进行测距验证。
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-003.jpg}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-004.jpg}
+  \end{minipage}
+  \caption{实地测距效果图}
+\end{figure}
+\FloatBarrier
+
+真实距离采用手持式激光测距仪进行测量，其标称精度为$\pm 3$ mm。测量方式为：以相机光心为起点，选取目标可见表面的几何中心作为测量点，以保证与视觉测距输出的空间定义保持一致。测得距离作为参考真值，用于评估双目测距结果的误差。
+
+\begin{table}[!htbp]
+  \centering
+  \caption{不同类别障碍物在各距离下的测距结果与相对误差}
+  \vspace{0.5em}\wuhao
+  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+    \toprule
+    ID & 障碍物 & 2m & 4m & 6m & 8m & 10m \\
+    \midrule
+    1 & 行人 & 2.02(1.0\%) & 3.93(1.8\%) & 6.09(1.5\%) & 8.46(5.8\%) & 10.74(7.4\%) \\
+    2 & 汽车 & 1.99(0.5\%) & 4.03(0.8\%) & 5.93(1.2\%) & 8.11(1.4\%) & 10.52(5.2\%) \\
+    3 & 摩托车 & 1.93(3.5\%) & 4.19(4.8\%) & 5.71(4.8\%) & 8.40(5.0\%) & 9.19(8.1\%) \\
+    4 & 路障 & 2.04(2.0\%) & 3.88(3.0\%) & 6.15(2.5\%) & 8.43(5.4\%) & 10.86(8.6\%) \\
+    5 & 杆体 & 1.98(1.0\%) & 4.13(3.3\%) & 5.67(5.5\%) & 8.44(5.5\%) & 9.53(4.7\%) \\
+    6 & 树木 & 2.01(0.5\%) & 3.94(1.5\%) & 6.05(0.8\%) & 8.34(4.3\%) & 10.43(4.3\%) \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+\FloatBarrier
+
+实验结果表明，在全部30组测量数据中，整体平均相对误差约为3.52\%。不同距离下的平均相对误差分别为：2m：约1.42\%；4m：约2.53\%；6m：约2.72\%；8m：约4.57\%；10m：约6.38\%。
+
+可以看出，测距误差随距离增加呈上升趋势。这一现象主要源于远距离条件下视差分辨率下降，导致深度量化误差增大。此外，在部分中空结构目标（如无人停放的摩托车）上观察到误差波动较大的情况。分析认为，其原因与当前采用的“ROI缩放+区域深度中位数”策略有关。当缩放后的感兴趣区域覆盖目标中心空腔时，部分背景深度值可能被纳入统计，从而干扰代表性深度的计算结果。该问题表明，在复杂结构目标上仍存在一定优化空间，后续可通过前景分割或自适应深度筛选策略进一步提升测距稳定性。
+
+\section{两轮平衡车避障能力的测试实验}
+
+在完成两轮平衡车行驶性能与环境感知能力的独立验证后，进一步开展整车闭环避障实验，验证“感知—规划—控制”完整链路的协同工作效果与系统稳定性。该实验重点评估在动态干扰条件下，车辆对突发障碍物的响应能力与安全裕度。
+
+实验构建动态行人干扰场景。车辆按照预设目标点进行路径规划并开始正常行驶，在行驶过程中，行人从侧方突然进入车辆原规划路径，如图5-3所示。该场景模拟公园或园区环境中常见的行人随机横穿道路情形，对系统实时感知与动态避障能力提出挑战。
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-005.jpg}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-006.jpg}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-007.jpg}
+  \end{minipage}
+  
+  \vspace{0.6em}
+  
+  \begin{minipage}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-008.jpg}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-009.jpg}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.32\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter05/p5u-010.jpg}
+  \end{minipage}
+  \caption{避障能力测试}
+\end{figure}
+\FloatBarrier
+
+实验过程中记录车辆轨迹、速度变化曲线以及最小安全距离。结果表明，在设定行驶速度范围内，系统能够在行人侵入后快速完成障碍检测与路径重规划，车辆减速并平滑绕行，未发生急剧姿态波动或失稳现象。最小安全距离始终保持在预设阈值以上，说明感知与规划模块之间的数据传递及时有效。
+
+在个别极端情况下（如行人距离过近或横向移动速度较快），车辆会出现短暂减速或轻微轨迹震荡现象，其主要原因在于感知距离快速变化导致代价地图更新频率提升，从而引起局部规划频繁重计算。总体而言，系统能够稳定完成动态避障任务，验证了整车闭环系统在实际复杂环境中的可行性与可靠性。
+
+\section{本章小节}
+
+本章对两轮平衡车的运动性能、视觉感知能力及闭环避障效果进行了综合实验验证。基本行驶测试表明，车辆启动平稳、加减速响应迅速、转向可控，能够稳定完成越障与复杂路径行驶，验证了底盘结构与平衡控制系统的可靠性。嵌入式部署实验显示，经过TensorRT（FP16）优化后，感知系统在640$\times$480分辨率下实现约30 Hz端到端刷新频率，满足低速运行需求。2--10 m范围内整体平均相对误差为3.52\%，误差随距离增加呈上升趋势，符合立体视觉测距规律。闭环避障实验表明，系统能够在动态干扰条件下完成目标检测、路径重规划与平滑绕行，保持安全距离，运行过程整体稳定。综上，实验结果验证了所构建系统在工程应用中的可行性与稳定性。

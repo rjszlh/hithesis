@@ -18,11 +18,12 @@
 
 （5）行驶安全性：在自动行驶模式下，应具备环境感知、路径规划及动态避障能力，确保在复杂多变的公园环境中实现安全、顺畅的通行。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{载人两轮平衡车总体设计方案 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-1.png}
+  \caption{载人两轮平衡车总体设计方案}
 \end{figure}
+\FloatBarrier
 
 基于上述需求分析，本课题提出了一种载人两轮平衡车的设计方案，如图2-1所示。从整体架构上看，载人两轮平衡车系统主要由三大核心部分组成：机械结构、控制系统与自主导航系统。三者密切协作、相互配合，共同实现平衡车的稳定运行与自主行驶。各部分的具体功能与组成如下：
 
@@ -32,11 +33,12 @@
 
 （3）自主导航系统：载人两轮平衡车的自主导航系统主要功能是通过传感器实现定位与环境感知，进而进行路径规划与避障控制，保障车辆在复杂环境中的自主导航与安全行驶。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{载人两轮平衡车系统功能组成图 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-2.png}
+  \caption{载人两轮平衡车系统功能组成图}
 \end{figure}
+\FloatBarrier
 
 \section{机械结构设计}
 
@@ -46,11 +48,25 @@
 
 载人两轮平衡车的设计指标如表2-1所示。因使用场景在公园、社区等生活场所，外形尺寸参照《GB/T 12996-2023 电动轮椅车》确定为不超过总长不超过900mm且总宽不超过750mm；参考国家国民体质监测中心发布的《第五次国民体质监测公报》中成年人的体重确定额定载荷为75kg。
 
-\begin{table}[htbp]
+\begin{table}[!htbp]
   \centering
-  \caption{两轮平衡车设计指标 (placeholder)}
-  \fbox{\parbox[c][2.5cm][c]{0.85\textwidth}{\centering [TABLE PLACEHOLDER]}}
+  \caption{两轮平衡车设计指标}
+  \vspace{0.5em}\wuhao
+  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+    \toprule
+    指标分类 & 指标项目 & 具体要求 \\
+    \midrule
+    尺寸 & 总长 & ≤900mm \\
+     & 总宽 & ≤750mm \\
+     & 整车质量 & 70kg \\
+    运动性能 & 额定载荷 & 75kg \\
+     & 最大运动速度 & 15km/h \\
+     & 最大加速度 & 2m/s2 \\
+     & 爬坡性能 & 15° \\
+    \bottomrule
+  \end{tabularx}
 \end{table}
+\FloatBarrier
 
 本课题设计的载人两轮平衡车需兼顾安全性与舒适性。传统两轮平衡车通常基于倒立摆原理实现平衡控制，但该结构本质上属于不稳定系统，易在速度变化或外部扰动时产生倾斜与位移。以Segway为代表的传统平衡车利用这一特性，通过人体倾斜改变重心以控制运动。而本课题中的平衡车面向乘坐式应用，用户通过控制器发送运动指令进行操控，不再依赖身体姿态调节，这对车辆的稳定性和响应性提出更高要求。为了提升系统在复杂工况下的稳定性与乘坐舒适性，本设计在传统倒立摆控制基础上引入力矩控制陀螺（Control Moment Gyroscope，CMG），通过提供快速、精确的姿态调节力矩，有效应对由加减速或外部扰动引起的倾斜问题，从而增强整体的动态平衡性能。因此，本课题采用倒立摆控制与力矩控制陀螺联合控制方案，以实现更高水平的稳定性与操控性。
 
@@ -66,11 +82,12 @@
 
 车体框架的主要功能包括承载驱动模块、稳定模块以及其他辅助零部件。本课题设计的双轮平衡车采用了模块化设计、具有装拆方便、集成度高的特点。车体框架如图2-3所示，整体结构主要由车体前后左右四个侧板和两个连接架组成。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{两轮平衡车车体框架设计示意图 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-3.png}
+  \caption{两轮平衡车车体框架设计示意图}
 \end{figure}
+\FloatBarrier
 
 车体前侧板用于安装踏板，后侧板安装控制箱以集成控制系统；左右两侧板则作为驱动模块的安装基座固定电机和车轮。四块侧板共同围成一个稳定模块的封闭安装腔体，为后续稳定模块的布置提供充足空间，并有助于整车质量分布的均衡及重心的合理控制，从而提升车体运行的稳定性。
 
@@ -131,11 +148,12 @@ L = I_y \omega_y \mathbf{e}_y
 
 稳定模块结构如图2-6，主要由力矩控制陀螺装置、调节机构及电池包构成。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{稳定模块结构 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-6.png}
+  \caption{稳定模块结构}
 \end{figure}
+\FloatBarrier
 
 力矩控制陀螺装置由两个对称布置的陀螺装置、进动电机以及陀螺框架组成。每个陀螺装置包含飞轮、高速电机和陀螺外壳，并通过连接轴与轴承固定于陀螺框架上。进动电机用于驱动陀螺装置的进动，实现对其进动角速度的精确控制。陀螺外壳及安装支架选用铝合金6061制造，该材料具有良好的力学性能与加工性能；飞轮部分则采用密度较大的45号钢，以显著提高陀螺转子的转动惯量，从而在进动过程中产生更大的进动力矩，增强姿态控制能力。
 
@@ -191,11 +209,19 @@ T = \frac{J_z \omega_z}{t_{\alpha}}
 
 最终选择了RobStride03一体化关节电机，该电机集成了电机本体、减速器和驱动器，结构紧凑，适合车内安装。其详细参数如表2-2所示。
 
-\begin{table}[htbp]
+\begin{table}[!htbp]
   \centering
-  \caption{进动电机技术参数 (placeholder)}
-  \fbox{\parbox[c][2.5cm][c]{0.85\textwidth}{\centering [TABLE PLACEHOLDER]}}
+  \caption{进动电机技术参数}
+  \vspace{0.5em}\wuhao
+  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+    \toprule
+    型号 & 额定电压 & 额定转速 & 额定扭矩 & 峰值扭矩 & 额定功率 \\
+    \midrule
+    RobStride03 & 48V & 180RPM & 20Nm & 60Nm & 380w \\
+    \bottomrule
+  \end{tabularx}
 \end{table}
+\FloatBarrier
 
 \subsection{驱动模块设计}
 
@@ -228,11 +254,23 @@ F_r = c_r m g
 
 在不同路面上滚动摩擦系数不同，各种路面的摩擦系数如表2-3所示
 
-\begin{table}[htbp]
+\begin{table}[!htbp]
   \centering
-  \caption{各种路面滚动摩擦系数 (placeholder)}
-  \fbox{\parbox[c][2.5cm][c]{0.85\textwidth}{\centering [TABLE PLACEHOLDER]}}
+  \caption{各种路面滚动摩擦系数}
+  \vspace{0.5em}\wuhao
+  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+    \toprule
+    路面类型 & 滚动摩擦系数 & 路面类型 & 滚动摩擦系数 \\
+    \midrule
+    良好的沥青或混凝土路面 & 0.010-0.018 & 泥泞路面 & 0.100-0.250 \\
+    一般沥青或混凝土路面 & 0.018-0.020 & 砂路 & 0.100-0.300 \\
+    碎石路面 & 0.020-0.025 & 湿砂 & 0.060-0.150 \\
+    良好的卵石路面 & 0.025-0.030 & 结冰路面 & 0.015-0.030 \\
+    坑洼路面 & 0.035-0.050 & 压紧的雪道 & 0.030-0.050 \\
+    \bottomrule
+  \end{tabularx}
 \end{table}
+\FloatBarrier
 
 平衡车的质量为70kg，最大载荷为75kg，可得最大总载荷m=145kg，重力加速度牵引力g=9.81N/kg，公园或社区的路面为良好的沥青或混凝土路面，由表表2-3取阻力系数cr为0.015。由式（2-9）计算得平衡车行驶时的滚动摩擦阻力Fr=21.34N。
 
@@ -329,11 +367,19 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 根据上述分析，轮毂电机的峰值扭矩应大于85.03Nm，额定功率大于887.15W且最高转速高于120.67rpm，最终选取WYQ-17，其参数如表2-4所示。
 
-\begin{table}[htbp]
+\begin{table}[!htbp]
   \centering
-  \caption{轮毂电机WYQ-17技术参数 (placeholder)}
-  \fbox{\parbox[c][2.5cm][c]{0.85\textwidth}{\centering [TABLE PLACEHOLDER]}}
+  \caption{轮毂电机WYQ-17技术参数}
+  \vspace{0.5em}\wuhao
+  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+    \toprule
+    型号 & 额定电压 & 额定转速 & 额定扭矩 & 峰值扭矩 & 额定功率 & 峰值功率 \\
+    \midrule
+    WYQ-17 & 48V & 150RPM & 70Nm & 120Nm & 1000w & 1600W \\
+    \bottomrule
+  \end{tabularx}
 \end{table}
+\FloatBarrier
 
 \subsection{机械结构有限元分析}
 
@@ -357,17 +403,21 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 载人两轮平衡车的机械结构如图2-13所示，连接了车体框架、稳定模块和驱动模块，具体包括了平衡车的轮毂电机、轮组、辅助轮、座椅、踏板及各种传感器。最终设计、装配好的两轮平衡车机械结构实物图如图2-14所示。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{载人两轮平衡车三维模型 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-13.png}
+  \caption{载人两轮平衡车三维模型}
 \end{figure}
+\FloatBarrier
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{平衡车机械结构装配实物图 (placeholder)}
+  \includegraphics[width=0.48\textwidth]{figures/chapter02/fig2-14a.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{figures/chapter02/fig2-14b.png}
+  \caption{平衡车机械结构装配实物图}
 \end{figure}
+\FloatBarrier
 
 \section{控制系统研究}
 
@@ -375,11 +425,12 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 控制系统的方案如图2-15所示，主要由单片机、电机驱动器、传感器、控制器以及供电电路构成。控制系统一方面从上位机或控制器接收用户发出的运动指令，另一方面对姿态传感器、光电开关、编码器等传感器进行通讯采集，解算运动指令并进行平衡控制计算，然后通过驱动器生成各电机控制信号，实现精确运动控制。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{控制系统方案 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-15.png}
+  \caption{控制系统方案}
 \end{figure}
+\FloatBarrier
 
 \subsection{控制系统硬件设计}
 
@@ -389,55 +440,63 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 为提升系统控制的总线统一性和抗干扰能力，除丝杠电机采用PWM方式进行控制外，其余电机驱动器均优先采用基于CAN总线的通信方式，以提高系统集成度并简化主控的通信负担。同时，通过GPIO接口接收丝杠电机光电开关的位置信号，实现对关键位置状态的快速响应与监测。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{控制系统信号电路连接 (placeholder)}
+  \includegraphics[width=0.70\textwidth]{figures/chapter02/fig2-16.png}
+  \caption{控制系统信号电路连接}
 \end{figure}
+\FloatBarrier
 
 控制系统的供电电路设计如图2-17所示。整车供电系统采用统一的48V直流电池电源作为主供电源，以简化能源分配结构并降低能量转换损耗。电源输出首先连接至一组继电保护模块，其中串联连接遥控继电器与手动电动开关，分别用于实现远程通断控制与现场物理切断，增强系统在调试、运行及紧急状态下的安全可控性。在主供电路径中，48V直流电压一方面直接分配至各电机驱动器为其提供高压高功率的驱动能源。另一方面经由降压转换模块变换后，输出24V直流电压供给单片机使用。单片机在正常运行时，通过其集成的稳压模块进一步输出5V直流电压，为系统中的姿态传感器、光电传感器和控制器提供稳定的低压电源。该分级供电设计有效隔离高低压系统，提升了电气系统的可靠性与抗干扰能力，亦为系统的维护与扩展提供了良好的电源接口基础。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{控制系统供电电路连接 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-17.png}
+  \caption{控制系统供电电路连接}
 \end{figure}
+\FloatBarrier
 
 \subsection{控制系统硬件环境搭建}
 
 在控制系统主控芯片的选型中，重点从接口资源和控制能力两方面进行考量。接口方面，系统需通过网口采用UDP协议与上位机通信；同时需多个串口与手柄接收机、姿态传感器等模块通信，以及CAN接口以连接多个电机驱动器；此外，还需PWM通道控制丝杠电机，以及若干GPIO用于读取光电开关等传感器信号。控制方面，系统需要较强的实时处理能力和稳定的数据处理性能，以满足姿态计算和运动控制等任务。综合上述需求，最终选用挑选科鑫STM32F407ZGT6工控板作为控制器。该芯片集成网口、UART、双路CAN、丰富的PWM和GPIO资源，并搭载168MHz的Cortex-M4内核，配备1MB Flash和192KB SRAM，能够满足系统在通信、控制与实时性方面的各项要求。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{科鑫STM32F407ZGT6工控板 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-18.png}
+  \caption{科鑫STM32F407ZGT6工控板}
 \end{figure}
+\FloatBarrier
 
 姿态传感器需满足车辆对高频率、高精度姿态感知的需求。在本系统中，选用惯性测量单元（IMU）作为姿态传感器。IMU由三轴加速度计、三轴陀螺仪和三轴磁力计组成，通过对线加速度、角速度以及磁场等原始数据的采集，结合内置融合算法，实时计算出车辆的姿态角和角速度信息。综合考虑精度、响应速度、算法性能及系统兼容性，选用Wheeltec-H30惯性导航模块，其具备200Hz输出频率、0.1°角度分辨率，内置融合算法，可稳定输出姿态角与角速度，满足动态工况下的测量要求。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{Wheeltec-H30惯性导航模块 (placeholder)}
+  \includegraphics[width=0.70\textwidth]{figures/chapter02/fig2-19.png}
+  \caption{Wheeltec-H30惯性导航模块}
 \end{figure}
+\FloatBarrier
 
 为满足开发阶段对整车控制与单电机调试的需求，系统需选用一款支持多通道输出、抗干扰强、通信稳定的控制手柄。综合性能与使用便利性，最终选用富斯FS-i6遥控器及其FS-iA10B接收模块，支持6通道以上模拟信号输出，具备拨码开关与自定义通道设置，可实现速度、角速度调节及电机独立控制，提升调试效率与系统灵活性。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{富斯FS-i6遥控器和FS-iA10B接收模块 (placeholder)}
+  \includegraphics[width=0.68\textwidth]{figures/chapter02/fig2-20a.png}
+  \hfill
+  \includegraphics[width=0.22\textwidth]{figures/chapter02/fig2-20b.png}
+  \caption{富斯FS-i6遥控器和FS-iA10B接收模块}
 \end{figure}
+\FloatBarrier
 
 为满足不同电机的驱动需求，系统依据性能参数选配匹配驱动器。轮毂电机采用中菱ZLAC8030L伺服驱动器，支持闭环控制和CAN通信，响应快速且抗干扰能力强；高速电机选用美固思MSSD-40LMA伺服驱动器，适配高速永磁同步电机，支持高频速度调节，也通过CAN总线通信；丝杠电机采用安川CA-4060M驱动器，采用PWM控制，支持多种模式及安全保护；进动电机为RobStride03一体式关节电机，内置驱动器，通过CAN总线直接与主控通信，简化布线并提升模块化。
 
 搭建完成的控制系统主要部分电路如图2-21所示，由于安装需要，惯性测量单元（IMU）和FS-iA10B接收模块在车体内部。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{控制系统连接实物图 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-21.png}
+  \caption{控制系统连接实物图}
 \end{figure}
+\FloatBarrier
 
 \subsection{控制系统软件总体方案设计}
 
@@ -445,11 +504,23 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 在载人两轮平衡车的运行过程中，为确保系统的稳定性与乘员的安全性，系统必须实现多任务的实时并行处理。单片机作为底层控制核心，需要并发执行多项任务，主要包括设备通信、设备信息数据处理、运动控制计算、电机驱动控制以及状态反馈等。各项任务在实时性要求、驱动方式及执行周期上各不相同。其中，设备通信具有最高的实时性要求，通常采用中断方式进行，以实现与传感器、上位机等外部设备之间的快速响应与数据交换。设备信息数据处理、运动控制计算和电机驱动控制则属于中等实时性任务，通常以10ms的周期性方式执行，以确保对车体姿态变化的持续响应以及对电机的有效控制，从而维持系统平衡和运动性能。状态反馈任务则实时性要求较低，同样采用中断驱动方式，在系统资源允许的情况下进行调度即可。单片机需要执行的主要任务及其对应的实时性、驱动方式与运行周期如表2-5所示。
 
-\begin{table}[htbp]
+\begin{table}[!htbp]
   \centering
-  \caption{控制系统软件任务分析 (placeholder)}
-  \fbox{\parbox[c][2.5cm][c]{0.85\textwidth}{\centering [TABLE PLACEHOLDER]}}
+  \caption{控制系统软件任务分析}
+  \vspace{0.5em}\wuhao
+  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+    \toprule
+    编号 & 任务 & 实时性 & 驱动方式 & 运行周期 \\
+    \midrule
+    1 & 设备通信 & 高 & 中断 & 无 \\
+    2 & 设备数据处理 & 中 & 周期 & 10ms \\
+    3 & 运动控制计算 & 中 & 周期 & 10ms \\
+    4 & 电机驱动控制 & 中 & 周期 & 10ms \\
+    5 & 状态反馈 & 低 & 中断 & 无 \\
+    \bottomrule
+  \end{tabularx}
 \end{table}
+\FloatBarrier
 
 为了实现任务的高效调度与资源的合理分配，系统采用实时操作系统 FreeRTOS，结合STM32 HAL库，构建了轻量级、可扩展的多任务并行处理框架。由于系统中各类任务的实时性要求差异较大，尤其是姿态控制相关任务对确定性和响应速度要求高，基于中断或简单时间片轮转的调度机制难以满足其性能需求。
 
@@ -461,19 +532,21 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
 
 控制系统的软件架构如图2-22所示采用分层设计，自上而下包括应用程序层、操作系统层、功能模块层和硬件驱动层。应用程序层实现系统的主要控制逻辑，任务包括设备数据处理、姿态估算、运动控制计算和电机控制命令生成。各功能以独立任务形式运行，满足周期性计算和实时控制的要求；操作系统层基于FreeRTOS，负责任务调度、定时器管理、中断处理和任务间通信（如信号量、消息队列等），用于协调各任务的运行顺序和资源使用；功能模块层根据各设备的API接口进行功能封装，为应用层提供统一的函数调用入口，上层可通过调用接口实现对IMU、电机、通信模块等的控制和数据获取；硬件驱动层运行在STM32平台上，使用HAL库访问GPIO、PWM、ADC、串口、CAN等外设资源，实现与传感器、电机和通信设备的底层交互。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{控制系统软件架构 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-22.png}
+  \caption{控制系统软件架构}
 \end{figure}
+\FloatBarrier
 
 控制系统的整体流程如图2-23控制系统总体工作流程图所示。系统启动后，首先完成系统及各外设的初始化配置工作，包括传感器、执行器以及通信接口等模块的底层驱动加载与参数设置。初始化完成后，系统进入周期性调度的运行阶段，系统通过串口、CAN总线和UDP协议分别与IMU、各电机和上位机进行通信，获取实时数据。数据处理线程负责接收并处理来自IMU及各电机的反馈信息，将其转换为可用于控制的姿态和状态数据；运动控制线程则基于这些处理后的数据及上位机下发的运动指令，执行运动控制算法，生成相应的控制量并驱动各电机完成控制任务。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{控制系统总体工作流程图 (placeholder)}
+  \includegraphics[width=0.45\textwidth]{figures/chapter02/fig2-23.png}
+  \caption{控制系统总体工作流程图}
 \end{figure}
+\FloatBarrier
 
 \subsection{控制系统软件框架搭建}
 
@@ -481,27 +554,40 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
 
 控制系统外部设备的初始化流程如图2-24所示，主要包括外设通信初始化、电机初始化等内容。串口和CAN通信的中断需在初始化阶段手动开启，而以太网通信由驱动程序自动管理，无需人工干预。电机的初始化通过CAN总线完成，主要包括设置各电机的控制模式、目标位置以及执行回零操作，具体控制模式配置详见表2-6所示。此外，IMU（惯性测量单元）的滤波参数与输出配置由上位机完成设置；各电机的CAN通信地址同样由上位机下发设定。系统在初始化开始和结束时将通过蜂鸣器发出提示音，以提示操作人员当前状态。
 
-\begin{table}[htbp]
+\begin{table}[!htbp]
   \centering
-  \caption{电机控制模式设置 (placeholder)}
-  \fbox{\parbox[c][2.5cm][c]{0.85\textwidth}{\centering [TABLE PLACEHOLDER]}}
+  \caption{电机控制模式设置}
+  \vspace{0.5em}\wuhao
+  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+    \toprule
+    电机种类 & 控制模式 \\
+    \midrule
+    轮毂电机 & 力矩控制模式 \\
+    进动电机 & 力矩控制模式 \\
+    丝杠电机 & 脉冲控制模式 \\
+    高速电机 & 位置控制模式 \\
+    \bottomrule
+  \end{tabularx}
 \end{table}
+\FloatBarrier
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{外部设备初始化流程 (placeholder)}
+  \includegraphics[width=0.70\textwidth]{figures/chapter02/fig2-24.png}
+  \caption{外部设备初始化流程}
 \end{figure}
+\FloatBarrier
 
 （2）设备通信
 
 在控制系统中，设备之间的通信通过串口、CAN和UDP三种方式实现：其中，两路串口分别用于与IMU及控制器的通信；CAN用于与各电机的通信；UDP 则用于与上位机进行数据交互。所有通信方式均基于中断机制实现数据接收与状态反馈。为了降低中断对系统线程调度的影响，中断服务程序中不直接处理数据内容，而仅负责接收数据及反馈当前通信状态。接收到的数据将被迅速转发至对应的消息队列，等待后续的数据处理线程按需读取并处理，从而提升系统整体的实时性与稳定性。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{控制系统设备通信流程图 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-25.png}
+  \caption{控制系统设备通信流程图}
 \end{figure}
+\FloatBarrier
 
 串口接收数据时，采用DMA（Direct Memory Access，直接存储器访问）方式将数据自动搬运至预设的内存缓冲区，无需CPU干预，从而显著减轻了处理负担并提升了搬运效率。当DMA正在接收数据过程中，若在设定的超时时间内未收到新的字节，即判定一帧数据接收完成，串口将触发空闲中断。中断服务程序在此时将DMA缓冲区中有效数据打包，并发送至对应的消息队列，供后台线程进一步解析处理。最后，清除中断标志，完成本次中断处理流程。
 
@@ -509,11 +595,34 @@ CAN通信主要用于与轮毂电机、高速电机和进动电机等部件之�
 
 UDP通信主要负责与自主导航系统之间的数据交互。当系统接收到来自导航系统的UDP数据报时，将立即触发相应的处理流程：首先将接收到的消息内容转发至指定的数据处理消息队列，供后台线程进行解析处理；随后，根据解析结果生成系统状态反馈报文并发送回上位机。反馈报文的具体结构如表2-7所示。最后，完成当前UDP通信处理流程。
 
-\begin{table}[htbp]
+\begin{table}[!htbp]
   \centering
-  \caption{状态反馈报文内容 (placeholder)}
-  \fbox{\parbox[c][2.5cm][c]{0.85\textwidth}{\centering [TABLE PLACEHOLDER]}}
+  \caption{状态反馈报文内容}
+  \vspace{0.5em}\wuhao
+  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+    \toprule
+    Index & 说明 & 类型 & Index & 说明 & 类型 \\
+    \midrule
+    0 & 报文编号 & uint32\_t & 23 & 左侧轮毂电机当前转速 & float \\
+    1–8 & 当前系统状态变量数组 & float[8] & 24 & 右侧轮毂电机当前转速 & float \\
+    9 & 进动电机目标输出转矩 & float & 25 & 左侧轮毂电机电流 & float \\
+    10 & 进动电机的目标转速 & float & 26 & 右侧轮毂电机电流 & float \\
+    11 & 左侧进动电机角度 & float & 27 & 左侧高速电机转速 & float \\
+    12 & 右侧进动电机角度 & float & 28 & 右侧高速电机转速 & float \\
+    13 & 左侧进动电机速度 & float & 29 & 左侧高速电机电流 & float \\
+    14 & 右侧进动电机速度 & float & 30 & 右侧高速电机电流 & float \\
+    15 & 左侧进动电机输出转矩 & float & 31 & 左侧高速电机错误代码 & float \\
+    16 & 右侧进动电机输出转矩 & float & 32 & 右侧高速电机错误代码 & float \\
+    17 & 左侧进动电机温度 & float & 33 & 步进电机的目标位置 & float \\
+    18 & 右侧进动电机温度 & float & 34 & 步进电机当前位置 & float \\
+    19 & 左侧进动电机错误代码 & uint32\_t & 35 & 步进电机当前速度 & float \\
+    20 & 右侧进动电机错误代码 & uint32\_t & 36 & 步进电机限位开关状态 & uint32\_t \\
+    21 & 左侧轮毂电机目标转矩 & float & 37 & 数据校验码（16位CRC） & uint16\_t \\
+    22 & 右侧轮毂电机目标转矩 & float & 38 & 测试字段 & uint16\_t \\
+    \bottomrule
+  \end{tabularx}
 \end{table}
+\FloatBarrier
 
 （3）设备数据处理
 
@@ -521,11 +630,12 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
 
 其中，IMU、轮毂电机、高速电机及进动电机的数据与车辆姿态平衡密切相关，对运行安全性影响较大。为保障系统的实时性与可靠性，若在解析过程中检测到上述关键设备的数据队列中无新数据，则系统将触发蜂鸣器报警，并记录对应的异常信息以供后续诊断。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{控制系统设备数据处理流程 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-26.png}
+  \caption{控制系统设备数据处理流程}
 \end{figure}
+\FloatBarrier
 
 （4）运动控制
 
@@ -533,19 +643,22 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
 
 当电机满足条件，系统进入由运动控制算法主导的控制阶段。该算法结合传感器反馈和运动指令，计算出控制策略并下发至电机控制模块，实现对电机的精确调节。控制完成后，系统进入周期性休眠，等待线程调度，形成稳定高效的实时闭环控制流程。控制系统的数据传输流程如图2-28所示。
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{控制系统运动控制流程图 (placeholder)}
+  \includegraphics[width=0.68\textwidth]{figures/chapter02/fig2-27.png}
+  \caption{控制系统运动控制流程图}
 \end{figure}
+\FloatBarrier
 
-\begin{figure}[htbp]
+\begin{figure}[!htbp]
   \centering
-  \fbox{\parbox[c][4cm][c]{0.85\textwidth}{\centering [IMAGE PLACEHOLDER]}}
-  \caption{控制系统数据传输流程示意图 (placeholder)}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/fig2-28.png}
+  \caption{控制系统数据传输流程示意图}
 \end{figure}
+\FloatBarrier
 
 \subsection{本章小节}
+
 
 
 
