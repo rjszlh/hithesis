@@ -75,3 +75,5 @@ test_texlive_latest.yml
 
 .codex-venv
 .codex-venv/
+
+examples/hitbook/chinese/svg-inkscape
