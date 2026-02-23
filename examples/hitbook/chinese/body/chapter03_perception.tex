@@ -33,7 +33,7 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/fig11.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter03/ideal_stereo_camera_model.png}
   \caption{理想双目模型}
 \end{figure}
 \FloatBarrier
@@ -44,16 +44,16 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.48\textwidth]{figures/chapter03/fig12a.png}
+  \includegraphics[width=0.48\textwidth]{figures/chapter03/stereo_camera_calibration_result_a.png}
   \hfill
-  \includegraphics[width=0.48\textwidth]{figures/chapter03/fig12b.png}
+  \includegraphics[width=0.48\textwidth]{figures/chapter03/stereo_camera_calibration_result_b.png}
   \caption{双目相机标定结果}
 \end{figure}
 \FloatBarrier
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/fig13.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter03/image_rectification_result.png}
   \caption{图像校正处理结果}
 \end{figure}
 \FloatBarrier
@@ -64,7 +64,7 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/fig14.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter03/hagvnet_architecture.png}
   \caption{HAGVNet结构图}
 \end{figure}
 \FloatBarrier
@@ -104,7 +104,7 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/fig15.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter03/cost_convolution_blocks_comparison.png}
   \caption{不同代价卷积块对比}
 \end{figure}
 \FloatBarrier
@@ -192,7 +192,7 @@ C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/fig16.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter03/cost_aggregation_structure.png}
   \caption{代价聚合结构图}
 \end{figure}
 \FloatBarrier
@@ -330,7 +330,7 @@ D1-all反映大误差像素比例，能够更有效评估模型在遮挡、弱�
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/fig17.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter03/hagvnet_kitti_partial_results_comparison.png}
   \caption{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
 \end{figure}
 \FloatBarrier
@@ -341,9 +341,9 @@ D1-all反映大误差像素比例，能够更有效评估模型在遮挡、弱�
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.48\textwidth]{figures/chapter03/fig18a.png}
+  \includegraphics[width=0.48\textwidth]{figures/chapter03/sceneflow_flops_performance_comparison.png}
   \hfill
-  \includegraphics[width=0.48\textwidth]{figures/chapter03/fig18b.png}
+  \includegraphics[width=0.48\textwidth]{figures/chapter03/kitti15_flops_performance_comparison.png}
   \caption{SceneFlow（左）和KITTI15（右）数据集上的性能与FLOPs对比}
 \end{figure}
 \FloatBarrier
@@ -407,7 +407,7 @@ YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测�
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/fig19.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter03/yolo11_coco_performance_comparison.png}
   \caption{YOLO11与其他主流网络在COCO数据集的性能对比}
 \end{figure}
 \FloatBarrier
@@ -418,7 +418,7 @@ YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测�
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/fig110.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter03/yolo11n_overall_architecture.png}
   \caption{YOLO11n整体结构}
 \end{figure}
 \FloatBarrier
@@ -463,7 +463,7 @@ mAP=\frac{1}{N}\sum_{c=1}^{N} AP_c
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/fig111.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter03/object_detection_and_ranging_pipeline.png}
   \caption{目标检测及测距流程}
 \end{figure}
 \FloatBarrier
@@ -571,7 +571,7 @@ O_i=(c_i,s_i,X_i,Y_i,Z_i)
 
 \begin{figure}[!htbp]
   \centering
-  \includegraphics[width=0.78\textwidth]{figures/chapter03/fig112.png}
+  \includegraphics[width=0.78\textwidth]{figures/chapter03/obstacle_detection_localization_result.png}
   \caption{障碍物检测与定位效果图}
 \end{figure}
 \FloatBarrier

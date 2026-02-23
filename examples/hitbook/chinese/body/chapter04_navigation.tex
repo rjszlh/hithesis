@@ -8,7 +8,7 @@
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.76806in,height=1.60139in]{figures/chapter04/image2}
+\includesvg[width=5.76806in,height=1.60139in]{figures/chapter04/autonomous_navigation_system_overall_design}
 \caption{自主导航系统总体设计}
 \label{_Ref201344573}
 \end{figure}
@@ -53,7 +53,7 @@ DC电源供电，其电路连接如图\ref{_Ref201344580}所示。
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=4.77083in,height=2.41667in]{figures/chapter04/image4}
+\includesvg[width=4.77083in,height=2.41667in]{figures/chapter04/autonomous_navigation_system_power_module}
 \caption{自主导航系统电源模块}
 \label{_Ref201344580}
 \end{figure}
@@ -62,7 +62,7 @@ DC电源供电，其电路连接如图\ref{_Ref201344580}所示。
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.76806in,height=2.58611in]{figures/chapter04/image6}
+\includesvg[width=5.76806in,height=2.58611in]{figures/chapter04/autonomous_navigation_system_signal_connection}
 \caption{自主导航系统信号电路连接}
 \label{_Ref201344587}
 \end{figure}
@@ -71,7 +71,7 @@ DC电源供电，其电路连接如图\ref{_Ref201344580}所示。
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=4.52308in,height=3.65878in]{figures/chapter04/image7.png}
+\includegraphics[width=4.52308in,height=3.65878in]{figures/chapter04/autonomous_navigation_hardware_platform_photo.png}
 \caption{自主导航系统硬件平台实物图}
 \label{_Ref201344591}
 \end{figure}
@@ -82,7 +82,7 @@ DC电源供电，其电路连接如图\ref{_Ref201344580}所示。
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.76806in,height=2.67083in]{figures/chapter04/image9}
+\includesvg[width=5.76806in,height=2.67083in]{figures/chapter04/autonomous_navigation_system_software_structure}
 \caption{自主导航系统软件结构}
 \label{_Ref201344232}
 \end{figure}
@@ -98,9 +98,9 @@ ROS）作为系统软件架构的基础。ROS是一种开源的机器人软件�
 
 \begin{figure}[htbp]
 \centering
-\subfigure[RViz界面]{\includegraphics[width=0.62\textwidth]{figures/chapter04/image10.png}}
+\subfigure[RViz界面]{\includegraphics[width=0.62\textwidth]{figures/chapter04/rviz_interface.png}}
 \hfill
-\subfigure[小程序界面\label{_Ref201344242}]{\includegraphics[width=0.20\textwidth]{figures/chapter04/image11.jpeg}}
+\subfigure[小程序界面\label{_Ref201344242}]{\includegraphics[width=0.20\textwidth]{figures/chapter04/mini_program_interface.jpeg}}
 \caption{交互界面}
 \end{figure}
 
@@ -128,7 +128,7 @@ ROS）作为系统软件架构的基础。ROS是一种开源的机器人软件�
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.58333in,height=4.83333in]{figures/chapter04/image13}
+\includesvg[width=5.58333in,height=4.83333in]{figures/chapter04/localization_module_flowchart}
 \caption{定位模块流程图}
 \label{_Ref201344278}
 \end{figure}
@@ -281,7 +281,7 @@ P_{k} = \left( I - K_{k}H_{k} \right)P_{k}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=5.76806in,height=3.26333in]{figures/chapter04/image14.png}
+\includegraphics[width=5.76806in,height=3.26333in]{figures/chapter04/kalman_fusion_localization_result.png}
 \caption{卡尔曼融合定位效果图}
 \label{_Ref201344298}
 \end{figure}
@@ -293,9 +293,9 @@ P_{k} = \left( I - K_{k}H_{k} \right)P_{k}
 
 \begin{figure}[htbp]
 \centering
-\subfigure[室内环境]{\includegraphics[width=0.44\textwidth]{figures/chapter04/image15.png}}
+\subfigure[室内环境]{\includegraphics[width=0.44\textwidth]{figures/chapter04/indoor_environment_switch_result.png}}
 \hfill
-\subfigure[室外环境]{\includegraphics[width=0.44\textwidth]{figures/chapter04/image16.png}}
+\subfigure[室外环境]{\includegraphics[width=0.44\textwidth]{figures/chapter04/outdoor_environment_switch_result.png}}
 \caption{室内室外切换效果图}
 \label{_Ref201344302}
 \end{figure}
@@ -317,7 +317,7 @@ Library）坐标系统提供。该系统用于维护多坐标系之间的变换�
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.76806in,height=3.64514in]{figures/chapter04/image18}
+\includesvg[width=5.76806in,height=3.64514in]{figures/chapter04/navigation_module_function_structure}
 \caption{导航模块功能结构图}
 \label{_Ref201344435}
 \end{figure}
@@ -341,7 +341,7 @@ costmap）：全局代价地图主要用于全局路径搜索，构建在静态�
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.76806in,height=5.57917in]{figures/chapter04/image20}
+\includesvg[width=5.76806in,height=5.57917in]{figures/chapter04/navigation_task_flowchart}
 \caption{导航任务流程图}
 \label{_Ref201344461}
 \end{figure}
@@ -431,7 +431,7 @@ include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=2.99948in,height=2.77991in]{figures/chapter04/image21.png}
+\includegraphics[width=2.99948in,height=2.77991in]{figures/chapter04/navigation_planning_result.png}
 \caption{导航规划效果}
 \label{_Ref201344523}
 \end{figure}
@@ -448,7 +448,7 @@ include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=3.51042in,height=4.90625in]{figures/chapter04/image23}
+\includesvg[width=3.51042in,height=4.90625in]{figures/chapter04/stereo_camera_data_processing_flowchart}
 \caption{双目相机数据处理流程图}
 \label{_Ref201344315}
 \end{figure}
@@ -515,7 +515,7 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=5.42456in,height=3.24716in]{figures/chapter04/image24.png}
+\includegraphics[width=5.42456in,height=3.24716in]{figures/chapter04/obstacle_list_costmap_mapping.png}
 \caption{障碍物列表在代价地图上的映射}
 \label{_Ref201344556}
 \end{figure}
@@ -531,7 +531,7 @@ y)平面位置，若其垂直方向z上存在任意点（即该处存在物体�
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=5.53914in,height=3.02432in]{figures/chapter04/image25.png}
+\includegraphics[width=5.53914in,height=3.02432in]{figures/chapter04/point_cloud_costmap_mapping.png}
 \caption{环境点云在代价地图上的映射}
 \label{_Ref201344564}
 \end{figure}
