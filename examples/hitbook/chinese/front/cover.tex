@@ -11,30 +11,30 @@
   % 秘级
   %=====
   statesecrets={公开},
-  natclassifiedindex={TM301.2},
-  intclassifiedindex={62-5},
+  natclassifiedindex={TP271},
+  intclassifiedindex={621.7},
   %
   %=========
   % 中文信息
   %=========
-  ctitleone={局部多孔质气体静压},%本科生封面使用
-  ctitletwo={轴承关键技术的研究},%本科生封面使用
-  ctitlecover={局部多孔质气体静压轴承关键技术的研究},%放在封面中使用，自由断行
-  ctitle={局部多孔质气体静压轴承关键技术的研究},%放在原创性声明中使用
-  csubtitle={一条副标题}, %一般情况没有，可以注释掉
+  ctitleone={基于双目视觉载人},%本科生封面使用
+  ctitletwo={两轮平衡车关键技术研究},%本科生封面使用
+  ctitlecover={基于双目视觉载人两轮平衡车\\关键技术研究},%放在封面中使用，自由断行
+  ctitle={基于双目视觉载人两轮平衡车关键技术研究},%放在原创性声明中使用
+  % csubtitle={一条副标题}, %一般情况没有，可以注释掉
   cxueke={工学},
   csubject={机械制造及其自动化},
   caffil={机电工程学院},
-  cauthor={于冬梅},
-  csupervisor={某某某教授},
-  cassosupervisor={某某某教授}, % 副指导老师
-  ccosupervisor={某某某教授}, % 联合指导老师
+  cauthor={阮健生},
+  csupervisor={周亮教授},
+  % cassosupervisor={某某某教授}, % 副指导老师
+  % ccosupervisor={某某某教授}, % 联合指导老师
   % 如果是第一封面的日期要手动设置，需要取消注释下一行，并将内容改为“规范”中要求的封面第一页最下方的日期
   % firstpagecdate={2022年6月},
   % 日期自动使用当前时间，若需指定按如下方式修改：
   % cdate={超新星纪元},
   cstudentid={9527},
-  cstudenttype={学术学位论文}, %非全日制教育申请学位者
+  cstudenttype={专业学位论文}, %非全日制教育申请学位者
   cnumber={no9527}, %编号
   cpositionname={哈铁西站}, %博士后站名称
   cfinishdate={20XX年X月---20XX年X月}, %到站日期
@@ -48,51 +48,44 @@
   %=========
   % 英文信息
   %=========
-  etitle={Research on key technologies of partial porous externally pressurized gas bearing},
-  esubtitle={This is the sub title},
+  etitle={Research on Key Technologies of a Manned Two-Wheeled Self-Balancing Vehicle Based on Stereo Vision},
+  % esubtitle={This is the sub title},
   exueke={Engineering},
-  esubject={Computer Science and Technology},
-  eaffil={\emultiline[t]{School of Mechatronics Engineering \\ Mechatronics Engineering}},
-  eauthor={Yu Dongmei},
-  esupervisor={Professor XXX},
-  eassosupervisor={XXX},
+  esubject={Mechanical Manufacturing and Automation},
+  eaffil={School of Mechatronics Engineering},
+  eauthor={Ruan Jiansheng},
+  esupervisor={Professor Zhou Liang},
+  % eassosupervisor={XXX},
   % 日期自动生成，若需指定按如下方式修改：
-  edate={December, 2017},
-  estudenttype={Master of Art},
+  % edate={December, 2017},
+  estudenttype={Master of Engineering},
   %
   % 关键词用“英文逗号”分割
-  ckeywords={\TeX, \LaTeX, CJK, 嗨！, thesis},
-  ekeywords={\TeX, \LaTeX, CJK, template, thesis},
+  ckeywords={载人两轮平衡车, 双目视觉, 环境感知, 自主导航, 动态避障},
+  ekeywords={manned two-wheeled self-balancing vehicle, stereo vision, environmental perception, autonomous navigation, dynamic obstacle avoidance},
 }
 
 \begin{cabstract}
 
-摘要的字数（以汉字计），硕士学位论文一般为500 $\sim$ 1000字，博士学位论文为1000 $\sim$ 2000字，
-均以能将规定内容阐述清楚为原则，文字要精练，段落衔接要流畅。摘要页不需写出论文题目。
-英文摘要与中文摘要的内容应完全一致，在语法、用词上应准确无误，语言简练通顺。
-留学生的英文版博士学位论文中应有不少于3000字的“详细中文摘要”。
+针对公园、景区等封闭场景中低速载人代步工具对安全性、舒适性与智能化的综合需求，本文开展了基于双目视觉的载人两轮平衡车关键技术研究，完成了整车结构与控制系统设计、环境感知算法研究、自主导航系统开发及实验验证。
 
-  关键词是为了文献标引工作、用以表示全文主要内容信息的单词或术语。关键词不超过 5
-  个，每个关键词中间用分号分隔。（模板作者注：关键词分隔符不用考虑，模板会自动处
-  理。英文关键词同理。）
+在整车设计方面，围绕载人场景的稳定性与操控性要求，提出由机械结构、控制系统与自主导航系统组成的总体方案；在传统倒立摆控制基础上引入力矩控制陀螺稳定模块，完成车体框架、驱动模块及稳定模块的结构设计与关键部件选型，为车辆平稳运行提供硬件基础。
+
+在环境感知方面，构建了基于双目视觉的障碍物感知方法。采用深度学习立体匹配算法获取视差与深度信息，结合目标检测网络实现典型障碍物识别，并通过深度图与检测结果融合完成目标测距与空间定位。针对嵌入式部署需求，对立体匹配与检测模型进行TensorRT加速，在640$\times$480分辨率下实现约30 Hz端到端感知刷新频率。实验结果表明，在2--10 m测距范围内，系统整体平均相对误差为3.52\%，能够满足低速自动行驶场景的感知需求。
+
+在自主导航方面，基于ROS构建导航软件架构，设计并实现地图、定位、感知、通信、交互与主控等模块。定位模块融合GPS、IMU与轮速计信息并采用卡尔曼滤波进行状态估计；规划与控制模块结合感知结果完成路径规划与动态避障；系统通过UDP与下位机通信，并支持RViz与小程序交互。
+
+实验结果表明，所研制两轮平衡车具备稳定的基本行驶能力，能够完成加减速、转向、越障等动作；在动态行人干扰场景下，系统可实现障碍物检测、路径重规划与平滑绕行，保持安全距离，验证了“感知--规划--控制”闭环系统的可行性与稳定性。
 \end{cabstract}
 
 \begin{eabstract}
-   An abstract of a dissertation is a summary and extraction of research work
-   and contributions. Included in an abstract should be description of research
-   topic and research objective, brief introduction to methodology and research
-   process, and summarization of conclusion and contributions of the
-   research. An abstract should be characterized by independence and clarity and
-   carry identical information with the dissertation. It should be such that the
-   general idea and major contributions of the dissertation are conveyed without
-   reading the dissertation.
+This thesis investigates key technologies of a manned two-wheeled self-balancing vehicle based on stereo vision for enclosed low-speed scenarios such as parks and scenic areas, where safety, comfort, and intelligent operation are all required. The work covers vehicle structure and control system design, visual perception algorithm development, autonomous navigation system implementation, and experimental validation.
 
-   An abstract should be concise and to the point. It is a misunderstanding to
-   make an abstract an outline of the dissertation and words ``the first
-   chapter'', ``the second chapter'' and the like should be avoided in the
-   abstract.
+For the vehicle platform, an overall architecture consisting of mechanical structure, control system, and autonomous navigation system is proposed. To improve stability and ride comfort in manned operation, a control moment gyroscope (CMG) stabilization module is introduced on top of the conventional inverted-pendulum balancing scheme. The vehicle frame, drive module, stabilization module, and key component selections are completed to provide the hardware foundation for stable motion.
 
-   Key words are terms used in a dissertation for indexing, reflecting core
-   information of the dissertation. An abstract may contain a maximum of 5 key
-   words, with semi-colons used in between to separate one another.
+For environmental perception, a stereo-vision-based obstacle perception method is developed. A deep-learning stereo matching network is used to generate disparity and depth, and a target detection network is used to recognize typical obstacles. Depth information is then fused with detection results for distance estimation and spatial localization. For embedded deployment, both stereo matching and detection models are accelerated with TensorRT. At an input resolution of 640$\times$480, the complete perception pipeline achieves an end-to-end refresh rate of about 30 Hz. Field tests show an overall average relative ranging error of 3.52\% within 2--10 m, which meets the perception requirements of low-speed autonomous driving.
+
+For autonomous navigation, a ROS-based software architecture is built with mapping, localization, perception, communication, interaction, and main control modules. The localization module fuses GPS, IMU, and wheel-speed information with a Kalman filter. The planning and control modules use perception results for path planning and dynamic obstacle avoidance. The system communicates with the lower controller through UDP and supports both RViz and mini-program interaction.
+
+Experimental results show that the developed vehicle performs stable basic motions, including acceleration/deceleration, steering, and obstacle crossing. In dynamic pedestrian interference scenarios, the system can detect obstacles, replan paths, and bypass smoothly while maintaining a safe distance, demonstrating the feasibility and stability of the closed-loop perception-planning-control system.
 \end{eabstract}
