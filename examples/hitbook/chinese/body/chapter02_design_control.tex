@@ -109,10 +109,27 @@
 
 （1）力矩控制陀螺原理及布置结构
 
-力矩控制陀螺是一种通过改变飞轮方向以产生控制力矩的装置，广泛应用于航天器姿态控制和高动态平衡系统中。力矩控制陀螺的结构主要包括高速旋转的飞轮、陀螺壳体以及外部安装框架。如图2-4所示飞轮绕自身主轴（图中y轴）以角速度ωy高速旋转，形成稳定的角动量矢量。当通过控制电机驱动其绕垂直于飞轮轴线的z轴以角速度ωz进动时，根据角动量守恒定律，系统将产生垂直于两轴的进动力矩τ，其方向沿x轴指向。
+力矩控制陀螺是一种通过改变飞轮方向以产生控制力矩的装置，广泛应用于航天器姿态控制和高动态平衡系统中。力矩控制陀螺的结构主要包括高速旋转的飞轮、陀螺壳体以及外部安装框架。如图\ref{陀螺力矩方向示意图}所示飞轮绕自身主轴（图中y轴）以角速度ωy高速旋转，形成稳定的角动量矢量。当通过控制电机驱动其绕垂直于飞轮轴线的z轴以角速度ωz进动时，根据角动量守恒定律，系统将产生垂直于两轴的进动力矩τ，其方向沿x轴指向。
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/陀螺力矩方向示意图.png}
+    \caption{陀螺力矩方向示意图}
+    \label{陀螺力矩方向示意图}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/双CMG结构示意图.png}
+    \caption{双CMG结构示意图}
+    \label{双CMG结构示意图}
+  \end{minipage}
+\end{figure}
+\FloatBarrier
 
 力矩控制陀螺产生的进动力矩来源于角动量的变化率。若设飞轮角动量L为：
-
 \begin{equation}
 L = I_y \omega_y \mathbf{e}_y
 \end{equation}
@@ -125,7 +142,6 @@ L = I_y \omega_y \mathbf{e}_y
 \end{tabularx}\vspace{3.15bp}
 
 则当飞轮绕z轴旋转时，其角动量方向随之发生变化，进而产生进动力矩，该力矩的大小与飞轮转速ωz、进动角速度ωy成正比，方向由右手定则确定：
-
 \begin{equation}
 \tau = \frac{\mathrm{d}L}{\mathrm{d}t} = I_y \omega_y \omega_z \mathbf{e}_x
 \end{equation}
@@ -136,17 +152,17 @@ L = I_y \omega_y \mathbf{e}_y
 & $\mathbf{e}_x$ & $X$轴方向的单位向量。\\
 \end{tabularx}\vspace{3.15bp}
 
-然而单个CMG在产生进动力矩的同时，也会由于结构偏置产生附加力矩分量，影响整体系统的稳定性。如图2-5所示在存在倾角θ的情况下，CMG所产生的进动力矩τ可分解为沿x轴方向的分力矩τ·cosθ，从而引入非期望的扭矩分布。为此采用对称双CMG布置结构是一种有效的抑制手段。两组CMG沿相同轴线对称放置，飞轮自转方向相反，进动方向也相反，最后产生的合力矩的方向沿绝对坐标系X，两个陀螺在绝对坐标Y轴方向产生的分力矩相互抵消。采用双陀螺布置的力矩控制陀螺装置产生的控制力矩为：
-
+然而单个CMG在产生进动力矩的同时，也会由于结构偏置产生附加力矩分量，影响整体系统的稳定性。如图\ref{双CMG结构示意图}所示在存在倾角θ的情况下，CMG所产生的进动力矩τ可分解为沿x轴方向的分力矩τ·cosθ，从而引入非期望的扭矩分布。为此采用对称双CMG布置结构是一种有效的抑制手段。两组CMG沿相同轴线对称放置，飞轮自转方向相反，进动方向也相反，最后产生的合力矩的方向沿绝对坐标系X，两个陀螺在绝对坐标Y轴方向产生的分力矩相互抵消。采用双陀螺布置的力矩控制陀螺装置产生的控制力矩为：
 \begin{equation}
 \tau = 2 I_y \omega_y \omega_z \mathbf{e}_x \cos\theta
+\label{eq:ch2-cmg-double}
 \end{equation}
 
 \noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $\theta$ & 飞轮转动角（$^\circ$）。\\
 \end{tabularx}\vspace{3.15bp}
 
-采用双陀螺布置结构显著降低系统由飞轮自转引入的耦合扰动，提升控制稳定性与响应灵敏度，所以稳定模块的力矩控制陀螺采用双陀螺布置结构。根据公式（2-3），力矩控制陀螺产生的控制力矩与转子的转动惯量、自转角速度和进动角速度成正比。由于飞轮自转速度较高不易调整，一般由高速电机保持自转速度恒定，通过调节进动角速度来控制所需的平衡力矩。
+采用双陀螺布置结构显著降低系统由飞轮自转引入的耦合扰动，提升控制稳定性与响应灵敏度，所以稳定模块的力矩控制陀螺采用双陀螺布置结构。根据式~\eqref{eq:ch2-cmg-double}，力矩控制陀螺产生的控制力矩与转子的转动惯量、自转角速度和进动角速度成正比。由于飞轮自转速度较高不易调整，一般由高速电机保持自转速度恒定，通过调节进动角速度来控制所需的平衡力矩。
 
 （2）稳定模块结构设计
 
@@ -166,8 +182,7 @@ L = I_y \omega_y \mathbf{e}_y
 
 （3）进动电机的选型
 
-稳定模块产生的控制力矩必须大于两轮平衡车倾斜时的重力矩。当平衡车载人状态下前后方向倾斜的角度为β时，产生的重力矩TG为：
-
+稳定模块产生的控制力矩必须大于两轮平衡车倾斜时的重力矩。当平衡车载人状态下前后方向倾斜的角度为$\beta$时，产生的重力矩$T_G$为：
 \begin{equation}
 T_G = m_c g h_c \sin\beta + m_p g h_p \sin\beta
 \end{equation}
@@ -179,14 +194,14 @@ T_G = m_c g h_c \sin\beta + m_p g h_p \sin\beta
 & $h_p$ & 人体乘坐时重心高度。\\
 \end{tabularx}\vspace{3.15bp}
 
-根据总体结构设计，估算mc=70kg，hc=0.42m，取mp=75kg，hp=0.85m，当β=20°时代入计算得TG=312.64N·m。所以稳定模块产生的控制力矩应不小于312.64Nm。
+根据总体结构设计，估算$m_c=70\,\mathrm{kg}$，$h_c=0.42\,\mathrm{m}$，取$m_p=75\,\mathrm{kg}$，$h_p=0.85\,\mathrm{m}$，当$\beta=20^\circ$时代入计算得$T_G=312.64\,\mathrm{N\cdot m}$。所以稳定模块产生的控制力矩应不小于$312.64\,\mathrm{N\cdot m}$。
 
-陀螺装置为根据车内空间设计的定制产品，其飞轮绕自转轴的转动惯量为Iy=0.09kg/m2，内部高速电机额定转速ωy=471.24rad/s（4500rpm），CMG倾角θ=10°由式（2-3）计算得进动角速度应不小于3.75rad/s（35.81rpm）。
+陀螺装置为根据车内空间设计的定制产品，其飞轮绕自转轴的转动惯量为$I_y=0.09\,\mathrm{kg/m^2}$，内部高速电机额定转速$\omega_y=471.24\,\mathrm{rad/s}$（4500rpm），CMG倾角$\theta=10^\circ$。由式~\eqref{eq:ch2-cmg-double}计算得进动角速度应不小于$3.75\,\mathrm{rad/s}$（35.81rpm）。
 
-设进动角速度为ωz=3.77rad/s（36rpm），为达到100Hz的控制周期，故需要在0.01s的时间内加速到目标转速，其加速功率计算公式：
-
+设进动角速度为$\omega_z=3.77\,\mathrm{rad/s}$（36rpm），为达到100Hz的控制周期，故需要在$0.01\,\mathrm{s}$的时间内加速到目标转速，其加速功率计算公式：
 \begin{equation}
 P_{\alpha} = \frac{\omega_z^2 J_z}{2 t_{\alpha}}
+\label{eq:ch2-power-acc}
 \end{equation}
 
 \noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
@@ -197,20 +212,19 @@ P_{\alpha} = \frac{\omega_z^2 J_z}{2 t_{\alpha}}
 \end{tabularx}\vspace{3.15bp}
 
 \noindent 考虑安全系数S=0.3，实际选择电机功率的额定功率应不小于P：
-
 \begin{equation}
 P = P_{\alpha}(1 + S)
+\label{eq:ch2-power-rated}
 \end{equation}
 
-由式（2-5）和式（2-6）计算得进动电机的额定功率应大于34.82W。
+由式~\eqref{eq:ch2-power-acc}和式~\eqref{eq:ch2-power-rated}计算得进动电机的额定功率应大于34.82W。
 
-电机所需的转矩T为：
-
+电机所需的转矩$T$为：
 \begin{equation}
 T = \frac{J_z \omega_z}{t_{\alpha}}
 \end{equation}
 
-计算得进动电机所需的转矩为18.47Nm。
+计算得进动电机所需的转矩为$18.47\,\mathrm{N\cdot m}$。
 
 最终选择了RobStride03一体化关节电机，该电机集成了电机本体、减速器和驱动器，结构紧凑，适合车内安装。其详细参数如表\ref{进动电机技术参数}所示。
 
@@ -237,20 +251,20 @@ T = \frac{J_z \omega_z}{t_{\alpha}}
 
 根据结构方案设计所述，本课题设计的两轮平衡车采用倒立摆与力矩控制陀螺联合控制的平衡方案。倒立摆需要通过电机驱动车轮实现，实现轮式倒立摆常用的电机有轮边电机或轮毂电机。轮边电机轮边电机具有成本低、维护方便、簧下质量小等优势，而轮毂电机则凭借更高的响应速度以及更紧凑的结构设计且不占用车内空间，选用轮毂电机能够更好地满足结构设计需求。
 
-为保证车辆在各工况下具备良好的驱动能力，需要根据设计指标计算符合各种工况下电机所需的扭矩、转速以及功率。平衡车在行驶中受到的阻力主要有滚动摩擦阻力Fr、空气阻力Fa、坡道阻力Fc以及加速阻力Fac，根据工况进行计算。
+为保证车辆在各工况下具备良好的驱动能力，需要根据设计指标计算符合各种工况下电机所需的扭矩、转速以及功率。平衡车在行驶中受到的阻力主要有滚动摩擦阻力$F_r$、空气阻力$F_a$、坡道阻力$F_c$以及加速阻力$F_{ac}$，根据工况进行计算。
 
 1）最大爬坡角度时的阻力
 
-在爬坡时，平衡车需要克服滚动摩擦阻力和坡道阻力，因速度较低忽略空气阻力。最大爬坡角度时的阻力F1的计算公式为：
-
+在爬坡时，平衡车需要克服滚动摩擦阻力和坡道阻力，因速度较低忽略空气阻力。最大爬坡角度时的阻力$F_1$的计算公式为：
 \begin{equation}
 F_1 = F_r + F_c
+\label{eq:ch2-f1}
 \end{equation}
 
 滚动摩擦阻力的计算公式为为：
-
 \begin{equation}
 F_r = c_r m g
+\label{eq:ch2-fr}
 \end{equation}
 
 \noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
@@ -279,10 +293,9 @@ F_r = c_r m g
 \end{table}
 \FloatBarrier
 
-平衡车的质量为70kg，最大载荷为75kg，可得最大总载荷m=145kg，重力加速度牵引力g=9.81N/kg，公园或社区的路面为良好的沥青或混凝土路面，由表\ref{各种路面滚动摩擦系数}取阻力系数cr为0.015。由式（2-9）计算得平衡车行驶时的滚动摩擦阻力Fr=21.34N。
+平衡车的质量为$70\,\mathrm{kg}$，最大载荷为$75\,\mathrm{kg}$，可得最大总载荷$m=145\,\mathrm{kg}$，重力加速度$g=9.81\,\mathrm{N/kg}$，公园或社区的路面为良好的沥青或混凝土路面，由表\ref{各种路面滚动摩擦系数}取阻力系数$c_r=0.015$。由式~\eqref{eq:ch2-fr}计算得平衡车行驶时的滚动摩擦阻力$F_r=21.34\,\mathrm{N}$。
 
 坡道阻力的计算公式为：
-
 \begin{equation}
 F_c = m g \sin\theta
 \end{equation}
@@ -291,20 +304,20 @@ F_c = m g \sin\theta
 式中& $\theta$ & 最大爬坡角（$^\circ$）。\\
 \end{tabularx}\vspace{3.15bp}
 
-平衡车最大总载荷m=145kg，重力加速度牵引力g=9.81N/kg，最大爬坡角θ=15°，计算得坡道阻力Fs≈365.16N。由式（2-8）计算得最大爬坡角度时的最大爬坡角度时的阻力F1=386.50N。
+平衡车最大总载荷$m=145\,\mathrm{kg}$，重力加速度$g=9.81\,\mathrm{N/kg}$，最大爬坡角$\theta=15^\circ$，计算得坡道阻力$F_s\approx365.16\,\mathrm{N}$。由式~\eqref{eq:ch2-f1}计算得最大爬坡角度时的最大爬坡角度时的阻力$F_1=386.50\,\mathrm{N}$。
 
 2）最大加速度时的阻力
 
-在最大加速度工况下，从静止开始加速，需考虑滚动阻力、空气阻力和加速阻力。最大加速度的阻力F2的计算公式为
-
+在最大加速度工况下，从静止开始加速，需考虑滚动阻力、空气阻力和加速阻力。最大加速度的阻力$F_2$的计算公式为
 \begin{equation}
 F_2 = F_r + F_a + F_{ac}
+\label{eq:ch2-f2}
 \end{equation}
 
-空气阻力Fa的计算公式为：
-
+空气阻力$F_a$的计算公式为：
 \begin{equation}
 F_a = \frac{1}{2}\rho C_d A V_{\max}^2
+\label{eq:ch2-fa}
 \end{equation}
 
 \noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
@@ -314,10 +327,9 @@ F_a = \frac{1}{2}\rho C_d A V_{\max}^2
 & $V_{\max}$ & 最大速度（m/s）。\\
 \end{tabularx}\vspace{3.15bp}
 
-空气密度取常温常压下值ρ=1.225kg/m3，空气阻力系数取Cd=1.0，迎风面积由设计估算约为A为0.73m2，最大速度Vmax约为4.17m/s，由式（2-12）计算得空气阻力Fa=7.78N。
+空气密度取常温常压下值$\rho=1.225\,\mathrm{kg/m^3}$，空气阻力系数取$C_d=1.0$，迎风面积由设计估算约为$A=0.73\,\mathrm{m^2}$，最大速度$V_{\max}\approx4.17\,\mathrm{m/s}$，由式~\eqref{eq:ch2-fa}计算得空气阻力$F_a=7.78\,\mathrm{N}$。
 
-加速阻力Fac的计算公式为：
-
+加速阻力$F_{ac}$的计算公式为：
 \begin{equation}
 F_{ac} = m a
 \end{equation}
@@ -326,22 +338,20 @@ F_{ac} = m a
 式中& $a$ & 加速度（m/s$^2$）。\\
 \end{tabularx}\vspace{3.15bp}
 
-最大加速度a=2m/s2，计算得加速阻力Fac=290N。由式（2-12）计算得最大加速度的阻力F2=319.12N。
+最大加速度$a=2\,\mathrm{m/s^2}$，计算得加速阻力$F_{ac}=290\,\mathrm{N}$。由式~\eqref{eq:ch2-f2}计算得最大加速度的阻力$F_2=319.12\,\mathrm{N}$。
 
 3）最大速度时的阻力
 
-最大速度情况下仅考虑摩擦滚动阻力和空气阻力，最大速度时的阻力F3计算公式为：
-
+最大速度情况下仅考虑摩擦滚动阻力和空气阻力，最大速度时的阻力$F_3$计算公式为：
 \begin{equation}
 F_3 = F_r + F_a
 \end{equation}
 
-计算得最大速度时的阻力F3=29.12N。
+计算得最大速度时的阻力$F_3=29.12\,\mathrm{N}$。
 
 4）轮毂电机所需参数计算
 
 由于两轮驱动，每个电机提供的牵引力为总力的一半，且考虑安全系数和传动效率，每个电机的扭矩需求τn的计算公式为：
-
 \begin{equation}
 \tau_n \ge \frac{S F r}{2 \eta}
 \end{equation}
@@ -350,18 +360,16 @@ F_3 = F_r + F_a
 式中& $r$ & 车轮半径（m）。\\
 \end{tabularx}\vspace{3.15bp}
 
-取安全系数S=1.2，传动效率η=0.9，带入r=0.33m，由最大爬坡角度时的阻力F1计算得τn≥85.03Nm，由最大加速度的阻力F2计算得扭矩τn≥70.21Nm。
+取安全系数$S=1.2$，传动效率$\eta=0.9$，带入$r=0.33\,\mathrm{m}$，由最大爬坡角度时的阻力$F_1$计算得$\tau_n\ge85.03\,\mathrm{N\cdot m}$，由最大加速度的阻力$F_2$计算得扭矩$\tau_n\ge70.21\,\mathrm{N\cdot m}$。
 
 轮毂电机所需的功率的计算公式为：
-
 \begin{equation}
 P_n \ge \frac{S F V_{\max}}{2 \eta}
 \end{equation}
 
-由最大加速度的阻力F2计算得Pn≥887.15W，由最大速度时的阻力F3=29.12N代入计算得Pn≥80.95W。
+由最大加速度的阻力$F_2$计算得$P_n\ge887.15\,\mathrm{W}$，由最大速度时的阻力$F_3=29.12\,\mathrm{N}$代入计算得$P_n\ge80.95\,\mathrm{W}$。
 
 电机转速要求：
-
 \begin{equation}
 \omega = \frac{60 V_{\max}}{2 \pi r}
 \end{equation}
@@ -397,15 +405,69 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 稳定模块的陀螺框架主要承受陀螺装置产生的控制扭矩以及其重量。陀螺框架、回形架和车体框架均采用6061铝合金，其密度为2.70g/cm³，泊松比0.33，杨氏模量为68.9GPa。
 
-设进动角速度为ωz=4.17rad/s（40rpm），由式（2-3）计算得控制扭矩353.71N·m，陀螺装置及进动电机的总重量234.459N。在陀螺框架两侧的上下连接轴安装位置施加扭矩及重力载荷，并添加标准地球重力。在空心轴孔处设置了圆柱形约束，限制其径向和切向位移；在丝杠孔处则施加了轴向位移约束。仿真分析结果如图2-7和图2-8所示，最大等效应力出现在丝杠孔附近，为23.142MPa，远小于材料的屈服强度276MPa。最大变形发生在上端连接轴安装位置的边缘，仅为0.10mm，变形量极小，对整体结构性能影响可忽略不计。
+设进动角速度为ωz=4.17rad/s（40rpm），由式~\eqref{eq:ch2-cmg-double}计算得控制扭矩353.71N·m，陀螺装置及进动电机的总重量234.459N。在陀螺框架两侧的上下连接轴安装位置施加扭矩及重力载荷，并添加标准地球重力。在空心轴孔处设置了圆柱形约束，限制其径向和切向位移；在丝杠孔处则施加了轴向位移约束。仿真分析结果如图\ref{陀螺框架等效应力图}和图\ref{陀螺框架总变形图}所示，最大等效应力出现在丝杠孔附近，为23.142MPa，远小于材料的屈服强度276MPa。最大变形发生在上端连接轴安装位置的边缘，仅为0.10mm，变形量极小，对整体结构性能影响可忽略不计。
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/陀螺框架等效应力图.png}
+    \caption{陀螺框架等效应力图}
+    \label{陀螺框架等效应力图}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/陀螺框架总变形图.png}
+    \caption{陀螺框架总变形图}
+    \label{陀螺框架总变形图}
+  \end{minipage}
+\end{figure}
+\FloatBarrier
 
 （2）稳定模块的回形架
 
-稳定模块的回形架主要承受力矩控制陀螺产生的控制扭矩以及以及陀螺装置和陀螺框架的重力。在模块安装支架空心轴支撑处施加CMG装置的重力载荷329.84N，并施加CMG装置产生的最大扭矩349.91Nm，结果如图2-9和图2-10所示，最大等效应力仅为3.8654MPa，远小于材料屈服强度276MPa。最大变形仅为0.029mm，变形量极小，对整体结构性能影响可忽略不计。
+稳定模块的回形架主要承受力矩控制陀螺产生的控制扭矩以及以及陀螺装置和陀螺框架的重力。在模块安装支架空心轴支撑处施加CMG装置的重力载荷329.84N，并施加CMG装置产生的最大扭矩349.91Nm，结果如图\ref{模块安装支架等效应力图}和图\ref{模块安装支架总变形图}所示，最大等效应力仅为3.8654MPa，远小于材料屈服强度276MPa。最大变形仅为0.029mm，变形量极小，对整体结构性能影响可忽略不计。
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/模块安装支架等效应力图.png}
+    \caption{模块安装支架等效应力图}
+    \label{模块安装支架等效应力图}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/模块安装支架总变形图.png}
+    \caption{模块安装支架总变形图}
+    \label{模块安装支架总变形图}
+  \end{minipage}
+\end{figure}
+\FloatBarrier
 
 （3）车体框架
 
-对平衡车车体框架的主要结构进行装配有限元仿真。在连接架上施加981N（100kg）的载荷，在前、后侧板上施加稳定模块最大扭矩349.91Nm和稳定模块总重377.35N（38.46kg）的载荷且设置标准地球重力，并在车轮架的轮毂电机安装孔处设定固定支撑。由图2-11和图2-12可以看出最大等效应力位于车轮架的转角处，数值为7.23MPa，远小于材料屈服强度276MPa；最大变形位于前后侧板顶端仅为0.063mm，对整体结构影响可忽略不计。
+对平衡车车体框架的主要结构进行装配有限元仿真。在连接架上施加981N（100kg）的载荷，在前、后侧板上施加稳定模块最大扭矩349.91Nm和稳定模块总重377.35N（38.46kg）的载荷且设置标准地球重力，并在车轮架的轮毂电机安装孔处设定固定支撑。由图\ref{车体框架等效应力图}和图\ref{车体框架总变形图}可以看出最大等效应力位于车轮架的转角处，数值为7.23MPa，远小于材料屈服强度276MPa；最大变形位于前后侧板顶端仅为0.063mm，对整体结构影响可忽略不计。
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/车体框架等效应力图.png}
+    \caption{车体框架等效应力图}
+    \label{车体框架等效应力图}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/车体框架总变形图.png}
+    \caption{车体框架总变形图}
+    \label{车体框架总变形图}
+  \end{minipage}
+\end{figure}
+\FloatBarrier
 
 \subsection{机械结构总成}
 
@@ -685,6 +747,8 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
 \FloatBarrier
 
 \subsection{本章小节}
+
+
 
 
 

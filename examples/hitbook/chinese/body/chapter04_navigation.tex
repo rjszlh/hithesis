@@ -140,7 +140,6 @@ ROS）作为系统软件架构的基础。ROS是一种开源的机器人软件�
 卡尔曼滤波推算车辆状态分为两个步骤：时间更新步骤和观察更新步骤。卡尔曼滤波器通过这些步骤将传感器信息与模型预测进行结合，以优化状态估计。
 
 状态向量 \(x_{k}\) 包含9个状态量：
-
 \begin{equation}
 x_{k} = \begin{bmatrix}
 p_{x} & p_{y} & p_{z} & v_{x} & v_{y} & v_{z} & a_{x} & a_{y} & a_{z}
@@ -155,7 +154,6 @@ p_{x} & p_{y} & p_{z} & v_{x} & v_{y} & v_{z} & a_{x} & a_{y} & a_{z}
 \emph{v\textsubscript{x}}，\emph{v\textsubscript{y}}，\emph{v\textsubscript{z}}------轮速传感器推算线速度。
 
 时间更新（预测）步骤通过动力学模型对下一时刻的状态进行估计。
-
 \begin{equation}
 \begin{array}{r}
 x_{k + 1} = F_{k}x_{k} + B_{k}u_{k} + w_{k}
@@ -172,7 +170,6 @@ x_{k + 1} = F_{k}x_{k} + B_{k}u_{k} + w_{k}
 \emph{w\textsubscript{k}}------过程噪声，假设为零均值高斯噪声，协方差为\emph{Q\textsubscript{k}}。
 
 状态转移矩阵\emph{F\textsubscript{k}}可以基于车辆的运动模型写成：
-
 \begin{equation}
 \begin{array}{r}
 F_{k} = \begin{bmatrix}
@@ -192,7 +189,6 @@ F_{k} = \begin{bmatrix}
 式中------\(\Delta t\)为采样时间。
 
 预测的协方差矩阵更新公式为：
-
 \begin{equation}
 \begin{array}{r}
 P_{k + 1} = F_{k}P_{k}{F_{k}}^{T} + Q_{k}
@@ -200,7 +196,6 @@ P_{k + 1} = F_{k}P_{k}{F_{k}}^{T} + Q_{k}
 \end{equation}
 
 过程噪声协方差矩阵\(Q_{k}\)设为：
-
 \begin{equation}
 \begin{array}{r}
 \  \\
@@ -219,7 +214,6 @@ Q_{k} = \begin{bmatrix}
 \end{equation}
 
 观察更新步骤结合传感器观测值来修正预测状态。假设测量模型为线性的：
-
 \begin{equation}
 \begin{array}{r}
 z_{k} = H_{k}x_{k} + v_{k}
@@ -234,7 +228,6 @@ z_{k} = H_{k}x_{k} + v_{k}
 \emph{v\textsubscript{k}}------测量噪声。
 
 测量噪声协方差\emph{R\textsubscript{k}}为：
-
 \begin{equation}
 \begin{array}{r}
 R_{k} = \begin{bmatrix}
@@ -252,7 +245,6 @@ R_{k} = \begin{bmatrix}
 \end{equation}
 
 更新步骤的卡尔曼增益为：
-
 \begin{equation}
 \begin{array}{r}
 K_{k} = P_{k}{H_{k}}^{T}\left( H_{k}P_{k}{H_{k}}^{T} + R_{k} \right)^{- 1}
@@ -260,7 +252,6 @@ K_{k} = P_{k}{H_{k}}^{T}\left( H_{k}P_{k}{H_{k}}^{T} + R_{k} \right)^{- 1}
 \end{equation}
 
 状态更新：
-
 \begin{equation}
 \begin{array}{r}
 x_{k} = x_{k} + K_{k}\left( z_{k} - H_{k}x_{k} \right)
@@ -268,7 +259,6 @@ x_{k} = x_{k} + K_{k}\left( z_{k} - H_{k}x_{k} \right)
 \end{equation}
 
 协方差更新：
-
 \begin{equation}
 \begin{array}{r}
 P_{k} = \left( I - K_{k}H_{k} \right)P_{k}
@@ -460,7 +450,6 @@ include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 代价地图映射采用人工势场（Artificial Potential
 Field）中斥力场（Repulsive
 Field）的思想，对每一个障碍物位置施加以该点为中心的二维高斯函数，构建空间上的软约束代价分布。其数学表达式如下：
-
 \begin{equation}
 C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{2}} \right)
 \end{equation}
@@ -502,7 +491,6 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 }
 
 为兼顾识别精度与运行效率，系统采用基于障碍物类别的代价参数设定机制。在实现时，导航模块从障碍物列表中读取每个障碍物的分类标签（由YOLO输出的class\_id）。系统首先根据表\ref{不同类别障碍物取值}按类别确定振幅\emph{A}和基础协方差\emph{σ}\textsubscript{base}，然后引入其实际宽度\emph{w}，通过如下方式计算最终协方差：
-
 \begin{equation}
 \sigma=\sigma_{\text{base}}\cdot w
 \end{equation}
@@ -543,5 +531,7 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 定位模块实现多源信息融合与位姿估计，导航模块完成路径规划与局部避障，感知
 模块输出目标检测与距离信息，各模块通过标准话题接口实现解耦协同。本章完成
 了自主导航系统的集成实现，为整车实验与性能验证提供了系统基础。
+
+
 
 
