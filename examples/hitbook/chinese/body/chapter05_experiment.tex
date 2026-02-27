@@ -1,4 +1,4 @@
-% !Mode:: "TeX:UTF-8"
+﻿% !Mode:: "TeX:UTF-8"
 
 \chapter{实验与结果分析}
 
@@ -6,7 +6,7 @@
 
 为验证两轮平衡车底盘结构设计与平衡控制系统的可靠性，对车辆开展基本行驶性能测试。实验内容主要包括前进与后退运行、加减速响应、左右转向控制以及典型障碍越障能力等项目。
 
-在平整路面条件下，分别进行低速与中速行驶测试，分析车辆启动过程、速度变化特性及姿态稳定性；在转向测试中，通过不同操作幅度与不同运行速度组合，评估车辆转向灵敏度与角速度响应特性；在越障测试中，设置减速带与砖块等典型障碍物，并开展绕桩行驶实验，以验证车辆在复杂路径条件下的运动稳定性。图5-1展示了减速带越障、砖块越障以及绕桩实验的实际测试情况。
+在平整路面条件下，分别进行低速与中速行驶测试，分析车辆启动过程、速度变化特性及姿态稳定性；在转向测试中，通过不同操作幅度与不同运行速度组合，评估车辆转向灵敏度与角速度响应特性；在越障测试中，设置减速带与砖块等典型障碍物，并开展绕桩行驶实验，以验证车辆在复杂路径条件下的运动稳定性。图\ref{行驶能力测试}展示了减速带越障、砖块越障以及绕桩实验的实际测试情况。
 
 \begin{figure}[!htbp]
   \centering
@@ -25,6 +25,7 @@
     \includegraphics[width=\textwidth]{figures/chapter05/slalom_driving_test.jpg}
   \end{minipage}
   \caption{行驶能力测试}
+  \label{行驶能力测试}
 \end{figure}
 \FloatBarrier
 
@@ -40,13 +41,14 @@
 
 为评估模型在嵌入式平台上的推理性能，分别对YOLO11n目标检测网络与立体匹配网络（HAGVNet）进行了部署测试，对比了PyTorch原生推理与TensorRT加速推理两种方式的性能表现。其中，PyTorch推理作为功能验证与性能基线；TensorRT在模型导出与转换基础上，采用FP16精度模式，并结合算子融合与图优化策略进行端到端加速，从而提升嵌入式设备上的运行效率。
 
-实验结果如表5-1所示，相比PyTorch推理，TensorRT（FP16）显著降低了模型延迟：（1）HAGVNet单帧推理时间由194.3ms降至21.6ms，对应帧率提升至46.3FPS；（2）YOLO11n单帧推理时间由62.3ms降至6.9ms，对应帧率提升至144.9FPS。可以看出，在嵌入式平台上，TensorRT加速对两类模型均带来了数量级的性能提升，显著增强了系统实时运行能力，为整车在线部署提供了算力保障。
+实验结果如表\ref{不同部署方式下的模型推理性能对比}所示，相比PyTorch推理，TensorRT（FP16）显著降低了模型延迟：（1）HAGVNet单帧推理时间由194.3ms降至21.6ms，对应帧率提升至46.3FPS；（2）YOLO11n单帧推理时间由62.3ms降至6.9ms，对应帧率提升至144.9FPS。可以看出，在嵌入式平台上，TensorRT加速对两类模型均带来了数量级的性能提升，显著增强了系统实时运行能力，为整车在线部署提供了算力保障。
 
 在完整感知流程部署测试中（包含目标检测、立体匹配与基于ROI的深度融合测距），输入分辨率设置为640$\times$480。系统实测端到端刷新频率为30Hz，能够满足低速移动载具的实时感知需求。进一步分析各模块耗时构成可以发现，当前系统的主要时延瓶颈来自立体匹配阶段。由于立体匹配涉及高维代价体构建与特征聚合运算，其计算复杂度显著高于目标检测模块，是后续性能优化的重点方向。
 
 \begin{table}[!htbp]
   \centering
   \caption{不同部署方式下的模型推理性能对比}
+  \label{不同部署方式下的模型推理性能对比}
   \vspace{0.5em}\wuhao
   \begin{tabularx}{0.85\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
     \toprule
@@ -79,6 +81,7 @@
     \includegraphics[width=\textwidth]{figures/chapter05/field_ranging_result_b.jpg}
   \end{minipage}
   \caption{实地测距效果图}
+  \label{实地测距效果图}
 \end{figure}
 \FloatBarrier
 
@@ -87,6 +90,7 @@
 \begin{table}[!htbp]
   \centering
   \caption{不同类别障碍物在各距离下的测距结果与相对误差}
+  \label{不同类别障碍物在各距离下的测距结果与相对误差}
   \vspace{0.5em}\wuhao
   \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
     \toprule
@@ -111,7 +115,7 @@
 
 在完成两轮平衡车行驶性能与环境感知能力的独立验证后，进一步开展整车闭环避障实验，验证“感知—规划—控制”完整链路的协同工作效果与系统稳定性。该实验重点评估在动态干扰条件下，车辆对突发障碍物的响应能力与安全裕度。
 
-实验构建动态行人干扰场景。车辆按照预设目标点进行路径规划并开始正常行驶，在行驶过程中，行人从侧方突然进入车辆原规划路径，如图5-3所示。该场景模拟公园或园区环境中常见的行人随机横穿道路情形，对系统实时感知与动态避障能力提出挑战。
+实验构建动态行人干扰场景。车辆按照预设目标点进行路径规划并开始正常行驶，在行驶过程中，行人从侧方突然进入车辆原规划路径，如图\ref{避障能力测试}所示。该场景模拟公园或园区环境中常见的行人随机横穿道路情形，对系统实时感知与动态避障能力提出挑战。
 
 \begin{figure}[!htbp]
   \centering
@@ -147,6 +151,7 @@
     \includegraphics[width=\textwidth]{figures/chapter05/obstacle_avoidance_test_frame_06.jpg}
   \end{minipage}
   \caption{避障能力测试}
+  \label{避障能力测试}
 \end{figure}
 \FloatBarrier
 
@@ -157,3 +162,5 @@
 \section{本章小节}
 
 本章对两轮平衡车的运动性能、视觉感知能力及闭环避障效果进行了综合实验验证。基本行驶测试表明，车辆启动平稳、加减速响应迅速、转向可控，能够稳定完成越障与复杂路径行驶，验证了底盘结构与平衡控制系统的可靠性。嵌入式部署实验显示，经过TensorRT（FP16）优化后，感知系统在640$\times$480分辨率下实现约30 Hz端到端刷新频率，满足低速运行需求。2--10 m范围内整体平均相对误差为3.52\%，误差随距离增加呈上升趋势，符合立体视觉测距规律。闭环避障实验表明，系统能够在动态干扰条件下完成目标检测、路径重规划与平滑绕行，保持安全距离，运行过程整体稳定。综上，实验结果验证了所构建系统在工程应用中的可行性与稳定性。
+
+
