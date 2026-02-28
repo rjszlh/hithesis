@@ -36,7 +36,6 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
   \caption{理想双目模型}
   \label{理想双目模型}
 \end{figure}
-\FloatBarrier
 
 实际双目系统中普遍存在镜头畸变与安装误差，若不进行标定将导致测距结果偏离理想几何模型。为此，本文采用张正友标定方法，通过MATLAB的Stereo Camera Calibrator应用对双目相机进行标定与校正。通过采集多组棋盘格图像，估计左右相机的内参及畸变参数，并计算双目系统的外参关系，包括旋转矩阵与平移向量，标定结果如图\ref{双目相机标定结果}所示。
 
@@ -50,7 +49,6 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
   \caption{双目相机标定结果}
   \label{双目相机标定结果}
 \end{figure}
-\FloatBarrier
 
 \begin{figure}[!htbp]
   \centering
@@ -58,7 +56,6 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
   \caption{图像校正处理结果}
   \label{图像校正处理结果}
 \end{figure}
-\FloatBarrier
 
 \subsection{轻量化立体匹配模型}
 
@@ -70,7 +67,6 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
   \caption{HAGVNet结构图}
   \label{HAGVNet结构图}
 \end{figure}
-\FloatBarrier
 
 （1）分层注意力引导代价体构建
 
@@ -109,7 +105,6 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
   \caption{不同代价卷积块对比}
   \label{不同代价卷积块对比}
 \end{figure}
-\FloatBarrier
 
 （2）用于2D代价聚合的covntxv2聚合块
 
@@ -191,7 +186,6 @@ C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
   \caption{代价聚合结构图}
   \label{代价聚合结构图}
 \end{figure}
-\FloatBarrier
 
 4）视差回归
 
@@ -293,7 +287,6 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
     \bottomrule
   \end{tabularx}
 \end{table}
-\FloatBarrier
 
 （2）HAGV模块消融实验
 
@@ -314,7 +307,6 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
     \bottomrule
   \end{tabularx}
 \end{table}
-\FloatBarrier
 
 （3）与主流方法的对比实验
 
@@ -326,7 +318,6 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
   \caption{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
   \label{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
 \end{figure}
-\FloatBarrier
 
 在SceneFlow数据集上，HAGVNet在仅$20.08\,\mathrm{GFLOPs}$的条件下取得$0.73\,\mathrm{px}$的$EPE$，在计算量显著低于多数方法的情况下保持了具有竞争力的精度表现；在KITTI 2012与KITTI 2015数据集上，HAGVNet的整体性能优于StereoNet、DeepPrunerFast、MobileStereoNet-2D与AANet等方法。与HITNet及Fast-ACVNet系列相比，HAGVNet在$D1$-all指标上仅高出约0.2\%--0.3\%，但其计算复杂度仅为$20.08\,\mathrm{GFLOPs}$，分别约为HITNet（$50.23\,\mathrm{GFLOPs}$）的40\%和Fast-ACVNet（$79.34\,\mathrm{GFLOPs}$）的25\%，在保持接近精度的同时显著降低了计算开销。图\ref{HAGVNet与多种主流方法在KITTI数据集上的部分表现}给出了部分定性结果对比，可见在弱纹理区域与大面积平坦区域，HAGVNet能较好保持结构连续性并抑制局部匹配噪声。
 
@@ -340,7 +331,6 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
   \caption{SceneFlow（左）和KITTI15（右）数据集上的性能与FLOPs对比}
   \label{SceneFlow（左）和KITTI15（右）数据集上的性能与FLOPs对比}
 \end{figure}
-\FloatBarrier
 
 \begin{table}[!htbp]
   \centering
@@ -364,7 +354,6 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
     \bottomrule
   \end{tabularx}
 \end{table}
-\FloatBarrier
 
 \begin{table}[!htbp]
   \centering
@@ -393,7 +382,6 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
   \end{tabularx}
   \endgroup
 \end{table}
-\FloatBarrier
 
 \section{基于深度学习的目标识别}
 
@@ -411,7 +399,6 @@ YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测�
   \caption{YOLO11与其他主流网络在COCO数据集的性能对比}
   \label{YOLO11与其他主流网络在COCO数据集的性能对比}
 \end{figure}
-\FloatBarrier
 
 结合本课题“嵌入式双目视觉障碍物检测与测距”的应用需求，模型选型需重点考虑以下因素：1推理实时性：需满足车辆低速行驶过程中的实时检测需求；2模型体积与参数量：适配Jetson等嵌入式平台有限的显存与计算资源；3检测精度稳定性：保证对行人、车辆、路障、树木等典型障碍物的可靠识别。
 
@@ -423,7 +410,6 @@ YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测�
   \caption{YOLO11n整体结构}
   \label{YOLO11n整体结构}
 \end{figure}
-\FloatBarrier
 
 YOLO11n的整体结构如图\ref{YOLO11n整体结构}所示，主要包括以下三个部分：1、Backbone（主干网络）用于提取输入图像的多尺度特征表示。通过轻量化卷积模块与跨层连接结构，提高特征表达能力的同时控制参数规模和计算复杂度。2、Neck（特征融合网络）采用改进的特征金字塔结构（FPN/PAN类结构），实现不同尺度特征之间的自顶向下与自底向上融合，增强对小目标与远距离目标的检测能力。3、Head（检测头）负责输出边界框回归参数、目标置信度及类别概率。检测头通常采用解耦设计，将分类分支与回归分支分离，以提高收敛稳定性与定位精度。
 
@@ -466,7 +452,6 @@ mAP=\frac{1}{N}\sum_{c=1}^{N} AP_c
   \caption{目标检测及测距流程}
   \label{目标检测及测距流程}
 \end{figure}
-\FloatBarrier
 
 （1）立体匹配与视差估计
 
@@ -567,7 +552,6 @@ O_i=(c_i,s_i,X_i,Y_i,Z_i)
   \caption{障碍物检测与定位效果图}
   \label{障碍物检测与定位效果图}
 \end{figure}
-\FloatBarrier
 
 \subsection{本章小节}
 

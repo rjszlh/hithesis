@@ -24,7 +24,6 @@
   \caption{载人两轮平衡车总体设计方案}
   \label{载人两轮平衡车总体设计方案}
 \end{figure}
-\FloatBarrier
 
 基于上述需求分析，本课题提出了一种载人两轮平衡车的设计方案，如图\ref{载人两轮平衡车总体设计方案}所示。从整体架构上看，载人两轮平衡车系统主要由三大核心部分组成：机械结构、控制系统与自主导航系统。三者密切协作、相互配合，共同实现平衡车的稳定运行与自主行驶。各部分的具体功能与组成如下：
 
@@ -40,7 +39,6 @@
   \caption{载人两轮平衡车系统功能组成图}
   \label{载人两轮平衡车系统功能组成图}
 \end{figure}
-\FloatBarrier
 
 \section{机械结构设计}
 
@@ -69,7 +67,6 @@
     \bottomrule
   \end{tabularx}
 \end{table}
-\FloatBarrier
 
 本课题设计的载人两轮平衡车需兼顾安全性与舒适性。传统两轮平衡车通常基于倒立摆原理实现平衡控制，但该结构本质上属于不稳定系统，易在速度变化或外部扰动时产生倾斜与位移。以Segway为代表的传统平衡车利用这一特性，通过人体倾斜改变重心以控制运动。而本课题中的平衡车面向乘坐式应用，用户通过控制器发送运动指令进行操控，不再依赖身体姿态调节，这对车辆的稳定性和响应性提出更高要求。为了提升系统在复杂工况下的稳定性与乘坐舒适性，本设计在传统倒立摆控制基础上引入力矩控制陀螺（Control Moment Gyroscope，CMG），通过提供快速、精确的姿态调节力矩，有效应对由加减速或外部扰动引起的倾斜问题，从而增强整体的动态平衡性能。因此，本课题采用倒立摆控制与力矩控制陀螺联合控制方案，以实现更高水平的稳定性与操控性。
 
@@ -91,7 +88,6 @@
   \caption{两轮平衡车车体框架设计示意图}
   \label{两轮平衡车车体框架设计示意图}
 \end{figure}
-\FloatBarrier
 
 车体前侧板用于安装踏板，后侧板安装控制箱以集成控制系统；左右两侧板则作为驱动模块的安装基座固定电机和车轮。四块侧板共同围成一个稳定模块的封闭安装腔体，为后续稳定模块的布置提供充足空间，并有助于整车质量分布的均衡及重心的合理控制，从而提升车体运行的稳定性。
 
@@ -127,7 +123,6 @@
     \label{双CMG结构示意图}
   \end{minipage}
 \end{figure}
-\FloatBarrier
 
 力矩控制陀螺产生的进动力矩来源于角动量的变化率。若设飞轮角动量L为：
 \begin{equation}
@@ -174,7 +169,6 @@ L = I_y \omega_y \mathbf{e}_y
   \caption{稳定模块结构}
   \label{稳定模块结构}
 \end{figure}
-\FloatBarrier
 
 力矩控制陀螺装置由两个对称布置的陀螺装置、进动电机以及陀螺框架组成。每个陀螺装置包含飞轮、高速电机和陀螺外壳，并通过连接轴与轴承固定于陀螺框架上。进动电机用于驱动陀螺装置的进动，实现对其进动角速度的精确控制。陀螺外壳及安装支架选用铝合金6061制造，该材料具有良好的力学性能与加工性能；飞轮部分则采用密度较大的45号钢，以显著提高陀螺转子的转动惯量，从而在进动过程中产生更大的进动力矩，增强姿态控制能力。
 
@@ -241,7 +235,6 @@ T = \frac{J_z \omega_z}{t_{\alpha}}
     \bottomrule
   \end{tabularx}
 \end{table}
-\FloatBarrier
 
 \subsection{驱动模块设计}
 
@@ -291,7 +284,6 @@ F_r = c_r m g
     \bottomrule
   \end{tabularx}
 \end{table}
-\FloatBarrier
 
 平衡车的质量为$70\,\mathrm{kg}$，最大载荷为$75\,\mathrm{kg}$，可得最大总载荷$m=145\,\mathrm{kg}$，重力加速度$g=9.81\,\mathrm{N/kg}$，公园或社区的路面为良好的沥青或混凝土路面，由表\ref{各种路面滚动摩擦系数}取阻力系数$c_r=0.015$。由式~\eqref{eq:ch2-fr}计算得平衡车行驶时的滚动摩擦阻力$F_r=21.34\,\mathrm{N}$。
 
@@ -395,7 +387,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
     \bottomrule
   \end{tabularx}
 \end{table}
-\FloatBarrier
 
 \subsection{机械结构有限元分析}
 
@@ -423,7 +414,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
     \label{陀螺框架总变形图}
   \end{minipage}
 \end{figure}
-\FloatBarrier
 
 （2）稳定模块的回形架
 
@@ -445,7 +435,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
     \label{模块安装支架总变形图}
   \end{minipage}
 \end{figure}
-\FloatBarrier
 
 （3）车体框架
 
@@ -467,7 +456,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
     \label{车体框架总变形图}
   \end{minipage}
 \end{figure}
-\FloatBarrier
 
 \subsection{机械结构总成}
 
@@ -479,7 +467,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption{载人两轮平衡车三维模型}
   \label{载人两轮平衡车三维模型}
 \end{figure}
-\FloatBarrier
 
 \begin{figure}[!htbp]
   \centering
@@ -489,7 +476,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption{平衡车机械结构装配实物图}
   \label{平衡车机械结构装配实物图}
 \end{figure}
-\FloatBarrier
 
 \section{控制系统研究}
 
@@ -503,7 +489,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption{控制系统方案}
   \label{控制系统方案}
 \end{figure}
-\FloatBarrier
 
 \subsection{控制系统硬件设计}
 
@@ -519,7 +504,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption{控制系统信号电路连接}
   \label{控制系统信号电路连接}
 \end{figure}
-\FloatBarrier
 
 控制系统的供电电路设计如图\ref{控制系统供电电路连接}所示。整车供电系统采用统一的48V直流电池电源作为主供电源，以简化能源分配结构并降低能量转换损耗。电源输出首先连接至一组继电保护模块，其中串联连接遥控继电器与手动电动开关，分别用于实现远程通断控制与现场物理切断，增强系统在调试、运行及紧急状态下的安全可控性。在主供电路径中，48V直流电压一方面直接分配至各电机驱动器为其提供高压高功率的驱动能源。另一方面经由降压转换模块变换后，输出24V直流电压供给单片机使用。单片机在正常运行时，通过其集成的稳压模块进一步输出5V直流电压，为系统中的姿态传感器、光电传感器和控制器提供稳定的低压电源。该分级供电设计有效隔离高低压系统，提升了电气系统的可靠性与抗干扰能力，亦为系统的维护与扩展提供了良好的电源接口基础。
 
@@ -529,7 +513,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption{控制系统供电电路连接}
   \label{控制系统供电电路连接}
 \end{figure}
-\FloatBarrier
 
 \subsection{控制系统硬件环境搭建}
 
@@ -541,7 +524,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption{科鑫STM32F407ZGT6工控板}
   \label{科鑫STM32F407ZGT6工控板}
 \end{figure}
-\FloatBarrier
 
 姿态传感器需满足车辆对高频率、高精度姿态感知的需求。在本系统中，选用惯性测量单元（IMU）作为姿态传感器。IMU由三轴加速度计、三轴陀螺仪和三轴磁力计组成，通过对线加速度、角速度以及磁场等原始数据的采集，结合内置融合算法，实时计算出车辆的姿态角和角速度信息。综合考虑精度、响应速度、算法性能及系统兼容性，选用Wheeltec-H30惯性导航模块，其具备200Hz输出频率、0.1°角度分辨率，内置融合算法，可稳定输出姿态角与角速度，满足动态工况下的测量要求。
 
@@ -551,7 +533,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption{Wheeltec-H30惯性导航模块}
   \label{Wheeltec-H30惯性导航模块}
 \end{figure}
-\FloatBarrier
 
 为满足开发阶段对整车控制与单电机调试的需求，系统需选用一款支持多通道输出、抗干扰强、通信稳定的控制手柄。综合性能与使用便利性，最终选用富斯FS-i6遥控器及其FS-iA10B接收模块，支持6通道以上模拟信号输出，具备拨码开关与自定义通道设置，可实现速度、角速度调节及电机独立控制，提升调试效率与系统灵活性。
 
@@ -563,7 +544,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption{富斯FS-i6遥控器和FS-iA10B接收模块}
   \label{富斯FS-i6遥控器和FS-iA10B接收模块}
 \end{figure}
-\FloatBarrier
 
 为满足不同电机的驱动需求，系统依据性能参数选配匹配驱动器。轮毂电机采用中菱ZLAC8030L伺服驱动器，支持闭环控制和CAN通信，响应快速且抗干扰能力强；高速电机选用美固思MSSD-40LMA伺服驱动器，适配高速永磁同步电机，支持高频速度调节，也通过CAN总线通信；丝杠电机采用安川CA-4060M驱动器，采用PWM控制，支持多种模式及安全保护；进动电机为RobStride03一体式关节电机，内置驱动器，通过CAN总线直接与主控通信，简化布线并提升模块化。
 
@@ -575,7 +555,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption{控制系统连接实物图}
   \label{控制系统连接实物图}
 \end{figure}
-\FloatBarrier
 
 \subsection{控制系统软件总体方案设计}
 
@@ -600,7 +579,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
     \bottomrule
   \end{tabularx}
 \end{table}
-\FloatBarrier
 
 为了实现任务的高效调度与资源的合理分配，系统采用实时操作系统 FreeRTOS，结合STM32 HAL库，构建了轻量级、可扩展的多任务并行处理框架。由于系统中各类任务的实时性要求差异较大，尤其是姿态控制相关任务对确定性和响应速度要求高，基于中断或简单时间片轮转的调度机制难以满足其性能需求。
 
@@ -618,7 +596,6 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
   \caption{控制系统软件架构}
   \label{控制系统软件架构}
 \end{figure}
-\FloatBarrier
 
 控制系统的整体流程如图\ref{控制系统总体工作流程图}控制系统总体工作流程图所示。系统启动后，首先完成系统及各外设的初始化配置工作，包括传感器、执行器以及通信接口等模块的底层驱动加载与参数设置。初始化完成后，系统进入周期性调度的运行阶段，系统通过串口、CAN总线和UDP协议分别与IMU、各电机和上位机进行通信，获取实时数据。数据处理线程负责接收并处理来自IMU及各电机的反馈信息，将其转换为可用于控制的姿态和状态数据；运动控制线程则基于这些处理后的数据及上位机下发的运动指令，执行运动控制算法，生成相应的控制量并驱动各电机完成控制任务。
 
@@ -628,7 +605,6 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
   \caption{控制系统总体工作流程图}
   \label{控制系统总体工作流程图}
 \end{figure}
-\FloatBarrier
 
 \subsection{控制系统软件框架搭建}
 
@@ -652,7 +628,6 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
     \bottomrule
   \end{tabularx}
 \end{table}
-\FloatBarrier
 
 \begin{figure}[!htbp]
   \centering
@@ -660,7 +635,6 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
   \caption{外部设备初始化流程}
   \label{外部设备初始化流程}
 \end{figure}
-\FloatBarrier
 
 （2）设备通信
 
@@ -672,7 +646,6 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
   \caption{控制系统设备通信流程图}
   \label{控制系统设备通信流程图}
 \end{figure}
-\FloatBarrier
 
 串口接收数据时，采用DMA（Direct Memory Access，直接存储器访问）方式将数据自动搬运至预设的内存缓冲区，无需CPU干预，从而显著减轻了处理负担并提升了搬运效率。当DMA正在接收数据过程中，若在设定的超时时间内未收到新的字节，即判定一帧数据接收完成，串口将触发空闲中断。中断服务程序在此时将DMA缓冲区中有效数据打包，并发送至对应的消息队列，供后台线程进一步解析处理。最后，清除中断标志，完成本次中断处理流程。
 
@@ -708,7 +681,6 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
     \bottomrule
   \end{tabularx}
 \end{table}
-\FloatBarrier
 
 （3）设备数据处理
 
@@ -722,7 +694,6 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
   \caption{控制系统设备数据处理流程}
   \label{控制系统设备数据处理流程}
 \end{figure}
-\FloatBarrier
 
 （4）运动控制
 
@@ -736,7 +707,6 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
   \caption{控制系统运动控制流程图}
   \label{控制系统运动控制流程图}
 \end{figure}
-\FloatBarrier
 
 \begin{figure}[!htbp]
   \centering
@@ -744,7 +714,6 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
   \caption{控制系统数据传输流程示意图}
   \label{控制系统数据传输流程示意图}
 \end{figure}
-\FloatBarrier
 
 \subsection{本章小节}
 
