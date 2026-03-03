@@ -46,9 +46,10 @@
 
 \begin{table}[htbp]
   \centering
-  \bicaption[不同部署方式下的模型推理性能对比]{}{不同部署方式下的模型推理性能对比}{Table$\!$}{不同部署方式下的模型推理性能对比}
+  \caption[不同部署方式下的模型推理性能对比]{不同部署方式下的模型推理性能对比}
+  \label{不同部署方式下的模型推理性能对比}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}}
+  \begin{tabular}{cccc}
     \toprule
     模型 & PyTorch(ms) & TensorRT(ms) & TensorRT(FPS) \\
     \midrule
@@ -85,12 +86,12 @@
 
 \begin{table}[htbp]
   \centering
-  \bicaption[不同类别障碍物在各距离下的测距结果与相对误差]{}{不同类别障碍物在各距离下的测距结果与相对误差}{Table$\!$}{不同类别障碍物在各距离下的测距结果与相对误差}
+  \caption[不同类别障碍物在各距离下的测距结果与相对误差]{不同类别障碍物在各距离下的测距结果与相对误差}
+  \label{不同类别障碍物在各距离下的测距结果与相对误差}
   \vspace{0.5em}\wuhao
   \begingroup
   \setlength{\tabcolsep}{3pt}
-  \scriptsize
-  \begin{tabular}{>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}}
+  \begin{tabular}{ccccccc}
     \toprule
     ID & 障碍物 & 2m & 4m & 6m & 8m & 10m \\
     \midrule
@@ -159,6 +160,7 @@
 \section{本章小节}
 
 本章对两轮平衡车的运动性能、视觉感知能力及闭环避障效果进行了综合实验验证。基本行驶测试表明，车辆启动平稳、加减速响应迅速、转向可控，能够稳定完成越障与复杂路径行驶，验证了底盘结构与平衡控制系统的可靠性。嵌入式部署实验显示，经过TensorRT（FP16）优化后，感知系统在640$\times$480分辨率下实现约30 Hz端到端刷新频率，满足低速运行需求。2--10 m范围内整体平均相对误差为3.52\%，误差随距离增加呈上升趋势，符合立体视觉测距规律。闭环避障实验表明，系统能够在动态干扰条件下完成目标检测、路径重规划与平滑绕行，保持安全距离，运行过程整体稳定。综上，实验结果验证了所构建系统在工程应用中的可行性与稳定性。
+
 
 
 

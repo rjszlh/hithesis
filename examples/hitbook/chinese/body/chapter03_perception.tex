@@ -273,9 +273,10 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 \begin{table}[htbp]
   \centering
-  \bicaption[不同卷积块在SceneFlow数据集上的消融实验]{}{不同卷积块在SceneFlow数据集上的消融实验}{Table$\!$}{不同卷积块在SceneFlow数据集上的消融实验}
+  \caption[不同卷积块在SceneFlow数据集上的消融实验]{不同卷积块在SceneFlow数据集上的消融实验}
+  \label{不同卷积块在SceneFlow数据集上的消融实验}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}}
+  \begin{tabular}{cccc}
     \toprule
     卷积块类型 & FLOPs(G) & Params(M) & epe \\
     \midrule
@@ -293,9 +294,10 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 \begin{table}[htbp]
   \centering
-  \bicaption[HAGV模块在SceneFlow数据集上的消融实验]{}{HAGV模块在SceneFlow数据集上的消融实验}{Table$\!$}{HAGV模块在SceneFlow数据集上的消融实验}
+  \caption[HAGV模块在SceneFlow数据集上的消融实验]{HAGV模块在SceneFlow数据集上的消融实验}
+  \label{HAGV模块在SceneFlow数据集上的消融实验}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}}
+  \begin{tabular}{cccccc}
     \toprule
     配置 & 粗尺度 & 细尺度 & FLOPs(G) & Params(M) & epe \\
     \midrule
@@ -332,9 +334,10 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 \begin{table}[htbp]
   \centering
-  \bicaption[在SceneFlow数据集上对比其他主流实时立体匹配网络]{}{在SceneFlow数据集上对比其他主流实时立体匹配网络}{Table$\!$}{在SceneFlow数据集上对比其他主流实时立体匹配网络}
+  \caption[在SceneFlow数据集上对比其他主流实时立体匹配网络]{在SceneFlow数据集上对比其他主流实时立体匹配网络}
+  \label{在SceneFlow数据集上对比其他主流实时立体匹配网络}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}}
+  \begin{tabular}{cccc}
     \toprule
     方法 & FLOPs (G) & Params (M) & EPE (px) \\
     \midrule
@@ -354,12 +357,12 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 \begin{table}[htbp]
   \centering
-  \bicaption[在KITTI数据集上对比其他主流轻量立体匹配网络]{}{在KITTI数据集上对比其他主流轻量立体匹配网络}{Table$\!$}{在KITTI数据集上对比其他主流轻量立体匹配网络}
+  \caption[在KITTI数据集上对比其他主流轻量立体匹配网络]{在KITTI数据集上对比其他主流轻量立体匹配网络}
+  \label{在KITTI数据集上对比其他主流轻量立体匹配网络}
   \vspace{0.5em}\wuhao
   \begingroup
   \setlength{\tabcolsep}{3pt}
-  \scriptsize
-  \begin{tabular}{>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}}
+  \begin{tabular}{ccccccccc}
     \toprule
     方法 & KITTI 2012 & KITTI 2015 & FLOPs(G) &  &  &  &  &  \\
      & 3-noc & 3-all & 4-noc & 4-noc & D1-bg & D1-fg & D1-all &  \\
@@ -550,6 +553,7 @@ O_i=(c_i,s_i,X_i,Y_i,Z_i)
 \end{figure}
 
 \subsection{本章小节}
+
 
 
 

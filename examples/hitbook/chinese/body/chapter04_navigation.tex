@@ -357,9 +357,10 @@ A*算法在Dijkstra基础上引入启发函数，通过估计当前节点到目�
 
 \begin{table}[htbp]
 \centering
-\bicaption[全局规划器的主要参数设置]{}{全局规划器的主要参数设置}{Table$\!$}{全局规划器的主要参数设置}
+\caption[全局规划器的主要参数设置]{全局规划器的主要参数设置}
+\label{全局规划器的主要参数设置}
 \vspace{0.5em}\wuhao
-\begin{tabularx}{\textwidth}{@{}lXc@{}}
+\begin{tabular}{ccc}
 \toprule
 \textbf{参数} & \textbf{含义} & \textbf{值} \\
 \midrule
@@ -368,7 +369,7 @@ planner\_patience & 最大规划等待时间（秒） & 5.0 \\
 default\_tolerance & 目标点搜索容差半径（米） & 0.5 \\
 allow\_unknown & 是否允许穿越未知区域 & false \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 
 \subsubsection{局部规划}
@@ -385,9 +386,10 @@ TEB算法将路径看作一系列时间约束节点组成的弹性带（band）�
 
 \begin{table}[htbp]
 \centering
-\bicaption[局部规划器主要参数设置]{}{局部规划器主要参数设置}{Table$\!$}{局部规划器主要参数设置}
+\caption[局部规划器主要参数设置]{局部规划器主要参数设置}
+\label{局部规划器主要参数设置}
 \vspace{0.5em}\wuhao
-\begin{tabularx}{\textwidth}{@{}lXc@{}}
+\begin{tabular}{ccc}
 \toprule
 \textbf{参数} & \textbf{含义} & \textbf{值} \\
 \midrule
@@ -398,7 +400,7 @@ min\_obstacle\_dist & 与障碍物最小距离 & 0.3 \\
 global\_plan\_overwrite\_orientation & 是否沿用全局路径方向作为参考 & true \\
 include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 
 规划效果如图\ref{导航规划效果}所示，黑色方框为平衡车位置及外边框，黑色长线为全局规划Dijkstra算法所得路径，红色箭头为局部规划TEB算法的一系列局部路径点。
@@ -447,9 +449,10 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 
 \begin{table}[htbp]
 \centering
-\bicaption[不同类别障碍物取值]{}{不同类别障碍物的取值}{Table$\!$}{不同类别障碍物的取值}
+\caption[不同类别障碍物取值]{不同类别障碍物的取值}
+\label{不同类别障碍物取值}
 \vspace{0.5em}\wuhao
-\begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}p{0.12\textwidth}>{\centering\arraybackslash}p{0.14\textwidth}>{\centering\arraybackslash}p{0.22\textwidth}>{\centering\arraybackslash}X@{}}
+\begin{tabular}{cccc}
 \toprule
 类别 & 振幅$A$ & 基础协方差$\sigma_{\text{base}}$ & 说明 \\
 \midrule
@@ -457,7 +460,7 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 车辆 & 255 & 0.6 & 体积大，影响广泛 \\
 其他 & 200 & 0.25 & 中等影响 \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 
 为兼顾识别精度与运行效率，系统采用基于障碍物类别的代价参数设定机制。在实现时，导航模块从障碍物列表中读取每个障碍物的分类标签（由YOLO输出的class\_id）。系统首先根据表\ref{不同类别障碍物取值}按类别确定振幅\emph{A}和基础协方差\emph{σ}\textsubscript{base}，然后引入其实际宽度\emph{w}，通过如下方式计算最终协方差：
@@ -494,3 +497,4 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 \section{本章小结}
 
 本章围绕两轮平衡车自主导航需求，完成了系统总体架构设计、软硬件平台搭建及核心功能实现。系统构建了包含定位、感知与路径规划的导航框架，明确了各模块的数据流与控制关系，形成感知、决策、控制闭环。硬件方面，完成主控平台、双目相机、IMU及底盘控制单元的集成与接口配置，保障系统稳定运行。软件方面，基于ROS搭建总体架构：定位模块实现多源信息融合与位姿估计，导航模块完成路径规划与局部避障，感知模块输出目标检测与距离信息，各模块通过标准话题接口实现解耦协同。本章完成了自主导航系统的集成实现，为整车实验与性能验证提供了系统基础。
+
