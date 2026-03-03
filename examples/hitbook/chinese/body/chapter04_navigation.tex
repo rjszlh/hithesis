@@ -357,8 +357,9 @@ A*算法在Dijkstra基础上引入启发函数，通过估计当前节点到目�
 
 \begin{table}[htbp]
 \centering
-\caption{全局规划器的主要参数设置}
-\begin{tabularx}{0.9\textwidth}{@{}lXc@{}}
+\bicaption[全局规划器的主要参数设置]{}{全局规划器的主要参数设置}{Table$\!$}{全局规划器的主要参数设置}
+\vspace{0.5em}\wuhao
+\begin{tabularx}{\textwidth}{@{}lXc@{}}
 \toprule
 \textbf{参数} & \textbf{含义} & \textbf{值} \\
 \midrule
@@ -384,8 +385,9 @@ TEB算法将路径看作一系列时间约束节点组成的弹性带（band）�
 
 \begin{table}[htbp]
 \centering
-\caption{局部规划器主要参数设置}
-\begin{tabularx}{0.9\textwidth}{@{}lXc@{}}
+\bicaption[局部规划器主要参数设置]{}{局部规划器主要参数设置}{Table$\!$}{局部规划器主要参数设置}
+\vspace{0.5em}\wuhao
+\begin{tabularx}{\textwidth}{@{}lXc@{}}
 \toprule
 \textbf{参数} & \textbf{含义} & \textbf{值} \\
 \midrule
@@ -429,9 +431,7 @@ include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 
 为了实现对动态障碍物的有效避让，本系统中感知模块将识别出的障碍物以列表形式发布给导航模块。导航模块需将障碍物信息实时映射至局部代价地图，以影响局部路径规划的代价函数，使局部规划器在路径优化过程中主动远离障碍物区域。
 
-代价地图映射采用人工势场（Artificial Potential
-Field）中斥力场（Repulsive
-Field）的思想，对每一个障碍物位置施加以该点为中心的二维高斯函数，构建空间上的软约束代价分布。其数学表达式如下：
+代价地图映射采用人工势场（Artificial PotentialField）中斥力场（Repulsive Field）的思想，对每一个障碍物位置施加以该点为中心的二维高斯函数，构建空间上的软约束代价分布。其数学表达式如下：
 \begin{equation}
 C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{2}} \right)
 \end{equation}
@@ -445,32 +445,20 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 
 \emph{σ}------协方差，控制代价衰减的快慢，值越大则扩散越广；
 
-{\def\LTcaptype{table} % do not increment counter
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0858}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1154}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2019}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3052}}@{}}
-\caption{不同类别障碍物的取值}\label{不同类别障碍物取值}\\
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-类别
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-振幅\emph{A}
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-基础协方差\emph{σ}\textsubscript{base}
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-说明
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
+\begin{table}[htbp]
+\centering
+\bicaption[不同类别障碍物取值]{}{不同类别障碍物的取值}{Table$\!$}{不同类别障碍物的取值}
+\vspace{0.5em}\wuhao
+\begin{tabularx}{\textwidth}{@{}>{\centering\arraybackslash}p{0.12\textwidth}>{\centering\arraybackslash}p{0.14\textwidth}>{\centering\arraybackslash}p{0.22\textwidth}>{\centering\arraybackslash}X@{}}
+\toprule
+类别 & 振幅$A$ & 基础协方差$\sigma_{\text{base}}$ & 说明 \\
+\midrule
 行人 & 255 & 0.5 & 高危险，小但需强烈避让 \\
 车辆 & 255 & 0.6 & 体积大，影响广泛 \\
 其他 & 200 & 0.25 & 中等影响 \\
-\end{longtable}
-}
+\bottomrule
+\end{tabularx}
+\end{table}
 
 为兼顾识别精度与运行效率，系统采用基于障碍物类别的代价参数设定机制。在实现时，导航模块从障碍物列表中读取每个障碍物的分类标签（由YOLO输出的class\_id）。系统首先根据表\ref{不同类别障碍物取值}按类别确定振幅\emph{A}和基础协方差\emph{σ}\textsubscript{base}，然后引入其实际宽度\emph{w}，通过如下方式计算最终协方差：
 \begin{equation}
@@ -506,7 +494,3 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 \section{本章小结}
 
 本章围绕两轮平衡车自主导航需求，完成了系统总体架构设计、软硬件平台搭建及核心功能实现。系统构建了包含定位、感知与路径规划的导航框架，明确了各模块的数据流与控制关系，形成感知、决策、控制闭环。硬件方面，完成主控平台、双目相机、IMU及底盘控制单元的集成与接口配置，保障系统稳定运行。软件方面，基于ROS搭建总体架构：定位模块实现多源信息融合与位姿估计，导航模块完成路径规划与局部避障，感知模块输出目标检测与距离信息，各模块通过标准话题接口实现解耦协同。本章完成了自主导航系统的集成实现，为整车实验与性能验证提供了系统基础。
-
-
-
-

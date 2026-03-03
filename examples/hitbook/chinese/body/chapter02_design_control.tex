@@ -48,12 +48,11 @@
 
 载人两轮平衡车的设计指标如表\ref{两轮平衡车设计指标}所示。因使用场景在公园、社区等生活场所，外形尺寸参照《GB/T 12996-2023 电动轮椅车》确定为不超过总长不超过900mm且总宽不超过750mm；参考国家国民体质监测中心发布的《第五次国民体质监测公报》中成年人的体重确定额定载荷为75kg。
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{两轮平衡车设计指标}
-  \label{两轮平衡车设计指标}
+  \bicaption[两轮平衡车设计指标]{}{两轮平衡车设计指标}{Table$\!$}{两轮平衡车设计指标}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.333\textwidth}>{\centering\arraybackslash}p{0.333\textwidth}>{\centering\arraybackslash}p{0.333\textwidth}}
     \toprule
     指标分类 & 指标项目 & 具体要求 \\
     \midrule
@@ -65,7 +64,7 @@
      & 最大加速度 & 2m/s2 \\
      & 爬坡性能 & 15° \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 本课题设计的载人两轮平衡车需兼顾安全性与舒适性。传统两轮平衡车通常基于倒立摆原理实现平衡控制，但该结构本质上属于不稳定系统，易在速度变化或外部扰动时产生倾斜与位移。以Segway为代表的传统平衡车利用这一特性，通过人体倾斜改变重心以控制运动。而本课题中的平衡车面向乘坐式应用，用户通过控制器发送运动指令进行操控，不再依赖身体姿态调节，这对车辆的稳定性和响应性提出更高要求。为了提升系统在复杂工况下的稳定性与乘坐舒适性，本设计在传统倒立摆控制基础上引入力矩控制陀螺（Control Moment Gyroscope，CMG），通过提供快速、精确的姿态调节力矩，有效应对由加减速或外部扰动引起的倾斜问题，从而增强整体的动态平衡性能。因此，本课题采用倒立摆控制与力矩控制陀螺联合控制方案，以实现更高水平的稳定性与操控性。
@@ -222,18 +221,17 @@ T = \frac{J_z \omega_z}{t_{\alpha}}
 
 最终选择了RobStride03一体化关节电机，该电机集成了电机本体、减速器和驱动器，结构紧凑，适合车内安装。其详细参数如表\ref{进动电机技术参数}所示。
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{进动电机技术参数}
-  \label{进动电机技术参数}
+  \bicaption[进动电机技术参数]{}{进动电机技术参数}{Table$\!$}{进动电机技术参数}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}}
     \toprule
     型号 & 额定电压 & 额定转速 & 额定扭矩 & 峰值扭矩 & 额定功率 \\
     \midrule
     RobStride03 & 48V & 180RPM & 20Nm & 60Nm & 380w \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 \subsection{驱动模块设计}
@@ -267,12 +265,11 @@ F_r = c_r m g
 
 在不同路面上滚动摩擦系数不同，各种路面的摩擦系数如表\ref{各种路面滚动摩擦系数}所示
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{各种路面滚动摩擦系数}
-  \label{各种路面滚动摩擦系数}
+  \bicaption[各种路面滚动摩擦系数]{}{各种路面滚动摩擦系数}{Table$\!$}{各种路面滚动摩擦系数}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}}
     \toprule
     路面类型 & 滚动摩擦系数 & 路面类型 & 滚动摩擦系数 \\
     \midrule
@@ -282,7 +279,7 @@ F_r = c_r m g
     良好的卵石路面 & 0.025-0.030 & 结冰路面 & 0.015-0.030 \\
     坑洼路面 & 0.035-0.050 & 压紧的雪道 & 0.030-0.050 \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 平衡车的质量为$70\,\mathrm{kg}$，最大载荷为$75\,\mathrm{kg}$，可得最大总载荷$m=145\,\mathrm{kg}$，重力加速度$g=9.81\,\mathrm{N/kg}$，公园或社区的路面为良好的沥青或混凝土路面，由表\ref{各种路面滚动摩擦系数}取阻力系数$c_r=0.015$。由式~\eqref{eq:ch2-fr}计算得平衡车行驶时的滚动摩擦阻力$F_r=21.34\,\mathrm{N}$。
@@ -374,18 +371,17 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 根据上述分析，轮毂电机的峰值扭矩应大于85.03Nm，额定功率大于887.15W且最高转速高于120.67rpm，最终选取WYQ-17，其参数如表\ref{轮毂电机WYQ-17技术参数}所示。
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{轮毂电机WYQ-17技术参数}
-  \label{轮毂电机WYQ-17技术参数}
+  \bicaption[轮毂电机WYQ-17技术参数]{}{轮毂电机WYQ-17技术参数}{Table$\!$}{轮毂电机WYQ-17技术参数}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}}
     \toprule
     型号 & 额定电压 & 额定转速 & 额定扭矩 & 峰值扭矩 & 额定功率 & 峰值功率 \\
     \midrule
     WYQ-17 & 48V & 150RPM & 70Nm & 120Nm & 1000w & 1600W \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 \subsection{机械结构有限元分析}
@@ -562,12 +558,11 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 在载人两轮平衡车的运行过程中，为确保系统的稳定性与乘员的安全性，系统必须实现多任务的实时并行处理。单片机作为底层控制核心，需要并发执行多项任务，主要包括设备通信、设备信息数据处理、运动控制计算、电机驱动控制以及状态反馈等。各项任务在实时性要求、驱动方式及执行周期上各不相同。其中，设备通信具有最高的实时性要求，通常采用中断方式进行，以实现与传感器、上位机等外部设备之间的快速响应与数据交换。设备信息数据处理、运动控制计算和电机驱动控制则属于中等实时性任务，通常以10ms的周期性方式执行，以确保对车体姿态变化的持续响应以及对电机的有效控制，从而维持系统平衡和运动性能。状态反馈任务则实时性要求较低，同样采用中断驱动方式，在系统资源允许的情况下进行调度即可。单片机需要执行的主要任务及其对应的实时性、驱动方式与运行周期如表\ref{控制系统软件任务分析}所示。
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{控制系统软件任务分析}
-  \label{控制系统软件任务分析}
+  \bicaption[控制系统软件任务分析]{}{控制系统软件任务分析}{Table$\!$}{控制系统软件任务分析}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.2\textwidth}>{\centering\arraybackslash}p{0.2\textwidth}>{\centering\arraybackslash}p{0.2\textwidth}>{\centering\arraybackslash}p{0.2\textwidth}>{\centering\arraybackslash}p{0.2\textwidth}}
     \toprule
     编号 & 任务 & 实时性 & 驱动方式 & 运行周期 \\
     \midrule
@@ -577,7 +572,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
     4 & 电机驱动控制 & 中 & 周期 & 10ms \\
     5 & 状态反馈 & 低 & 中断 & 无 \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 为了实现任务的高效调度与资源的合理分配，系统采用实时操作系统 FreeRTOS，结合STM32 HAL库，构建了轻量级、可扩展的多任务并行处理框架。由于系统中各类任务的实时性要求差异较大，尤其是姿态控制相关任务对确定性和响应速度要求高，基于中断或简单时间片轮转的调度机制难以满足其性能需求。
@@ -612,12 +607,11 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
 
 控制系统外部设备的初始化流程如图\ref{外部设备初始化流程}所示，主要包括外设通信初始化、电机初始化等内容。串口和CAN通信的中断需在初始化阶段手动开启，而以太网通信由驱动程序自动管理，无需人工干预。电机的初始化通过CAN总线完成，主要包括设置各电机的控制模式、目标位置以及执行回零操作，具体控制模式配置详见表\ref{电机控制模式设置}所示。此外，IMU（惯性测量单元）的滤波参数与输出配置由上位机完成设置；各电机的CAN通信地址同样由上位机下发设定。系统在初始化开始和结束时将通过蜂鸣器发出提示音，以提示操作人员当前状态。
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{电机控制模式设置}
-  \label{电机控制模式设置}
+  \bicaption[电机控制模式设置]{}{电机控制模式设置}{Table$\!$}{电机控制模式设置}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.5\textwidth}>{\centering\arraybackslash}p{0.5\textwidth}}
     \toprule
     电机种类 & 控制模式 \\
     \midrule
@@ -626,7 +620,7 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
     丝杠电机 & 脉冲控制模式 \\
     高速电机 & 位置控制模式 \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 \begin{figure}[!htbp]
@@ -653,12 +647,11 @@ CAN通信主要用于与轮毂电机、高速电机和进动电机等部件之�
 
 UDP通信主要负责与自主导航系统之间的数据交互。当系统接收到来自导航系统的UDP数据报时，将立即触发相应的处理流程：首先将接收到的消息内容转发至指定的数据处理消息队列，供后台线程进行解析处理；随后，根据解析结果生成系统状态反馈报文并发送回上位机。反馈报文的具体结构如表\ref{状态反馈报文内容}所示。最后，完成当前UDP通信处理流程。
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{状态反馈报文内容}
-  \label{状态反馈报文内容}
+  \bicaption[状态反馈报文内容]{}{状态反馈报文内容}{Table$\!$}{状态反馈报文内容}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}}
     \toprule
     Index & 说明 & 类型 & Index & 说明 & 类型 \\
     \midrule
@@ -679,7 +672,7 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
     21 & 左侧轮毂电机目标转矩 & float & 37 & 数据校验码（16位CRC） & uint16\_t \\
     22 & 右侧轮毂电机目标转矩 & float & 38 & 测试字段 & uint16\_t \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 （3）设备数据处理
@@ -716,6 +709,11 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
 \end{figure}
 
 \subsection{本章小节}
+
+
+
+
+
 
 
 

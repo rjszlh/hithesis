@@ -271,12 +271,11 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 在保持网络结构与训练策略一致的条件下，对不同风格的卷积块在SceneFlow数据集上进行了对比实验，其结果如表\ref{不同卷积块在SceneFlow数据集上的消融实验}所示。ShuffleNetV2与GhostNet在FLOPs与参数规模方面最为轻量（FLOPs约17.9G，参数量低于3M），但匹配精度相对较低，其EPE分别为0.9223与0.8271，表明其在弱纹理与复杂几何区域的特征表达能力受限。相比之下，ConvNeXtV2在FLOPs为19.58G、参数量为3.40M的条件下取得最低的EPE（0.7644），且相较MobileNetV2，EPE下降约3.7\%；相较GhostNet与ShuffleNetV2，误差分别降低约7.6\%与17.1\%。综合考虑精度、计算量与模型规模，ConvNeXtV2在当前实验配置下实现了更优的精度–复杂度折中，因此被选作后续实验的基础代价聚合单元。
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{不同卷积块在SceneFlow数据集上的消融实验}
-  \label{不同卷积块在SceneFlow数据集上的消融实验}
+  \bicaption[不同卷积块在SceneFlow数据集上的消融实验]{}{不同卷积块在SceneFlow数据集上的消融实验}{Table$\!$}{不同卷积块在SceneFlow数据集上的消融实验}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}}
     \toprule
     卷积块类型 & FLOPs(G) & Params(M) & epe \\
     \midrule
@@ -285,19 +284,18 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
     MobileNetV2 & 20.32 & 3.44 & 0.7935 \\
     ConvNeXtV2 & 19.58 & 3.40 & 0.7644 \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 （2）HAGV模块消融实验
 
 为验证所提出分层注意力引导代价体（HAGV）模块的有效性，在采用ConvNeXtV2作为基本卷积单元的基础上引入HAGV及不同粗尺度设置进行了消融实验，结果如表\ref{HAGV模块在SceneFlow数据集上的消融实验}所示。在基线模型中，仅利用1/4分辨率特征进行代价建模，其在SceneFlow数据集上的EPE为0.7644。引入HAGV后，模型匹配精度得到提升：当粗尺度分支设置为1/16时，EPE降至0.7612；进一步采用1/8分辨率作为粗尺度，EPE降至0.7415，而FLOPs仅由19.58G增至20.08G，计算开销增加有限。实验结果表明，HAGV通过引入粗尺度几何先验对细尺度代价体进行调制，可有效提升代价体的几何一致性与匹配稳定性；同时，粗尺度分支的分辨率对先验质量具有显著影响，其中1/8分辨率在稳定性与细节保留之间取得了更优折中。
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{HAGV模块在SceneFlow数据集上的消融实验}
-  \label{HAGV模块在SceneFlow数据集上的消融实验}
+  \bicaption[HAGV模块在SceneFlow数据集上的消融实验]{}{HAGV模块在SceneFlow数据集上的消融实验}{Table$\!$}{HAGV模块在SceneFlow数据集上的消融实验}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}>{\centering\arraybackslash}p{0.167\textwidth}}
     \toprule
     配置 & 粗尺度 & 细尺度 & FLOPs(G) & Params(M) & epe \\
     \midrule
@@ -305,7 +303,7 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
     +HAGV & 1/16 & 1/4 & 19.61 & 3.50 & 0.7612 \\
     +HAGV & 1/8 & 1/4 & 20.08 & 3.78 & 0.7415 \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 （3）与主流方法的对比实验
@@ -332,12 +330,11 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
   \label{SceneFlow（左）和KITTI15（右）数据集上的性能与FLOPs对比}
 \end{figure}
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{在SceneFlow数据集上对比其他主流实时立体匹配网络}
-  \label{在SceneFlow数据集上对比其他主流实时立体匹配网络}
+  \bicaption[在SceneFlow数据集上对比其他主流实时立体匹配网络]{}{在SceneFlow数据集上对比其他主流实时立体匹配网络}{Table$\!$}{在SceneFlow数据集上对比其他主流实时立体匹配网络}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}}
     \toprule
     方法 & FLOPs (G) & Params (M) & EPE (px) \\
     \midrule
@@ -352,18 +349,17 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
     IINet & 90.16 & 19.54 & 0.54 \\
     HAGVNet（ours） & 20.08 & 3.78 & 0.73 \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{在KITTI数据集上对比其他主流轻量立体匹配网络}
-  \label{在KITTI数据集上对比其他主流轻量立体匹配网络}
+  \bicaption[在KITTI数据集上对比其他主流轻量立体匹配网络]{}{在KITTI数据集上对比其他主流轻量立体匹配网络}{Table$\!$}{在KITTI数据集上对比其他主流轻量立体匹配网络}
   \vspace{0.5em}\wuhao
   \begingroup
   \setlength{\tabcolsep}{3pt}
   \scriptsize
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}>{\centering\arraybackslash}p{0.111\textwidth}}
     \toprule
     方法 & KITTI 2012 & KITTI 2015 & FLOPs(G) &  &  &  &  &  \\
      & 3-noc & 3-all & 4-noc & 4-noc & D1-bg & D1-fg & D1-all &  \\
@@ -379,7 +375,7 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
     IINet & 1.81 & 2.21 & 1.35 & 1.65 & 2.02 & 3.39 & 2.25 & 90.16 \\
     HAGVNet（ours） & 1.87 & 2.27 & 1.32 & 1.62 & 1.86 & 3.76 & 2.18 & 20.08 \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
   \endgroup
 \end{table}
 
@@ -554,6 +550,11 @@ O_i=(c_i,s_i,X_i,Y_i,Z_i)
 \end{figure}
 
 \subsection{本章小节}
+
+
+
+
+
 
 
 

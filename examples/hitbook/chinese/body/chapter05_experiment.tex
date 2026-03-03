@@ -44,19 +44,18 @@
 
 在完整感知流程部署测试中（包含目标检测、立体匹配与基于ROI的深度融合测距），输入分辨率设置为640$\times$480。系统实测端到端刷新频率为30Hz，能够满足低速移动载具的实时感知需求。进一步分析各模块耗时构成可以发现，当前系统的主要时延瓶颈来自立体匹配阶段。由于立体匹配涉及高维代价体构建与特征聚合运算，其计算复杂度显著高于目标检测模块，是后续性能优化的重点方向。
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{不同部署方式下的模型推理性能对比}
-  \label{不同部署方式下的模型推理性能对比}
+  \bicaption[不同部署方式下的模型推理性能对比]{}{不同部署方式下的模型推理性能对比}{Table$\!$}{不同部署方式下的模型推理性能对比}
   \vspace{0.5em}\wuhao
-  \begin{tabularx}{0.85\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}>{\centering\arraybackslash}p{0.25\textwidth}}
     \toprule
     模型 & PyTorch(ms) & TensorRT(ms) & TensorRT(FPS) \\
     \midrule
     HAGVNet & 194.3 & 21.6 & 46.3 \\
     Yolo11n & 62.3 & 6.9 & 144.9 \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
 \end{table}
 
 \subsection{端到端感知流程实时性测试}
@@ -84,15 +83,14 @@
 
 真实距离采用手持式激光测距仪进行测量，其标称精度为$\pm 3$ mm。测量方式为：以相机光心为起点，选取目标可见表面的几何中心作为测量点，以保证与视觉测距输出的空间定义保持一致。测得距离作为参考真值，用于评估双目测距结果的误差。
 
-\begin{table}[!htbp]
+\begin{table}[htbp]
   \centering
-  \caption{不同类别障碍物在各距离下的测距结果与相对误差}
-  \label{不同类别障碍物在各距离下的测距结果与相对误差}
+  \bicaption[不同类别障碍物在各距离下的测距结果与相对误差]{}{不同类别障碍物在各距离下的测距结果与相对误差}{Table$\!$}{不同类别障碍物在各距离下的测距结果与相对误差}
   \vspace{0.5em}\wuhao
   \begingroup
   \setlength{\tabcolsep}{3pt}
   \scriptsize
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+  \begin{tabular}{>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}>{\centering\arraybackslash}p{0.143\textwidth}}
     \toprule
     ID & 障碍物 & 2m & 4m & 6m & 8m & 10m \\
     \midrule
@@ -103,7 +101,7 @@
     5 & 杆体 & 1.98(1.0\%) & 4.13(3.3\%) & 5.67(5.5\%) & 8.44(5.5\%) & 9.53(4.7\%) \\
     6 & 树木 & 2.01(0.5\%) & 3.94(1.5\%) & 6.05(0.8\%) & 8.34(4.3\%) & 10.43(4.3\%) \\
     \bottomrule
-  \end{tabularx}
+  \end{tabular}
   \endgroup
 \end{table}
 
@@ -161,6 +159,11 @@
 \section{本章小节}
 
 本章对两轮平衡车的运动性能、视觉感知能力及闭环避障效果进行了综合实验验证。基本行驶测试表明，车辆启动平稳、加减速响应迅速、转向可控，能够稳定完成越障与复杂路径行驶，验证了底盘结构与平衡控制系统的可靠性。嵌入式部署实验显示，经过TensorRT（FP16）优化后，感知系统在640$\times$480分辨率下实现约30 Hz端到端刷新频率，满足低速运行需求。2--10 m范围内整体平均相对误差为3.52\%，误差随距离增加呈上升趋势，符合立体视觉测距规律。闭环避障实验表明，系统能够在动态干扰条件下完成目标检测、路径重规划与平滑绕行，保持安全距离，运行过程整体稳定。综上，实验结果验证了所构建系统在工程应用中的可行性与稳定性。
+
+
+
+
+
 
 
 
