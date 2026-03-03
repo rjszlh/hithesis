@@ -4,13 +4,13 @@
 
 \section{课题背景及意义}
 
-随着智能化技术的快速进步，城市公园、景区、社区等封闭场景中的用于休闲代步工具需求日益增多。人们对一种能够随时召唤、自动行驶且乘坐舒适的低速、稳定、安全的交通工具需求尤为突出。然而，传统的交通工具在这些环境中难以兼顾灵活性、安全性和便捷性，无法充分满足休闲和安全的双重需求。在这种背景下，两轮平衡车以其结构紧凑、操控灵活的特点，成为公园中代步工具的理想选择。如何保证两轮平衡车在这些复杂场景中的稳定行驶并感知周围环境，已成为该领域的重要研究课题。
+随着智能化技术的快速发展，城市公园、景区、社区等封闭场景对休闲代步工具的需求持续增长。用户对低速、安全、稳定且可随时召唤的智能交通工具需求尤为突出。然而，传统代步工具在上述环境中往往难以同时兼顾灵活性、安全性与便捷性。在此背景下，两轮平衡车凭借结构紧凑、操控灵活等优势，成为公园场景中的重要候选方案。如何保障两轮平衡车在复杂场景下的稳定行驶并实现可靠环境感知，已成为该领域的重要研究问题。
 
-为实现灵活、安全且舒适的目标，两轮平衡车的结构设计至关重要。当前常见的两轮平衡车结构包括以车轮控制为核心的Segway式平衡车、由Segway演变而来的可变结构两轮车、通过改变重心控制的平衡车，以及采用力矩控制陀螺CMG（Control Moment Gyroscope）的倒立摆机器人等。Segway式平衡车结构紧凑，操控性好且技术成熟，但其平衡依赖车体移动，限制了静态场景的应用，且在较大外部扭矩或冲击下，电机调整能力不足；可变结构平衡车提高了灵活性，但在稳定性方面仍存在较大问题；CMG倒立摆机器人能够更精确地控制姿态，但其存在能耗高、噪声等问题。这些现有结构难以在灵活性、安全性和乘坐舒适性之间找到最佳平衡，亟需进一步研究以探索更加优化的解决方案。
+为实现灵活、安全与舒适的综合目标，两轮平衡车的结构设计至关重要。当前常见方案包括以轮系控制为核心的Segway式平衡车、由Segway演化而来的变结构两轮车、通过重心调节实现平衡的结构，以及采用控制力矩陀螺（Control Moment Gyroscope, CMG）的倒立摆机器人等。Segway式结构技术成熟、操控性较好，但平衡过程依赖车体位移，在静态保持和抗冲击能力方面存在局限；变结构方案提升了形态灵活性，但系统稳定性仍需加强；CMG方案具备更精细的姿态调节能力，但存在能耗和噪声较高等问题。总体而言，现有结构在灵活性、安全性与乘坐舒适性之间仍难兼顾，亟需面向应用场景开展进一步优化研究。
 
-为了确保两轮平衡车在复杂环境中精确感知障碍物并及时反应，环境感知技术至关重要。目前主流技术包括激光雷达、毫米波雷达、ToF（Time to Fly）红外光传感器和双目相机。激光雷达虽然精度高，但成本较为昂贵；毫米波雷达具有较强的抗干扰能力，尤其在恶劣天气条件下表现出色，但其精度和分辨率在复杂环境中有所不足。ToF易受到光线、天气等环境因素影响。在综合考虑成本、精度和抗干扰能力后，双目相机凭借视差获取深度信息，逐渐展现出其高性价比和环境适应性，且结合深度学习可以显著提高障碍物检测的精度和鲁棒性，成为应对复杂环境感知需求的有效研究方向。
+为确保两轮平衡车在复杂环境中准确感知障碍物并及时响应，环境感知技术是系统关键。当前主流方案包括激光雷达、毫米波雷达、ToF（Time of Flight）传感器和双目相机。激光雷达精度高但成本较高；毫米波雷达抗干扰能力强，尤其在恶劣天气下表现较好，但在复杂场景中的分辨率和细节表达能力有限；ToF传感器则易受光照与天气条件影响。综合成本、精度与鲁棒性等因素，双目视觉方案凭借视差测深能力和较高性价比，结合深度学习后可有效提升障碍物检测精度与鲁棒性，已成为复杂场景感知的重要研究方向。
 
-本课题将对两轮平衡车的部分技术开展研究，包括两轮平衡车的总体设计、基于双目视觉和深度学习的障碍物感知和感知与系统的设计和开发。双轮平衡车能够负载100kg，最高时速10km/h；完成对于双目视觉感知模块的研究，具备感知尺寸大于50x50x50cm的障碍物的能力，最终能在15m内能够识别典型障碍物。
+本课题围绕两轮平衡车关键技术开展研究，主要包括整车总体设计、基于双目视觉与深度学习的障碍物感知方法，以及自主导航系统设计与开发。研究目标为：整车额定载荷达到100\,kg，最高车速达到10\,km/h；完成双目视觉感知模块开发，实现对尺寸大于50$\times$50$\times$50\,cm障碍物的稳定感知，并在15\,m范围内识别典型障碍物。
 
 \section{国内外研究现状}
 
@@ -18,11 +18,11 @@
 
 两轮平衡车的结构设计是影响其性能的关键因素。合理的机械布局和平衡方式能够提升车辆的稳定性和操控性，因此，如何优化两轮平衡车的结构成为研究的重点方向。
 
-1912年，英国谢洛夫斯基发明了基于力矩陀螺的两轮车，该车使用一个陀螺来保持车辆的平衡。1988年，俄国本资诺斯等人在该基础上发明了一款在运动过程中保持平衡的自行车机器人，该机器人上安置了一对控制力矩陀螺来产生力矩平衡车身稳定。该实验表明了力矩陀螺效应对平衡自行车机器人的作用\cite{ChenBaoTuoLuoJiaoSuDuKongZhiXiaDeDanCheLiangLunCheZiPingHengYanJiu2024}。
+1912年，英国学者提出基于力矩陀螺保持平衡的两轮车概念。1988年，相关研究进一步发展为可在运动过程中保持平衡的自行车机器人，通过配置一对控制力矩陀螺产生稳定力矩以维持车身姿态。上述工作验证了力矩陀螺效应在平衡自行车机器人中的可行性\cite{ChenBaoTuoLuoJiaoSuDuKongZhiXiaDeDanCheLiangLunCheZiPingHengYanJiu2024}。
 
-最早成型的两轮平衡车，即Segway平衡车，是在1985年日本电通大学的山腾一雄教授构思的，由于当时能提供的硬件技术和控制理论有限，最终的研发结果不是很理想。21世纪开始，Segway平衡车在国外开始商业化，2006年，美国的Segway二代在市场上研究取得巨大成功。\cite{ZhengJiaQiuJuYouKongZhiLiJuTuoLuoDeLiangLunCheJiQiRenYunDongGuiJiKongZhiFenXiYanJiu2022}
+较早成型的两轮平衡车代表是Segway。其概念可追溯至1985年日本电通大学的相关构想，受限于当时硬件条件与控制理论，早期研发效果有限。进入21世纪后，Segway在国外逐步实现商业化，并在市场应用中取得较大成功\cite{ZhengJiaQiuJuYouKongZhiLiJuTuoLuoDeLiangLunCheJiQiRenYunDongGuiJiKongZhiFenXiYanJiu2022}。
 
-1996年，Naoji Shiroma等人设计了一款两轮车如图~\ref{fig:NaojiShiroma两轮车}所示，Naoji Shiroma建立了系统的模型，并通过系统稳定性特征方程求解特征根的方式完成了两轮车机器人提升重物的实验\cite{shiromaCooperativeBehaviorWheeled1996}。
+1996年，Naoji Shiroma等人设计了一款两轮车，如图~\ref{fig:NaojiShiroma两轮车}所示。该研究建立了系统模型，并通过稳定性特征方程求解特征根，完成了两轮车机器人提升重物实验\cite{shiromaCooperativeBehaviorWheeled1996}。
 
 \begin{figure}[htbp]
   \centering
@@ -31,29 +31,29 @@
   \label{fig:NaojiShiroma两轮车}
 \end{figure}
 
-2005年，哈尔滨工业大学王晓宇博士等人制作了两轮直立自平衡机器人，如图~\ref{fig:王晓宇HitBot两轮机器人}所示，利用拉格朗日法建立了机器人的动力学方程，并设计了自适应控制器来实现机器人的动态平衡。同时，他们还采用了Levenberg-.Marquardt最小二乘迭代法建立传感器的误差模型，以及采用了两级分散式异构卡尔曼滤波算法来实现机器人的组合导航。此外，王晓宇博士等人还分析比较了几种可以减少两轮机器人能量消耗的方法，这些方法包括使用摩擦力补偿器、使用能量回收技术以及改变机器人的行驶策略等\cite{WangXiaoYuLiangLunZiPingHengJiQiRenDeYanJiu2008}。
+2005年，哈尔滨工业大学王晓宇等人研制了两轮直立自平衡机器人，如图~\ref{fig:王晓宇HitBot两轮机器人}所示。该研究利用拉格朗日方法建立动力学模型，并设计自适应控制器实现动态平衡；同时采用Levenberg-Marquardt最小二乘迭代法建立传感器误差模型，并结合两级分散式异构卡尔曼滤波算法实现组合导航。此外，研究还比较了摩擦补偿、能量回收和行驶策略优化等降耗方法\cite{WangXiaoYuLiangLunZiPingHengJiQiRenDeYanJiu2008}。
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter01/王晓宇设计的HitBot两轮机器人.png}
+  \includegraphics[width=0.45\textwidth]{figures/chapter01/王晓宇设计的HitBot两轮机器人.png}
   \caption{王晓宇设计的HitBot两轮机器人}
   \label{fig:王晓宇HitBot两轮机器人}
 \end{figure}
 
-2009年，北京工业大学的阮晓钢、赵建伟研究了一种直立式的自平衡辆车机器人，并在控制中引入了PWM（Pulse-width modulation）直流伺服控制系统。他们通过Matlab设计了LQR（Linear Quadratic Regulator）平衡控制器，接着进行了数值仿真和物理实验，实验结果表明两轮车机器人可以完成直立平衡行走\cite{RuanXiaoGangJiYuPWMSiFuKongZhiJiLQRDeLiangLunZiPingHengYiDongJiQiRen2009}。
+2009年，北京工业大学阮晓钢、赵建伟研究了直立式自平衡两轮机器人，并在控制系统中引入PWM（Pulse-width Modulation）直流伺服方案。研究基于Matlab设计LQR（Linear Quadratic Regulator）平衡控制器，并开展数值仿真与实物实验，结果表明该机器人可实现直立平衡行走\cite{RuanXiaoGangJiYuPWMSiFuKongZhiJiLQRDeLiangLunZiPingHengYiDongJiQiRen2009}。
 
-2005年，日本千叶大学研究学者Minh-Quan DAO和Kang-Zhi LIU在独轮车的基础上加制了一对力矩陀螺，力矩陀螺结构为上下分布，该两对力矩陀螺以相反的速度高速运转，通过相反的陀螺进动来产生陀螺力矩来平衡车辆机器人的侧向平衡，通过车轮的驱动来实现车辆机器人的俯仰平衡，该研究团队选用拉格朗日方法建模，采用了LQR、H、常数限H等控制方法，最后实验实现了机器人姿态控制和纵向轨迹控制\cite{daoGainScheduledStabilizationControl2005}。模型如图~\ref{fig:力矩陀螺独轮车}所示。
+2005年，日本千叶大学Minh-Quan DAO和Kang-Zhi LIU等在独轮车基础上增设一对上下分布的力矩陀螺。两陀螺以相反角速度高速旋转，通过反向进动产生陀螺力矩以维持侧向平衡，并通过车轮驱动力矩实现俯仰平衡。该研究采用拉格朗日方法建模，并使用LQR、$H_\infty$及常数限$H_\infty$等控制方法，实验实现了姿态控制和纵向轨迹控制\cite{daoGainScheduledStabilizationControl2005}，模型如图~\ref{fig:力矩陀螺独轮车}所示。
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter01/力矩陀螺的独轮车.png}
+  \includegraphics[width=0.45\textwidth]{figures/chapter01/力矩陀螺的独轮车.png}
   \caption{力矩陀螺的独轮车}
   \label{fig:力矩陀螺独轮车}
 \end{figure}
 
 2009年，北京邮电大学的刘大亮、孙汉旭和贾庆轩共同研发了一种具备动态平衡和载人行走能力的两轮机器人\cite{LiuDaLiangYiZhongKeZaiRenXingZouDeShuangLunJiQiRen2009}。该机器人由两个独立驱动的同轴车轮、可转动的厢体和固定在厢体上的操纵杆组成。通过操纵杆的倾斜，机器人能够实现前进、后退和转向动作，同时保持动态平衡。该机器人的设计注重安全性，允许在出现异常时，操作者能够安全地跳离车体，避免被操作机构绊倒。
 
-2011年，北京邮电大学的孟祥珺等设计了一种变结构两轮车机器人的实体样机，如图~\ref{fig:变结构两轮车样机}所示，该两轮车机器人通过转动车轮角度，来改变机器人模式，车把转动至并列形式可形成segway模式，也可以如图中示意的车轮转动呈一字排布的自行车模式\cite{MengXiangJunYiZhongBianJieGouZiPingHengLiangLunCheJiQiRenYanJiu2013}。
+2011年，北京邮电大学孟祥珺等设计了变结构两轮车机器人样机，如图~\ref{fig:变结构两轮车样机}所示。该机器人通过调节车轮角度切换运行模式，车轮并列时形成Segway模式，车轮前后成一字排布时形成自行车模式\cite{MengXiangJunYiZhongBianJieGouZiPingHengLiangLunCheJiQiRenYanJiu2013}。
 
 \begin{figure}[htbp]
   \centering
@@ -62,7 +62,7 @@
   \label{fig:变结构两轮车样机}
 \end{figure}
 
-2012年，美国加州的Lit Motor公司推出了一款两轮电动摩托车概念产品，代号为C-1，如图~\ref{fig:LitMotor内部结构}所示\cite{C1SelfbalancingElectric}。该车拥有全封闭的汽车外观，车的底盘部分相比普通摩托车加装了一对高速旋转的力矩陀螺，如图~\ref{fig:LitMotor内部结构}所示，使得该款摩托车在停止，行驶和转弯时候能够保持车身稳定不倒。
+2012年，美国加州Lit Motor公司推出两轮电动摩托车概念产品C-1，如图~\ref{fig:LitMotor内部结构}所示\cite{C1SelfbalancingElectric}。该车采用全封闭外观，并在底盘增设一对高速旋转的力矩陀螺，使其在停止、行驶和转弯过程中保持车身稳定。
 
 \begin{figure}[htbp]
   \centering
@@ -71,7 +71,7 @@
   \label{fig:LitMotor内部结构}
 \end{figure}
 
-2015年，戴福全在北京理工大学的研究中取得了重要进展，他设计并研制了一款具有多自由度和可变重心的两轮机器人如图~\ref{fig:可变重心两轮机器人}所示，这一创新性的设计在机器人领域引起了广泛的关注\cite{DaiFuQuanDuoZiYouDuLiangLunZiPingHengJiQiRenJiShuYanJiu2015}。这款机器人采用了卡尔曼滤波和摩擦补偿等技术来实现滑模控制，进一步提高了机器人的控制性能。
+2015年，戴福全在北京理工大学设计并研制了具有多自由度和可变重心的两轮机器人，如图~\ref{fig:可变重心两轮机器人}所示\cite{DaiFuQuanDuoZiYouDuLiangLunZiPingHengJiQiRenJiShuYanJiu2015}。该机器人采用卡尔曼滤波与摩擦补偿等方法实现滑模控制，进一步提升了控制性能。
 
 \begin{figure}[htbp]
   \centering
@@ -80,7 +80,7 @@
   \label{fig:可变重心两轮机器人}
 \end{figure}
 
-20l6年泰国亚洲理工学院的Surachat Chantarachit、ManukidParnichkun等人设计了一款具有力矩陀螺机构的独轮车机器人，如图~\ref{fig:亚洲理工独轮车机器人}所示，该独轮车采用的是左右分布放置两个力矩陀螺的方案，同样的利用控制力矩陀螺的原理控制独轮车的侧向平衡，车轮驱动力矩控制机器人的俯仰平衡\cite{chantarachitDevelopmentControlUnicycle2016}。
+2016年，泰国亚洲理工学院Surachat Chantarachit、Manukid Parnichkun等人设计了具备力矩陀螺机构的独轮车机器人，如图~\ref{fig:亚洲理工独轮车机器人}所示。该方案在左右两侧布置两个力矩陀螺，通过控制力矩陀螺实现侧向平衡，并利用车轮驱动力矩实现俯仰平衡\cite{chantarachitDevelopmentControlUnicycle2016}。
 
 \begin{figure}[htbp]
   \centering
@@ -89,7 +89,7 @@
   \label{fig:亚洲理工独轮车机器人}
 \end{figure}
 
-2018年，桂林电子科技大学的黄用华设计了一种变结构两轮车机器人，如图~\ref{fig:黄用华两轮车机器人}所示\cite{HuangYongHuaLiangLunZiXingCheJiQiRenSuoBaPingHengDingWeiKongZhiFangZhen2018}。机器人采用Chaplygin建立动力学模型，使用部分反馈线性化控制器，然后进行了不同角度固定车把定车实验，行进过程中车轮角度切换等实验。
+2018年，桂林电子科技大学黄用华设计了变结构两轮车机器人，如图~\ref{fig:黄用华两轮车机器人}所示\cite{HuangYongHuaLiangLunZiXingCheJiQiRenSuoBaPingHengDingWeiKongZhiFangZhen2018}。该研究采用Chaplygin方法建立动力学模型，使用部分反馈线性化控制器，并开展了不同车把固定角度和行进过程车轮角度切换等实验。
 
 \begin{figure}[htbp]
   \centering
@@ -98,7 +98,7 @@
   \label{fig:黄用华两轮车机器人}
 \end{figure}
 
-2019年Kunitoshi Tanaka和Sumito Nagasawa提出了一种利用CMG来获得所需恢复力的倒立摆机器人如图~\ref{fig:KunitoshiTanakaCMG倒立摆机器人}所示\cite{tanakaPostureStabilityControl2020}。CMG的效果降低了机器人倾倒的速度，这意味着它可以在不移动的情况下保持平衡。研究成功展示了采用CMG的倒立摆机器人可以将姿态稳定性控制和轨迹跟踪控制分离。
+2019年，Kunitoshi Tanaka和Sumito Nagasawa提出了一种利用CMG获得恢复力的倒立摆机器人，如图~\ref{fig:KunitoshiTanakaCMG倒立摆机器人}所示\cite{tanakaPostureStabilityControl2020}。研究表明，CMG可降低机器人倾倒速度，使其在不移动条件下维持平衡，并可将姿态稳定控制与轨迹跟踪控制进行解耦。
 
 \begin{figure}[htbp]
   \centering
@@ -107,7 +107,7 @@
   \label{fig:KunitoshiTanakaCMG倒立摆机器人}
 \end{figure}
 
-2020年，苏黎世联邦理工学院设计和开发的一款高度先进的腿式机器人Ascento\cite{AscentoTwoWheeledJumping}。如图~\ref{fig:Ascento轮腿机器人}所示。该机器人能够行走、奔跑、跳跃，甚至行杂技动作。Ascento的设计灵感来自猫和灵长类动物等动物的解剖结构和运动。它有四条单独驱动的腿，使其能够以极大的敏捷性和稳定性在广泛的方向上移动。机器人的身体也非常灵活，使其能够扭曲和适应不同的地形和障碍物。Ascento设计的关键创新之一是使用节能的电力驱动系统，该系统利用电机和弹簧的独特组合来实现高效率和动态性能。这使得机器人可以长时间运行，而无需频繁充电或维护。
+2020年，苏黎世联邦理工学院设计并开发了轮腿机器人Ascento\cite{AscentoTwoWheeledJumping}，如图~\ref{fig:Ascento轮腿机器人}所示。该机器人具备行走、奔跑、跳跃等机动能力，采用多驱动腿部结构与高效电驱系统，在复杂地形下表现出较好的敏捷性与稳定性。
 
 \begin{figure}[htbp]
   \centering
@@ -116,7 +116,7 @@
   \label{fig:Ascento轮腿机器人}
 \end{figure}
 
-2023年，Ahmed Ami和Moustafa A. Fouz等人设计了一种装备剪刀对控制力矩陀螺的两轮倒立摆机器人，旨在通过轮子驱动力矩实现稳定倾斜角度\cite{aminLQRStabilityControl2023}。研究将数学模型分为稳定性和运动性两个子系统，其中稳定性子系统在零状态下线性化以获取状态空间模型，并采用线性二次调节器（LQR）优化全状态反馈增益以实现平衡状态。运动子系统则独立于稳定性子系统进行力矩控制。
+2023年，Ahmed Ami和Moustafa A. Fouz等人设计了一种配置剪刀式成对控制力矩陀螺的两轮倒立摆机器人，旨在通过车轮驱动力矩维持稳定倾角\cite{aminLQRStabilityControl2023}。研究将数学模型划分为稳定性子系统和运动性子系统，其中稳定性子系统在零状态附近线性化得到状态空间模型，并采用LQR优化全状态反馈增益以实现平衡；运动子系统独立完成力矩控制。
 
 2024年，Gökhan Çetin通过拉格朗日方程推导了CMG机器人的运动方程，并使用Matlab模拟了未受控陀螺的平衡性能，以确定机电系统设计的期望配置。然后，将LQR应用于选定的CMG配置，并在RecurDyn的仿真中进行比较。LQR控制器被用来防止在武器后坐力作用下双CMG的振荡运动。仿真结果表明，采用LQR控制器的陀螺两轮机器人在静态下具有出色的性能，实现了显著的平衡改善\cite{cetinGyroscopicPrecessionControl2024}。
 
@@ -213,7 +213,7 @@
 
 2021年，Wang等提出IVMP方法，先预测未来BEV语义表示再进行运动规划，通过中间语义表征增强了规划过程的可解释性与决策稳定性\cite{wangLearningInterpretableEndtoEnd2021a}。
 
-2022年，Shepel等面向双目视觉提出动态障碍分割占据栅格生成方法，在占据建图阶段区分动静态障碍物，降低了动态目标对地图污染的影响\cite{shepelOccupancyGridGeneration2022}。同年，Schmid等提出Panoptic Multi-TSDFs，采用多TSDF表示实现在线多分辨率体素建图，提升了长期动态场景中的一致性\cite{schmidPanopticMultiTSDFsFlexible2022}；Kantaros和Pappas则将不确定语义地图与时序逻辑任务约束结合，提升了复杂任务下规划的形式化可达性\cite{kantarosPerceptionBasedTemporalLogic2022}。
+2022年，Shepel等面向双目视觉提出动态障碍分割占据栅格生成方法，在占据建图阶段区分动静态障碍物，降低了动态目标对地图污染的影响。同年，Schmid等提出Panoptic Multi-TSDFs，采用多TSDF表示实现在线多分辨率体素建图，提升了长期动态场景中的一致性\cite{schmidPanopticMultiTSDFsFlexible2022}；Kantaros和Pappas则将不确定语义地图与时序逻辑任务约束结合，提升了复杂任务下规划的形式化可达性\cite{kantarosPerceptionBasedTemporalLogic2022}。
 
 2023年，Triest等通过逆强化学习构建风险感知代价地图，并在闭环导航任务中验证了学习型代价函数在复杂地形避障中的有效性\cite{triestLearningRiskAwareCostmaps2023}。同年，姚陈鹏等对移动机器人导航技术进行了系统综述，指出动态障碍处理和不确定环境下的安全约束规划是后续研究重点\cite{yaoOverviewMobileRobot2023}。
 
@@ -259,7 +259,7 @@
 
 （3）两轮平衡车自主导航系统开发
 
-两轮平衡车自动行驶的实现依赖于自主导航系统，该系统主要包括融合定位、环境感知与路径规划等功能模块。在接收到目的地信息后，系统结合定位数据和环境感知结果，规划出合适的行驶路线，并能将运动指令生成相应的运动指令，发送至控制系统，从而实现自动行驶。
+两轮平衡车自动行驶的实现依赖于自主导航系统，该系统主要包括融合定位、环境感知与路径规划等功能模块。在接收到目的地信息后，系统结合定位数据与环境感知结果规划合适路线，并生成相应运动控制指令发送至控制系统，从而实现自动行驶。
 
 \begin{itemize}
   \item 两轮平衡车自主导航系统的设计
