@@ -1,5 +1,4 @@
 ﻿\chapter{两轮平衡车自主导航系统开发}
-
 两轮平衡车自动行驶的实现依赖自主导航系统。该系统主要承担实时感知与路径规划任务：在接收到目标点信息后，结合定位数据与环境感知结果规划行驶路线，并将运动指令发送至控制系统，从而实现自动行驶。本章首先根据需求搭建自主导航系统硬件环境，随后完成软件部分开发。
 
 \section{自主导航系统的设计}
@@ -8,7 +7,7 @@
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.76806in,height=1.60139in]{figures/chapter04/自主导航系统总体设计}
+\includesvg[width=0.8\textwidth]{figures/chapter04/自主导航系统总体设计}
 \caption{自主导航系统总体设计}
 \label{自主导航系统总体设计}
 \end{figure}
@@ -20,8 +19,6 @@
 根据自主导航系统的总体设计，对硬件进行选型，设计连接电路并实际搭建自主导航系统的硬件环境。
 
 \subsection{自主导航系统的硬件选型}
-
-
 
 为满足系统对高精度、高更新率定位的需求，选用北天 BT‑982K3 双天线 RTK GNSS 模块。该模块支持 GPS、北斗等多星系统，具备20Hz实时RTK定位能力。在合理布设双天线的条件下，可实现优于2\,cm的平面定位精度和0.1°/1\,m的航向精度。
 
@@ -35,29 +32,26 @@
 
 分析自主导航系统硬件供电需求可知，主控电脑需要19V DC电源供电，而传感器及信号转换元件等需要5V DC电源供电，电路连接如图\ref{自主导航系统电源模块}所示。
 
+\begin{figure}[htbp]
+\centering
+\includesvg[width=0.8\textwidth]{figures/chapter04/自主导航系统电源模块}
+\caption{自主导航系统电源模块}
+\label{自主导航系统电源模块}
+\end{figure}
 以24V直流电池电源为基础，通过24V-220V逆变器将24V直流电转换为220V交流电后，分别采用19V和12V电源适配器为主控电脑及外部设备提供所需电压。其中，19V电源适配器为主控电脑供电，12V电源适配器则为USB拓展坞供能。USB拓展坞进一步将12V电压转换为5V，并通过各类接口为USB-485转换器、IMU、超声波雷达转接模组、双目相机、GPS及便携无线路由网卡等多种外部设备提供稳定的电源与数据连接。
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=4.77083in,height=2.41667in]{figures/chapter04/自主导航系统电源模块}
-\caption{自主导航系统电源模块}
-\label{自主导航系统电源模块}
-\end{figure}
-
-自主导航系统的信号连接如图\ref{自主导航系统信号电路连接}所示。主控电脑作为核心处理单元，通过多个USB接口与双目相机、IMU、GPS等传感与通信设备进行数据交互。其中，双目相机直接连接主控电脑以保证带宽和实时性，其他设备则通过USB拓展坞接入，以提升接口扩展能力。此外，主控电脑通过USB-485转换器将USB信号转换为RS-485信号，进而连接超声波雷达转接模块，实现对多路超声波雷达（UART接口）的统一管理与数据采集。同时，主控电脑通过以太网口与控制系统STM32F407微控制器通信，完成自主导航系统与控制系统之间的信息交互。上述信号连接设计有效整合了各类传感器与执行单元，保障了数据传输的实时性与稳定性。
-
-\begin{figure}[htbp]
-\centering
-\includesvg[width=5.76806in,height=2.58611in]{figures/chapter04/自主导航系统信号连接}
+\includesvg[width=0.8\textwidth]{figures/chapter04/自主导航系统信号连接}
 \caption{自主导航系统信号电路连接}
 \label{自主导航系统信号电路连接}
 \end{figure}
 
-自主导航系统硬件平台实物如图\ref{自主导航系统硬件平台实物图}所示。
+自主导航系统的信号连接如图\ref{自主导航系统信号电路连接}所示。主控电脑作为核心处理单元，通过多个USB接口与双目相机、IMU、GPS等传感与通信设备进行数据交互。其中，双目相机直接连接主控电脑以保证带宽和实时性，其他设备则通过USB拓展坞接入，以提升接口扩展能力。此外，主控电脑通过USB-485转换器将USB信号转换为RS-485信号，进而连接超声波雷达转接模块，实现对多路超声波雷达（UART接口）的统一管理与数据采集。同时，主控电脑通过以太网口与控制系统STM32F407微控制器通信，完成自主导航系统与控制系统之间的信息交互。上述信号连接设计有效整合了各类传感器与执行单元，保障了数据传输的实时性与稳定性。自主导航系统硬件平台实物如图\ref{自主导航系统硬件平台实物图}所示。
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=4.52308in,height=3.65878in]{figures/chapter04/自主导航系统硬件平台实物图.png}
+\includegraphics[width=0.85\textwidth]{figures/chapter04/自主导航系统硬件平台实物图.png}
 \caption{自主导航系统硬件平台实物图}
 \label{自主导航系统硬件平台实物图}
 \end{figure}
@@ -68,7 +62,7 @@
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.76806in,height=2.67083in]{figures/chapter04/自主导航系统软件结构}
+\includesvg[width=0.95\textwidth]{figures/chapter04/自主导航系统软件结构}
 \caption{自主导航系统软件结构}
 \label{自主导航系统软件结构}
 \end{figure}
@@ -81,6 +75,8 @@
 
 通讯模块方面，系统通过UDP协议与下位机进行数据交互。上位机（ROS主控端）将速度、角速度等运动指令实时发送至下位机，以驱动控制系统；下位机将控制状态、传感器数据等反馈信息返回上位机，实现闭环控制与状态监测。UDP协议传输效率高、实时性好，能够满足车辆控制系统对时延的要求。
 
+交互模块如图\ref{小程序界面}所示。系统选用RViz作为主要可视化开发与测试工具。RViz是ROS中的三维可视化平台，既可实现外部信息的图形化显示，也可用于发布控制信息，从而实现对机器人的监测与控制。通过RViz可直观展示车辆在地图中的位置、运动轨迹及传感器数据，便于开发人员调试与功能验证。此外，为实现与用户端（如手机小程序）的实时交互，系统采用MQTT协议进行加密通信。上位机可通过MQTT协议将车辆当前位置等状态信息实时发送至小程序端，用户亦可通过小程序下发目的地指令，系统接收后自动执行目标导航。该设计有效提升了系统的人机交互能力与操作便利性。
+
 \begin{figure}[htbp]
 \centering
 \subfigure[RViz界面]{\includegraphics[width=0.62\textwidth]{figures/chapter04/RViz界面.png}}
@@ -88,8 +84,6 @@
 \subfigure[小程序界面\label{小程序界面}]{\includegraphics[width=0.20\textwidth]{figures/chapter04/小程序界面.jpeg}}
 \caption{交互界面}
 \end{figure}
-
-交互模块如图\ref{小程序界面}所示。系统选用RViz作为主要可视化开发与测试工具。RViz是ROS中的三维可视化平台，既可实现外部信息的图形化显示，也可用于发布控制信息，从而实现对机器人的监测与控制。通过RViz可直观展示车辆在地图中的位置、运动轨迹及传感器数据，便于开发人员调试与功能验证。此外，为实现与用户端（如手机小程序）的实时交互，系统采用MQTT协议进行加密通信。上位机可通过MQTT协议将车辆当前位置等状态信息实时发送至小程序端，用户亦可通过小程序下发目的地指令，系统接收后自动执行目标导航。该设计有效提升了系统的人机交互能力与操作便利性。
 
 \subsection{定位模块}
 
@@ -113,7 +107,7 @@
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.58333in,height=4.83333in]{figures/chapter04/定位模块流程图}
+\includesvg[width=0.85\textwidth]{figures/chapter04/定位模块流程图}
 \caption{定位模块流程图}
 \label{定位模块流程图}
 \end{figure}
@@ -130,13 +124,11 @@ x_{k} = \begin{bmatrix}
 p_{x} & p_{y} & p_{z} & v_{x} & v_{y} & v_{z} & a_{x} & a_{y} & a_{z}
 \end{bmatrix}^{T}
 \end{equation}
-
-式中
-\emph{p\textsubscript{x}}，\emph{p\textsubscript{y}}，\emph{p\textsubscript{z}}------GPS坐标；
-
-\emph{a\textsubscript{x}}，\emph{a\textsubscript{y}}，\emph{a\textsubscript{z}}------IMU加速度；
-
-\emph{v\textsubscript{x}}，\emph{v\textsubscript{y}}，\emph{v\textsubscript{z}}------轮速传感器推算线速度。
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $p_x,p_y,p_z$ & GPS坐标；\\
+& $a_x,a_y,a_z$ & IMU加速度；\\
+& $v_x,v_y,v_z$ & 轮速传感器推算线速度。\\
+\end{tabularx}\vspace{3.15bp}
 
 时间更新（预测）步骤通过动力学模型对下一时刻的状态进行估计。
 \begin{equation}
@@ -144,15 +136,12 @@ p_{x} & p_{y} & p_{z} & v_{x} & v_{y} & v_{z} & a_{x} & a_{y} & a_{z}
 x_{k + 1} = F_{k}x_{k} + B_{k}u_{k} + w_{k}
 \end{array}
 \end{equation}
-
-式中
-\emph{F\textsubscript{k}}------状态转移矩阵，用于从当前状态推算下一时刻的状态；
-
-\emph{B\textsubscript{k}}------控制输入矩阵（设为零）；
-
-\emph{u\textsubscript{k}}------外部输入控制（设为零）；
-
-\emph{w\textsubscript{k}}------过程噪声，假设为零均值高斯噪声，协方差为\emph{Q\textsubscript{k}}。
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $F_k$ & 状态转移矩阵，用于从当前状态推算下一时刻的状态；\\
+& $B_k$ & 控制输入矩阵（设为零）；\\
+& $u_k$ & 外部输入控制（设为零）；\\
+& $w_k$ & 过程噪声，假设为零均值高斯噪声，协方差为$Q_k$。\\
+\end{tabularx}\vspace{3.15bp}
 
 状态转移矩阵\emph{F\textsubscript{k}}可以基于车辆的运动模型写成：
 \begin{equation}
@@ -170,8 +159,9 @@ F_{k} = \begin{bmatrix}
 \end{bmatrix}
 \end{array}
 \end{equation}
-
-式中------\(\Delta t\)为采样时间。
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $\Delta t$ & 采样时间。\\
+\end{tabularx}\vspace{3.15bp}
 
 预测的协方差矩阵更新公式为：
 \begin{equation}
@@ -204,13 +194,11 @@ Q_{k} = \begin{bmatrix}
 z_{k} = H_{k}x_{k} + v_{k}
 \end{array}
 \end{equation}
-
-式中
-\emph{z\textsubscript{k}}------测量值向量（GPS位置、IMU加速度和轮速推算的速度）；
-
-\emph{H\textsubscript{k}}------测量矩阵，它将状态向量映射到测量空间,H\emph{\textsubscript{k}}=E；
-
-\emph{v\textsubscript{k}}------测量噪声。
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $z_k$ & 测量值向量（GPS位置、IMU加速度和轮速推算的速度）；\\
+& $H_k$ & 测量矩阵，它将状态向量映射到测量空间，$H_k=E$；\\
+& $v_k$ & 测量噪声。\\
+\end{tabularx}\vspace{3.15bp}
 
 测量噪声协方差\emph{R\textsubscript{k}}为：
 \begin{equation}
@@ -256,7 +244,7 @@ P_{k} = \left( I - K_{k}H_{k} \right)P_{k}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=5.76806in,height=3.26333in]{figures/chapter04/卡尔曼融合定位结果.png}
+\includegraphics[width=0.85\textwidth]{figures/chapter04/卡尔曼融合定位结果.png}
 \caption{卡尔曼融合定位效果图}
 \label{卡尔曼融合定位效果图}
 \end{figure}
@@ -265,9 +253,9 @@ P_{k} = \left( I - K_{k}H_{k} \right)P_{k}
 
 \begin{figure}[htbp]
 \centering
-\subfigure[室内环境]{\includegraphics[width=0.44\textwidth]{figures/chapter04/室内环境切换结果.png}}
-\hfill
-\subfigure[室外环境]{\includegraphics[width=0.44\textwidth]{figures/chapter04/室外环境切换结果.png}}
+\subfigure[室内环境]{\includegraphics[width=0.4\textwidth]{figures/chapter04/室内环境切换结果.png}}
+% \hfill
+\subfigure[室外环境]{\includegraphics[width=0.4\textwidth]{figures/chapter04/室外环境切换结果.png}}
 \caption{室内室外切换效果图}
 \label{室内室外切换效果图}
 \end{figure}
@@ -289,7 +277,7 @@ Library）坐标系统提供。该系统用于维护多坐标系之间的变换�
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.76806in,height=3.64514in]{figures/chapter04/导航模块功能结构}
+\includesvg[width=0.8\textwidth]{figures/chapter04/导航模块功能结构}
 \caption{导航模块功能结构图}
 \label{导航模块功能结构图}
 \end{figure}
@@ -310,10 +298,10 @@ costmap）：全局代价地图主要用于全局路径搜索，构建在静态�
 首先，在系统启动后，导航模块初始化各子模块，包括地图服务、代价地图、规划器、坐标变换系统等，确保其正常运行并完成ROS话题与服务的绑定关系。随后，从地图模块加载静态地图数据，构建用于全局路径规划的环境基础。
 
 导航任务开始后，导航模块从交互模块接收用户或上位系统设定的目标点信息，并通过tf坐标变换系统将目标转换为统一坐标系下的空间位置。随后，从定位模块实时获取机器人当前位姿，并持续更新至导航框架。
-
+% todo 调整svg大小
 \begin{figure}[htbp]
 \centering
-\includesvg[width=5.76806in,height=5.57917in]{figures/chapter04/导航任务流程图}
+\includesvg[width=0.8\textwidth]{figures/chapter04/导航任务流程图}
 \caption{导航任务流程图}
 \label{导航任务流程图}
 \end{figure}
@@ -407,7 +395,7 @@ include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=2.99948in,height=2.77991in]{figures/chapter04/导航规划结果.png}
+\includegraphics[width=0.7\textwidth]{figures/chapter04/导航规划结果.png}
 \caption{导航规划效果}
 \label{导航规划效果}
 \end{figure}
@@ -424,7 +412,7 @@ include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 
 \begin{figure}[htbp]
 \centering
-\includesvg[width=3.51042in,height=4.90625in]{figures/chapter04/双目相机数据处理流程图}
+\includesvg[width=0.7\textwidth]{figures/chapter04/双目相机数据处理流程图}
 \caption{双目相机数据处理流程图}
 \label{双目相机数据处理流程图}
 \end{figure}
@@ -437,15 +425,12 @@ include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 \begin{equation}
 C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{2}} \right)
 \end{equation}
-
-式中 \emph{C}(\emph{x}, \emph{y})------地图上点(\emph{x},
-\emph{y})的代价值；
-
-(x\textsubscript{0}, y\textsubscript{0})------障碍物在地图上的中心坐标；
-
-\emph{A}------高斯函数的振幅，即障碍物中心的最大代价；
-
-\emph{σ}------协方差，控制代价衰减的快慢，值越大则扩散越广；
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $C(x,y)$ & 地图上点$(x,y)$的代价值；\\
+& $(x_0,y_0)$ & 障碍物在地图上的中心坐标；\\
+& $A$ & 高斯函数的振幅，即障碍物中心的最大代价；\\
+& $\sigma$ & 协方差，控制代价衰减的快慢，值越大则扩散越广。\\
+\end{tabularx}\vspace{3.15bp}
 
 \begin{table}[htbp]
 \centering
@@ -476,7 +461,7 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=5.42456in,height=3.24716in]{figures/chapter04/障碍物列表代价地图映射.png}
+\includegraphics[width=0.85\textwidth]{figures/chapter04/障碍物列表代价地图映射.png}
 \caption{障碍物列表在代价地图上的映射}
 \label{障碍物列表在代价地图上的映射}
 \end{figure}
@@ -489,7 +474,7 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=5.53914in,height=3.02432in]{figures/chapter04/点云代价地图映射.png}
+\includegraphics[width=0.85\textwidth]{figures/chapter04/点云代价地图映射.png}
 \caption{环境点云在代价地图上的映射}
 \label{环境点云在代价地图上的映射}
 \end{figure}
@@ -497,4 +482,3 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 \section{本章小结}
 
 本章围绕两轮平衡车自主导航需求，完成了系统总体架构设计、软硬件平台搭建及核心功能实现。系统构建了包含定位、感知与路径规划的导航框架，明确了各模块的数据流与控制关系，形成感知、决策、控制闭环。硬件方面，完成主控平台、双目相机、IMU及底盘控制单元的集成与接口配置，保障系统稳定运行。软件方面，基于ROS搭建总体架构：定位模块实现多源信息融合与位姿估计，导航模块完成路径规划与局部避障，感知模块输出目标检测与距离信息，各模块通过标准话题接口实现解耦协同。本章完成了自主导航系统的集成实现，为整车实验与性能验证提供了系统基础。
-

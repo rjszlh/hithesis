@@ -1,23 +1,31 @@
 ﻿% !Mode:: "TeX:UTF-8"
 
 \chapter{基于双目视觉的感知技术研究}
-
+% todo 补充引用
 环境感知一直以来是自动行驶的重点与难点。现有方法中，基于激光雷达的感知手段虽然精度较高，但其设备成本昂贵；而基于单目视觉的深度估计则存在精度不足和稳定性差的问题。另一方面，仅依赖基于目标识别的环境感知方法容易受到漏检和误检的影响，难以满足高可靠性的自动行驶感知需求。
 
 根据环境感知的需求，研究基于深度学习的立体匹配算法，在保证处理速度的前提下获取高质量的视差图，并通过双目相机参数计算得到深度图；研究基于深度学习的目标检测算法，制作专用数据集并实现对障碍物目标的精准检测；设计算法将深度图与目标检测结果结合，对障碍物目标的空间定位。最终实现对环境的有效感知。
 
 \section{基于深度学习的立体匹配}
 
-立体匹配旨在通过双目图像对计算视差图，从而恢复场景的深度信息，是视觉感知中的关键技术之一。传统方法在纹理丰富区域表现良好，但在遮挡、低纹理等复杂场景下易出现误匹配，且难以兼顾精度与实时性。近年来，基于深度学习的立体匹配方法在精度和鲁棒性方面取得显著进展，展现出更强的场景适应能力。
+立体匹配旨在通过双目图像对计算视差图，从而恢复场景的深度信息，是视觉感知中的关键技术之一。传统方法在纹理丰富区域表现良好，但在遮挡、低纹理等复杂场景下易出现误匹配，且难以兼顾精度与实时性。近年来，基于深度学习的立体匹配方法在精度和鲁棒性方面取得显著进展，展现出更强的场景适应能力\cite{tosiSurveyDeepStereo2025,zhangReviewStereoMatching2024}。
 
 \subsection{双目测距原理及相机标定}
+
+在相机参数固定的条件下，视差与深度呈反比关系，理想双目模型如图\ref{理想双目模型}所示,由此可实现从像素坐标到三维空间坐标的映射。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.50\textwidth]{figures/chapter03/理想双目模型.png}
+  \caption{理想双目模型}
+  \label{理想双目模型}
+\end{figure}
 
 双目视觉测距基于针孔成像几何模型。假设左右相机光轴平行、成像平面共面，双目基线沿水平方向布置，且图像已完成极线对齐。在该理想模型下，空间点，在左右相机中的像素坐标分别为，，其纵向坐标满足 ，仅在水平方向存在视差。根据相似三角形关系，空间点深度与视差的关系如式~\eqref{eq:ch3-geometry}所示：
 \begin{equation}\label{eq:ch3-geometry}
 P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\quad Z=\frac{fB}{d}
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $P=(X,Y,Z)$ & 空间点在相机坐标系下的三维坐标；\\
 & $P_l(u_l,v_l),\,P_r(u_r,v_r)$ & 空间点在左右相机像平面的像素坐标；\\
 & $d=u_l-u_r$ & 左右图像对应点的水平视差；\\
@@ -26,22 +34,11 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
 & $Z=\frac{fB}{d}$ & 深度与视差的几何关系。\\
 \end{tabularx}\vspace{3.15bp}
 
-在相机参数固定的条件下，视差与深度呈反比关系，理想双目模型如图\ref{理想双目模型}所示。
-
-由此可实现从像素坐标到三维空间坐标的映射。
-
-\begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/理想双目模型.png}
-  \caption{理想双目模型}
-  \label{理想双目模型}
-\end{figure}
-
 实际双目系统中普遍存在镜头畸变与安装误差，若不进行标定将导致测距结果偏离理想几何模型。为此，本文采用张正友标定方法，通过MATLAB的Stereo Camera Calibrator应用对双目相机进行标定与校正。通过采集多组棋盘格图像，估计左右相机的内参及畸变参数，并计算双目系统的外参关系，包括旋转矩阵与平移向量，标定结果如图\ref{双目相机标定结果}所示。
 
 基于标定结果，对左右图像进行去畸变与立体校正处理，使其极线对齐至水平方向，从而满足双目测距的几何假设，校正效果如图\ref{图像校正处理结果}所示。校正后的图像可稳定用于视差估计与深度计算，为后续障碍物检测与测距算法提供可靠的几何基础。
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.48\textwidth]{figures/chapter03/双目相机标定结果A.png}
   \hfill
@@ -50,7 +47,7 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
   \label{双目相机标定结果}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter03/图像校正处理结果.png}
   \caption{图像校正处理结果}
@@ -59,11 +56,11 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
 
 \subsection{轻量化立体匹配模型}
 
-现有轻量化立体匹配研究主要围绕降低代价建模与聚合开销展开：StereoNet通过低分辨率匹配表示并结合逐级细化实现粗到细估计，AANet采用自适应聚合在多尺度上动态调制代价融合，MobileNetStereo-2D以轻量化骨干配合二维聚合策略压缩计算量，HITNet通过假设驱动的迭代推理逐步优化视差以减少对显式重型代价正则化的依赖，Fast-ACVNet与IINet则分别从高效代价体构建/聚合与左右特征交互优化角度提升信息利用效率。尽管上述方法在实时性方面取得进展，但在轻量化约束下，代价体构建阶段对多尺度几何信息的利用往往仍较为有限，粗尺度几何先验对细尺度匹配的引导作用有进一步挖掘空间。基于此，HAGVNet的核心思路在于构建分层注意力引导的代价体（HierarchicalAttention-GuidedCostVolume,HAGV），利用粗尺度几何先验调制细尺度代价建模过程，并结合轻量化的ConvNeXtV2风格二维代价聚合模块实现端到端立体匹配；模型整体结构如图\ref{HAGVNet结构图}所示。
+现有轻量化立体匹配研究主要围绕降低代价建模与聚合开销展开：StereoNet\cite{khamisStereonetGuidedHierarchical2018a}通过低分辨率匹配表示并结合逐级细化实现粗到细估计，AANet\cite{xuAANetAdaptiveAggregation2020}采用自适应聚合在多尺度上动态调制代价融合，MobileNetStereo-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}以轻量化骨干配合二维聚合策略压缩计算量，HITNet\cite{tankovichHitnetHierarchicalIterative2021a}通过假设驱动的迭代推理逐步优化视差以减少对显式重型代价正则化的依赖，Fast-ACVNet\cite{xuAccurateEfficientStereo2023}与IINet\cite{liIinetImplicitIntrainter2024}则分别从高效代价体构建/聚合与左右特征交互优化角度提升信息利用效率。尽管上述方法在实时性方面取得进展，但在轻量化约束下，代价体构建阶段对多尺度几何信息的利用往往仍较为有限，粗尺度几何先验对细尺度匹配的引导作用有进一步挖掘空间。基于此，HAGVNet的核心思路在于构建分层注意力引导的代价体（HierarchicalAttention-GuidedCostVolume,HAGV），利用粗尺度几何先验调制细尺度代价建模过程，并结合轻量化的ConvNeXtV2\cite{wooConvnextV2Codesigning2023a}风格二维代价聚合模块实现端到端立体匹配；模型整体结构如图\ref{HAGVNet结构图}所示。
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/HAGVNet结构图.png}
+  \includegraphics[width=0.95\textwidth]{figures/chapter03/HAGVNet结构图.png}
   \caption{HAGVNet结构图}
   \label{HAGVNet结构图}
 \end{figure}
@@ -76,8 +73,7 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
 \begin{equation}\label{eq:ch3-attention}
 A=\exp\left(-\frac{(d_{\text{coarse}}-\mu)^2}{2\sigma^2}\right)
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $A$ & 分层注意力先验权重；\\
 & $d_{\text{coarse}}$ & 粗尺度视差先验；\\
 & $\mu$ & 以粗尺度先验为中心的局部均值；\\
@@ -88,8 +84,7 @@ A=\exp\left(-\frac{(d_{\text{coarse}}-\mu)^2}{2\sigma^2}\right)
 \begin{equation}\label{eq:ch3-fusion}
 C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $C'_{\text{fine}}$ & 融合后的细尺度代价体；\\
 & $C_{\text{fine}}$ & 原始细尺度代价体；\\
 & $\Delta C$ & 由轻量卷积分支提取的残差信息；\\
@@ -99,7 +94,7 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 
 该机制赋予几何可靠区域更高权重，抑制不确定区域，使代价体在构建阶段即具备更强的几何一致性，从而提升聚合阶段的匹配稳定性与边界一致性。
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter03/不同代价卷积块对比.png}
   \caption{不同代价卷积块对比}
@@ -108,7 +103,7 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 
 （2）用于2D代价聚合的covntxv2聚合块
 
-先前的二维代价聚合研究多以轻量卷积结构为核心，通过深度可分离卷积与倒置残差块（如MobileNet系列）在聚合阶段压缩计算开销。相关思路已在MobileNetStereo-2D以及以MobileNetV2为骨干的LightStereo中得到验证，表明该类方法在嵌入式算力受限场景下表现出较好的速度-精度折中特性。然而，此类以局部卷积运算为主的轻量结构在建模长程空间依赖及复杂几何关系方面仍存在一定局限，易导致代价聚合阶段的特征表征能力受限。基于上述考虑，本文在二维代价聚合网络中引入ConvNeXtV2风格的轻量残差块，在保持整体计算复杂度可控的前提下，通过大核卷积、规范化与非线性激活的协同设计增强空间与通道维度的表达能力，从而提升聚合特征对复杂匹配模式的建模能力。其整体结构示意如图\ref{不同代价卷积块对比}所示。
+先前的二维代价聚合研究多以轻量卷积结构为核心，通过深度可分离卷积与倒置残差块（如MobileNet系列\cite{sandlerMobilenetv2InvertedResiduals2018}）在聚合阶段压缩计算开销。相关思路已在MobileNetStereo-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}以及以MobileNetV2\cite{sandlerMobilenetv2InvertedResiduals2018}为骨干的LightStereo\cite{guoLightstereoChannelBoost2025}中得到验证，表明该类方法在嵌入式算力受限场景下表现出较好的速度-精度折中特性。然而，此类以局部卷积运算为主的轻量结构在建模长程空间依赖及复杂几何关系方面仍存在一定局限，易导致代价聚合阶段的特征表征能力受限。基于上述考虑，本文在二维代价聚合网络中引入ConvNeXtV2\cite{wooConvnextV2Codesigning2023a}风格的轻量残差块，在保持整体计算复杂度可控的前提下，通过大核卷积、规范化与非线性激活的协同设计增强空间与通道维度的表达能力，从而提升聚合特征对复杂匹配模式的建模能力。其整体结构示意如图\ref{不同代价卷积块对比}所示。
 
 设输入代价体。该模块首先通过深度卷积扩大感受野，以增强对局部上下文的建模能力（式~\eqref{eq:ch3-conv1}）：
 \begin{equation}\label{eq:ch3-conv1}
@@ -124,8 +119,7 @@ X_2=LN(X_1)
 \begin{equation}\label{eq:ch3-gelu}
 X_3=GELU(W_1*X_2)
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $W_1$ & 逐点卷积权重，用于通道扩张。\\
 \end{tabularx}\vspace{3.15bp}
 
@@ -138,8 +132,7 @@ X_4=GRN(X_3)
 \begin{equation}\label{eq:ch3-conv2}
 X_5=W_2*X_4
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $W_2$ & 投影卷积权重，用于将通道数映射回原始维度。\\
 \end{tabularx}\vspace{3.15bp}
 
@@ -148,7 +141,7 @@ X_5=W_2*X_4
 Y=X+X_5
 \end{equation}
 
-该ConvNeXtV2风格残差块通过大核深度卷积、通道扩张、归一化与残差融合的组合设计，在维持轻量化特性的同时显著增强了模型对平面区域与边界纹理的建模能力，适用于对精度与算力均有约束的嵌入式立体匹配场景。对比实验结果表明，该结构在综合性能上优于ShuffleNet-V2、GhostNet及MobileNet-V2等常见轻量残差块。
+该ConvNeXtV2风格残差块通过大核深度卷积、通道扩张、归一化与残差融合的组合设计，在维持轻量化特性的同时显著增强了模型对平面区域与边界纹理的建模能力，适用于对精度与算力均有约束的嵌入式立体匹配场景。对比实验结果表明，该结构在综合性能上优于ShuffleNet-V2、GhostNet\cite{hanGhostnetMoreFeatures2020a}及MobileNet-V2\cite{sandlerMobilenetv2InvertedResiduals2018}等常见轻量残差块。
 
 （3）网络整体结构
 
@@ -156,7 +149,7 @@ Y=X+X_5
 
 1）多尺度特征提取
 
-设输入左右图像分别为与。本文采用在ImageNet上预训练的MobileNetV2作为骨干网络，对输入图像进行逐级下采样以提取多尺度结构与纹理特征。在骨干网络输出的基础上，引入双向特征金字塔（BiFPN），用于在高、低分辨率特征之间进行有效的信息融合，从而增强多尺度几何结构的一致性。最终在与分辨率下分别获得左右图像的特征图与，并分别用于细尺度与粗尺度代价体的构建。
+设输入左右图像分别为与。本文采用在ImageNet\cite{dengImagenetLargescaleHierarchical2009a}上预训练的MobileNetV2\cite{sandlerMobilenetv2InvertedResiduals2018}作为骨干网络，对输入图像进行逐级下采样以提取多尺度结构与纹理特征。在骨干网络输出的基础上，引入双向特征金字塔（BiFPN\cite{tanEfficientdetScalableEfficient2020b}），用于在高、低分辨率特征之间进行有效的信息融合，从而增强多尺度几何结构的一致性。最终在与分辨率下分别获得左右图像的特征图与，并分别用于细尺度与粗尺度代价体的构建。
 
 2）代价体构建
 
@@ -164,8 +157,7 @@ Y=X+X_5
 \begin{equation}\label{eq:ch3-cost}
 C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $C(x,y,d)$ & 像素$(x,y)$在视差$d$处的匹配代价值；\\
 & $\left\langle \cdot,\cdot \right\rangle$ & 两个特征向量的内积运算；\\
 & $F_l,F_r$ & 左右图像的特征表示；\\
@@ -180,7 +172,7 @@ C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
 
 代价聚合阶段对粗尺度代价体 与细尺度代价体 分别采用相同的 ConvNeXtV2 风格残差块进行层次化聚合。两条聚合分支仅在输入分辨率与通道数上不同，均对输入代价体（）进行逐级 1/2 与 1/4 下采样，并通过 U-Net 式的对称上采样与跨尺度跳连融合多层级信息，从而提升代价体的空间一致性与几何关联性。
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter03/代价聚合结构图.png}
   \caption{代价聚合结构图}
@@ -205,8 +197,7 @@ d(x,y)=\sum_{d=0}^{D_{\max}-1} d\cdot p(d\mid x,y)
 \begin{equation}\label{eq:ch3-loss-single}
 L(d,d^*)=\frac{1}{N}\sum_{i=1}^{N}\mathrm{SmoothL1}(d_i-d_i^*)
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $N$ & 有效像素总数；\\
 & $d_i$ & 第$i$个像素的预测视差；\\
 & $d_i^*$ & 第$i$个像素的真实视差。\\
@@ -216,8 +207,7 @@ L(d,d^*)=\frac{1}{N}\sum_{i=1}^{N}\mathrm{SmoothL1}(d_i-d_i^*)
 \begin{equation}\label{eq:ch3-loss-total}
 L_{\text{total}}=L(d,d^*)+\lambda L(d_{\text{coarse}},d^*)
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $\lambda$ & 粗尺度监督损失的权重系数；\\
 & $d_{\text{coarse}}$ & 粗尺度分支的视差预测。\\
 \end{tabularx}\vspace{3.15bp}
@@ -230,12 +220,11 @@ L_{\text{total}}=L(d,d^*)+\lambda L(d_{\text{coarse}},d^*)
 
 （1）预训练阶段
 
-模型首先在 SceneFlow 数据集上进行预训练。该数据集提供稠密视差真值，适用于模型初始参数学习。预训练阶段采用端点误差（End-Point Error, EPE）作为主要评价指标，其定义如式~\eqref{eq:ch3-epe}所示：
+模型首先在 SceneFlow 数据集\cite{mayerLargeDatasetTrain2016}上进行预训练。该数据集提供稠密视差真值，适用于模型初始参数学习。预训练阶段采用端点误差（End-Point Error, EPE）作为主要评价指标，其定义如式~\eqref{eq:ch3-epe}所示：
 \begin{equation}\label{eq:ch3-epe}
 EPE=\frac{1}{N}\sum_{i=1}^{N}\left|d_i^{pred}-d_i^{gt}\right|
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $N$ & 有效像素总数；\\
 & $d_i^{pred}$ & 第$i$个像素的预测视差；\\
 & $d_i^{gt}$ & 第$i$个像素对应的真实视差。\\
@@ -245,12 +234,11 @@ EPE实质为像素级视差绝对误差的平均值，能够直接反映整体�
 
 （2）微调与测试阶段
 
-完成预训练后，模型在 KITTI 2012 与 KITTI 2015 混合数据集上进行微调与测试。该数据来源于真实道路场景，更贴近实际应用环境。在 KITTI 2012 中，仍采用$EPE$作为评价指标，在 KITTI 2015 中，采用$D1$-all指标，其定义如式~\eqref{eq:ch3-d1all}所示：
+完成预训练后，模型在 KITTI 2012\cite{geigerAreWeReady2012a} 与 KITTI 2015\cite{menzeObjectSceneFlow2015a} 混合数据集上进行微调与测试。该数据来源于真实道路场景，更贴近实际应用环境。在 KITTI 2012 中，仍采用$EPE$作为评价指标，在 KITTI 2015 中，采用$D1$-all指标，其定义如式~\eqref{eq:ch3-d1all}所示：
 \begin{equation}\label{eq:ch3-d1all}
 D1\text{-all}=\frac{\left|\left\{i:\left|d_i^{pred}-d_i^{gt}\right|>3\ \text{or}\ \frac{\left|d_i^{pred}-d_i^{gt}\right|}{d_i^{gt}}>0.05\right\}\right|}{N}\times 100\%
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $\left|\left\{\cdot\right\}\right|$ & 满足误差条件的像素集合元素个数；\\
 & $N$ & 有效像素总数；\\
 & $3$ & 绝对误差阈值（像素）；\\
@@ -269,7 +257,7 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 （1）卷积块消融实验
 
-在保持网络结构与训练策略一致的条件下，对不同风格的卷积块在SceneFlow数据集上进行了对比实验，其结果如表\ref{不同卷积块在SceneFlow数据集上的消融实验}所示。ShuffleNetV2与GhostNet在FLOPs与参数规模方面最为轻量（FLOPs约17.9G，参数量低于3M），但匹配精度相对较低，其EPE分别为0.9223与0.8271，表明其在弱纹理与复杂几何区域的特征表达能力受限。相比之下，ConvNeXtV2在FLOPs为19.58G、参数量为3.40M的条件下取得最低的EPE（0.7644），且相较MobileNetV2，EPE下降约3.7\%；相较GhostNet与ShuffleNetV2，误差分别降低约7.6\%与17.1\%。综合考虑精度、计算量与模型规模，ConvNeXtV2在当前实验配置下实现了更优的精度–复杂度折中，因此被选作后续实验的基础代价聚合单元。
+在保持网络结构与训练策略一致的条件下，对不同风格的卷积块在SceneFlow数据集\cite{mayerLargeDatasetTrain2016}上进行了对比实验，其结果如表\ref{不同卷积块在SceneFlow数据集上的消融实验}所示。ShuffleNetV2与GhostNet\cite{hanGhostnetMoreFeatures2020a}在FLOPs与参数规模方面最为轻量（FLOPs约17.9G，参数量低于3M），但匹配精度相对较低，其EPE分别为0.9223与0.8271，表明其在弱纹理与复杂几何区域的特征表达能力受限。相比之下，ConvNeXtV2\cite{wooConvnextV2Codesigning2023a}在FLOPs为19.58G、参数量为3.40M的条件下取得最低的EPE（0.7644），且相较MobileNetV2\cite{sandlerMobilenetv2InvertedResiduals2018}，EPE下降约3.7\%；相较GhostNet与ShuffleNetV2，误差分别降低约7.6\%与17.1\%。综合考虑精度、计算量与模型规模，ConvNeXtV2在当前实验配置下实现了更优的精度–复杂度折中，因此被选作后续实验的基础代价聚合单元。
 
 \begin{table}[htbp]
   \centering
@@ -310,20 +298,16 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 （3）与主流方法的对比实验
 
-为进一步验证模型的整体性能，本文在SceneFlow与KITTI数据集上将所提出的HAGVNet与多种主流实时或轻量化立体匹配方法进行对比，结果分别如表\ref{在SceneFlow数据集上对比其他主流实时立体匹配网络}和表\ref{在KITTI数据集上对比其他主流轻量立体匹配网络}所示。其中，KITTI数据集结果由官方评测服务器获得。为消除硬件差异，统一采用FLOPs作为计算复杂度指标，在1242×375分辨率下统计。
+为进一步验证模型的整体性能，本文在SceneFlow\cite{mayerLargeDatasetTrain2016}与KITTI数据集\cite{geigerAreWeReady2012a,menzeObjectSceneFlow2015a}上将所提出的HAGVNet与多种主流实时或轻量化立体匹配方法进行对比，结果分别如表\ref{在SceneFlow数据集上对比其他主流实时立体匹配网络}和表\ref{在KITTI数据集上对比其他主流轻量立体匹配网络}所示。其中，KITTI数据集结果由官方评测服务器获得。为消除硬件差异，统一采用FLOPs作为计算复杂度指标，在1242×375分辨率下统计。对比方法包括StereoNet\cite{khamisStereonetGuidedHierarchical2018a}、DeepPrunerFast\cite{duggalDeepprunerLearningEfficient2019a}、AANet\cite{xuAANetAdaptiveAggregation2020}、HITNet\cite{tankovichHitnetHierarchicalIterative2021a}、CoEx\cite{bangunharcanaCorrelateandexciteRealtimeStereo2021a}、MobileStereoNet-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}、Fast-ACVNet/Fast-ACVNet+\cite{xuAccurateEfficientStereo2023}与IINet\cite{liIinetImplicitIntrainter2024}等代表性方法。
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter03/HAGVNet在KITTI2015部分结果对比.png}
   \caption{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
   \label{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
 \end{figure}
 
-在SceneFlow数据集上，HAGVNet在仅$20.08\,\mathrm{GFLOPs}$的条件下取得$0.73\,\mathrm{px}$的$EPE$，在计算量显著低于多数方法的情况下保持了具有竞争力的精度表现；在KITTI 2012与KITTI 2015数据集上，HAGVNet的整体性能优于StereoNet、DeepPrunerFast、MobileStereoNet-2D与AANet等方法。与HITNet及Fast-ACVNet系列相比，HAGVNet在$D1$-all指标上仅高出约0.2\%--0.3\%，但其计算复杂度仅为$20.08\,\mathrm{GFLOPs}$，分别约为HITNet（$50.23\,\mathrm{GFLOPs}$）的40\%和Fast-ACVNet（$79.34\,\mathrm{GFLOPs}$）的25\%，在保持接近精度的同时显著降低了计算开销。图\ref{HAGVNet与多种主流方法在KITTI数据集上的部分表现}给出了部分定性结果对比，可见在弱纹理区域与大面积平坦区域，HAGVNet能较好保持结构连续性并抑制局部匹配噪声。
-
-综合来看，HAGVNet在保持极低计算复杂度与参数规模的前提下，仍能在多个公开数据集上取得稳定且具有竞争力的匹配精度，体现出良好的精度–复杂度折中性能，具备在算力受限嵌入式平台上部署的工程可行性。
-
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.48\textwidth]{figures/chapter03/SceneFlow性能与FLOPs对比.png}
   \hfill
@@ -331,6 +315,8 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
   \caption{SceneFlow（左）和KITTI15（右）数据集上的性能与FLOPs对比}
   \label{SceneFlow（左）和KITTI15（右）数据集上的性能与FLOPs对比}
 \end{figure}
+
+在SceneFlow数据集上，HAGVNet在仅$20.08\,\mathrm{GFLOPs}$的条件下取得$0.73\,\mathrm{px}$的$EPE$，在计算量显著低于多数方法的情况下保持了具有竞争力的精度表现；在KITTI 2012与KITTI 2015数据集上，HAGVNet的整体性能优于StereoNet\cite{khamisStereonetGuidedHierarchical2018a}、DeepPrunerFast\cite{duggalDeepprunerLearningEfficient2019a}、MobileStereoNet-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}与AANet\cite{xuAANetAdaptiveAggregation2020}等方法。与HITNet\cite{tankovichHitnetHierarchicalIterative2021a}及Fast-ACVNet系列\cite{xuAccurateEfficientStereo2023}相比，HAGVNet在$D1$-all指标上仅高出约0.2\%--0.3\%，但其计算复杂度仅为$20.08\,\mathrm{GFLOPs}$，分别约为HITNet（$50.23\,\mathrm{GFLOPs}$）的40\%和Fast-ACVNet（$79.34\,\mathrm{GFLOPs}$）的25\%，在保持接近精度的同时显著降低了计算开销。图\ref{HAGVNet与多种主流方法在KITTI数据集上的部分表现}给出了部分定性结果对比，可见在弱纹理区域与大面积平坦区域，HAGVNet能较好保持结构连续性并抑制局部匹配噪声。
 
 \begin{table}[htbp]
   \centering
@@ -382,6 +368,8 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
   \endgroup
 \end{table}
 
+综合来看，HAGVNet在保持极低计算复杂度与参数规模的前提下，仍能在多个公开数据集上取得稳定且具有竞争力的匹配精度，体现出良好的精度–复杂度折中性能，具备在算力受限嵌入式平台上部署的工程可行性。
+
 \section{基于深度学习的目标识别}
 
 目标识别是环境感知中的重要任务，能够实时检测公园场景中常见的行人、动物、长椅等障碍物进而结合双目视觉测距做出决策保证安全。目标识别除了要求很高的准确度之外,还要保证有足够快的响应速度以保证控制的实时性，对于在嵌入式系统的部署,更需要保证较小的模型尺寸。
@@ -392,7 +380,7 @@ YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测�
 
 近年来，YOLO系列不断迭代更新，在特征提取结构、特征融合方式以及检测头设计等方面持续优化。YOLOv11作为该系列的较新版本，在继承轻量化与高效性的基础上，进一步改进了主干网络与多尺度特征融合结构，使得模型在推理延迟、参数规模与检测精度之间取得更优平衡。在T4 TensorRT平台（FP16）下的性能对比结果表明，YOLOv11系列在不同延迟水平下均实现了更高的COCO $mAP@0.5$指标，相比YOLOv10及以往版本具有整体性能优势，体现出更优的精度–速度权衡能力。
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter03/YOLO11在COCO上的性能对比.png}
   \caption{YOLO11与其他主流网络在COCO数据集的性能对比}
@@ -403,7 +391,7 @@ YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测�
 
 在YOLOv11系列的不同规模模型中，YOLO11n（nano版本）在精度与推理时间之间取得了较优折中。其推理延迟达到毫秒级水平，同时仍保持较高的mAP@0.5指标。在相同硬件与量化条件下，YOLO11n相较于YOLOv10n、YOLOv9n等轻量模型在综合性能指标上表现更优，尤其在保持低延迟的同时未显著牺牲检测精度。因此，综合工程可部署性与系统整体算力预算，最终选定YOLO11n作为本系统的目标检测模型。
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter03/YOLO11n整体结构.png}
   \caption{YOLO11n整体结构}
@@ -430,8 +418,7 @@ Recall=\frac{TP}{TP+FN}
 \begin{equation}\label{eq:ch3-map}
 mAP=\frac{1}{N}\sum_{c=1}^{N} AP_c
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $TP$ & 将正样本预测为正样本的数量；\\
 & $FP$ & 将负样本预测为正样本的数量；\\
 & $FN$ & 将正样本预测为负样本的数量；\\
@@ -445,7 +432,7 @@ mAP=\frac{1}{N}\sum_{c=1}^{N} AP_c
 
 在获得障碍物的二维检测结果后，需要进一步结合双目视觉深度信息，实现对目标空间距离及三维位置的估计。本文的障碍物测距算法以第4.1节输出的目标检测结果为输入，融合立体匹配与双目成像几何模型，完成从图像平面到相机坐标系的空间恢复。整体测距流程如图\ref{目标检测及测距流程}所示，主要包括立体匹配与视差估计、视差到深度转换、目标区域深度估计以及目标三维坐标计算四个步骤。
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter03/目标检测与测距流程.png}
   \caption{目标检测及测距流程}
@@ -458,8 +445,7 @@ mAP=\frac{1}{N}\sum_{c=1}^{N} AP_c
 \begin{equation}\label{eq:ch3-disparity}
 D=F(I_l,I_r)
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $D$ & 稠密视差图；\\
 & $F(\cdot)$ & 立体匹配网络的前向映射函数；\\
 & $I_l,\,I_r$ & 校正后的左右输入图像。\\
@@ -478,8 +464,7 @@ Z_{u,v}=\frac{fB}{d_{u,v}}
 \begin{equation}\label{eq:ch3-depth-map}
 Z=G(D)
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $Z_{u,v}$ & 像素位置$(u,v)$处的深度值；\\
 & $d_{u,v}$ & 像素位置$(u,v)$处的视差值；\\
 & $f$ & 相机焦距（像素单位）；\\
@@ -493,8 +478,7 @@ Z=G(D)
 \begin{equation}\label{eq:ch3-roi-scale}
 b_i'=\alpha b_i,\quad 0<\alpha<1
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $b_i$ & 第$i$个目标的原始二维边界框；\\
 & $b_i'$ & 缩放后的有效ROI边界框；\\
 & $\alpha$ & ROI缩放系数，且$0<\alpha<1$。\\
@@ -509,8 +493,7 @@ Z_i=\{Z(u,v)\mid (u,v)\in b_i'\}
 \begin{equation}\label{eq:ch3-depth-median}
 \hat{Z}_i=\mathrm{median}(Z_i)
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $Z_i$ & 第$i$个目标ROI内的深度值集合；\\
 & $\hat{Z}_i$ & 第$i$个障碍物相对于相机的估计深度（中位数）。\\
 \end{tabularx}\vspace{3.15bp}
@@ -523,50 +506,39 @@ X_i=\frac{(u_i-c_x)\hat{Z}_i}{f},\quad
 Y_i=\frac{(v_i-c_y)\hat{Z}_i}{f},\quad
 Z_i=\hat{Z}_i
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $(c_x,c_y)$ & 相机主点坐标；\\
 & $f$ & 相机焦距；\\
 & $(u_i,v_i)$ & 第$i$个目标中心像素坐标；\\
-& $(X_i,Y_i,Z_i)$ & 第$i$个目标在相机坐标系下的三维坐标。\\
 \end{tabularx}\vspace{3.15bp}
 
 综合目标检测与深度估计结果，系统最终输出的障碍物信息可表示为（式~\eqref{eq:ch3-output}）：
 \begin{equation}\label{eq:ch3-output}
 O_i=(c_i,s_i,X_i,Y_i,Z_i)
 \end{equation}
-
-\noindent \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $O_i$ & 第$i$个障碍物的输出信息向量；\\
 & $c_i$ & 目标类别；\\
 & $s_i$ & 检测置信度；\\
-& $(X_i,Y_i,Z_i)$ & 障碍物在相机坐标系下的三维空间位置。\\
 \end{tabularx}\vspace{3.15bp}
 
 目标检测与定位的效果如图\ref{障碍物检测与定位效果图}所示。
 
-\begin{figure}[!htbp]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.78\textwidth]{figures/chapter03/障碍物检测与定位结果.png}
+  \includegraphics[width=0.65\textwidth]{figures/chapter03/障碍物检测与定位结果.png}
   \caption{障碍物检测与定位效果图}
   \label{障碍物检测与定位效果图}
 \end{figure}
+\FloatBarrier
 
 \subsection{本章小节}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+本章围绕双目视觉环境感知需求，完成了立体匹配、目标检测与空间定位算法
+的设计与验证。在立体匹配方面，基于双目测距原理与相机标定方法，提出轻量化
+模型 HAGVNet。该模型通过分层注意力引导代价体构建机制，在较低计算量下提
+升匹配稳定性与精度，满足嵌入式平台实时测距需求。在目标检测方面，采用轻量
+化一阶段模型 YOLO11n，实现典型障碍物的快速识别与边界框输出。结合检测结
+果与深度信息，构建目标级空间定位方法，实现由二维检测到三维距离估计的转换。
+本章完成了双目视觉感知算法体系的构建，为整车系统集成与实验验证提供了算
+法基础。
