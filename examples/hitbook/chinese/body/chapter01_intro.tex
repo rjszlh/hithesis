@@ -159,7 +159,7 @@
     \label{fig:黄用华两轮车机器人}
   \end{minipage}
   \hfill
-  \begin{minipage}[t]{0.40\textwidth}
+  \begin{minipage}[t]{0.35\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter01/KunitoshiTanaka设计的基于CMG的倒立摆机器人.png}
     \caption{Kunitoshi Tanaka设计的基于CMG的倒立摆机器人\cite{tanakaPostureStabilityControl2020}}
@@ -186,7 +186,7 @@
   \end{minipage}
 \end{figure}
 
-2024年，Gökhan Çetin通过拉格朗日方程推导了CMG机器人的运动方程，并使用Matlab模拟了未受控陀螺的平衡性能，以确定机电系统设计的期望配置。然后，将LQR应用于选定的CMG配置，并在RecurDyn的仿真中进行比较。LQR控制器被用来防止在武器后坐力作用下双CMG的振荡运动。仿真结果表明，采用LQR控制器的陀螺两轮机器人在静态下具有出色的性能，实现了显著的平衡改善\cite{cetinGyroscopicPrecessionControl2024}。
+2024年，Gökhan Çetin通过拉格朗日方程推导了CMG机器人的运动方程，并使用Matlab模拟了未受控陀螺的平衡性能，以确定机电系统设计的期望配置。然后，将LQR应用于选定的CMG配置，并在RecurDyn的仿真中进行比较，其所设计的结构如图~\ref{fig:GokhanCetin武器系统陀螺两轮机器人}所示。LQR控制器被用来防止在武器后坐力作用下双CMG的振荡运动。仿真结果表明，采用LQR控制器的陀螺两轮机器人在静态下具有出色的性能，实现了显著的平衡改善\cite{cetinGyroscopicPrecessionControl2024}。
 
 % \begin{figure}[htbp]
 %   \centering
@@ -194,7 +194,6 @@
 %   \caption{Gökhan Çetin设计的装备有武器系统的力矩控制陀螺两轮机器人}
 %   \label{fig:GokhanCetin武器系统陀螺两轮机器人}
 % \end{figure}
-\FloatBarrier
 
 \subsection{基于双目视觉的障碍物感知国内外研究现状}
 
@@ -204,14 +203,16 @@
 
 从代表性工作看，2015年前后基于CNN学习匹配代价的方法开启了深度双目研究；2017年的GC-Net和2018年的PSMNet确立了“代价体构建+上下文聚合”的主流范式；2021年RAFT-Stereo将迭代优化思想引入立体匹配并取得较好精度与效率平衡；2022年的CREStereo和2023年的IGEV-Stereo进一步提升了复杂场景和实时部署能力；2025年出现的FoundationStereo等工作开始探索大规模预训练与zero-shot泛化能力，体现了双目感知向“基础模型化”和跨域鲁棒方向的发展趋势\cite{kendallEndtoendLearningGeometry2017a,changPyramidStereoMatching2018,lipsonRAFTStereoMultilevelRecurrent2021,liPracticalStereoMatching2022,xuIterativeGeometryEncoding2023,wenFoundationStereoZeroShotStereo2025}。
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.7\textwidth]{figures/chapter01/检测演算流程.png}
-  \caption{检测演算流程\cite{estiloObstacleDetectionLocalization2016}}
-  \label{fig:检测演算流程}
-\end{figure}
+% \begin{figure}[htbp]
+%   \centering
+%   \includegraphics[width=0.7\textwidth]{figures/chapter01/检测演算流程.png}
+%   \caption{检测演算流程\cite{estiloObstacleDetectionLocalization2016}}
+%   \label{fig:检测演算流程}
+% \end{figure}
 
-国内在该领域的研究更强调面向具体应用场景的工程化实现，尤其在园区车辆、果园车辆、AGV和农业装备等场景中，形成了“目标检测+双目测距”的实用技术路线。2016年，Jonathan David Estilo等人提出模块化障碍物检测系统，将双目立体视觉与运动场分析结合，验证了特征丰富目标的有效检测能力，但在无明显纹理障碍物场景中仍存在不足\cite{estiloObstacleDetectionLocalization2016}，其检测流程如图~\ref{fig:检测演算流程}所示。
+% 国内在该领域的研究更强调面向具体应用场景的工程化实现，尤其在园区车辆、果园车辆、AGV和农业装备等场景中，形成了“目标检测+双目测距”的实用技术路线。2016年，Jonathan David Estilo等人提出模块化障碍物检测系统，将双目立体视觉与运动场分析结合，验证了特征丰富目标的有效检测能力，但在无明显纹理障碍物场景中仍存在不足\cite{estiloObstacleDetectionLocalization2016}，其检测流程如图~\ref{fig:检测演算流程}所示。
+
+国内在该领域的研究更强调面向具体应用场景的工程化实现，尤其在园区车辆、果园车辆、AGV和农业装备等场景中，形成了“目标检测+双目测距”的实用技术路线。2016年，Jonathan David Estilo等人提出模块化障碍物检测系统，将双目立体视觉与运动场分析结合，验证了特征丰富目标的有效检测能力，但在无明显纹理障碍物场景中仍存在不足\cite{estiloObstacleDetectionLocalization2016}。
 
 \begin{figure}[htbp]
   \centering
@@ -277,6 +278,7 @@
   \caption{YOLOv5+SGBM测距流程\cite{ChenQuanGanJiYuYOLOv5DeJiGengChuanShuangMuShiJueZhangAiGanZhiYanJiu2024}}
   \label{fig:YOLOv5SGBM测距流程}
 \end{figure}
+\FloatBarrier
 
 总体而言，基于双目视觉的障碍物感知研究已从“规则驱动”转向“深度学习驱动”，并进一步转向“感知精度与实时部署并重”。未来仍需重点突破三方面问题：复杂光照和动态遮挡下的鲁棒视差估计、低算力平台上的实时性与能耗控制，以及跨场景数据分布差异引起的泛化能力不足。
 
@@ -284,21 +286,56 @@
 
 在完成障碍物检测与距离估计之后，如何将感知结果转化为安全、平稳且可实时执行的运动决策，是自主行驶研究的关键问题。围绕这一目标，国内外研究通常按照“环境建模—路径规划—运动控制”的技术链路展开：一方面通过占据地图、语义地图或BEV表示提升环境表达能力，另一方面将动态障碍预测与风险约束引入规划与控制过程，以提高系统在复杂场景中的避障可靠性和运行稳定性。基于此，以下从代表性工作出发，对自主行驶及避障方向的研究进展进行梳理。
 
-2017年，Oleynikova等提出Voxblox方法，利用TSDF增量更新并在线构建ESDF，为无人机局部轨迹优化提供可实时查询的距离场信息，在单机载计算平台上验证了可用性\cite{oleynikovaVoxbloxIncremental3D2017}。
+2017年，Oleynikova等提出Voxblox方法，利用TSDF增量更新并在线构建ESDF，为无人机局部轨迹优化提供可实时查询的距离场信息，在单机载计算平台上验证了可用性\cite{oleynikovaVoxbloxIncremental3D2017}，其ESDF增量建图与轨迹规划示意如图~\ref{fig:VoxbloxESDF规划示意}所示。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.80\textwidth]{figures/chapter01/Voxblox增量ESDF与轨迹规划示意.jpg}
+  \caption{Voxblox增量ESDF与轨迹规划示意\cite{oleynikovaVoxbloxIncremental3D2017}}
+  \label{fig:VoxbloxESDF规划示意}
+\end{figure}
 
 2019年，胡美玉等将深度卷积神经网络语义分割与SLAM建图结合，构建三维语义地图，提升了机器人在复杂环境中的环境理解能力，为后续导航与避障提供了更丰富的地图先验\cite{hu2019semantic}。
 
-2020年，Rosinol等提出Kimera开源框架，实现实时度量-语义定位与建图，将视觉前端、语义信息与地图表示统一到同一系统中，显著提升了感知到规划链路的工程可复用性\cite{rosinolKimeraOpenSourceLibrary2020}。同年，Bartolomei等提出感知约束路径规划方法，在规划中显式引入语义分割信息，使轨迹在保证避障的同时兼顾视觉可观测性，提升了定位与导航稳定性\cite{bartolomeiPerceptionawarePathPlanning2020}。
+2020年，Rosinol等提出Kimera开源框架，实现实时度量-语义定位与建图，将视觉前端、语义信息与地图表示统一到同一系统中，显著提升了感知到规划链路的工程可复用性\cite{rosinolKimeraOpenSourceLibrary2020}，其度量语义建图结果如图~\ref{fig:Kimera度量语义建图结果}所示。同年，Bartolomei等提出感知约束路径规划方法，在规划中显式引入语义分割信息，使轨迹在保证避障的同时兼顾视觉可观测性，提升了定位与导航稳定性\cite{bartolomeiPerceptionawarePathPlanning2020}。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\textwidth]{figures/chapter01/Kimera度量语义建图结果.png}
+  \caption{Kimera度量语义建图结果\cite{rosinolKimeraOpenSourceLibrary2020}}
+  \label{fig:Kimera度量语义建图结果}
+\end{figure}
 
 2021年，Wang等提出IVMP方法，先预测未来BEV语义表示再进行运动规划，通过中间语义表征增强了规划过程的可解释性与决策稳定性\cite{wangLearningInterpretableEndtoEnd2021a}。
 
 2022年，Shepel等面向双目视觉提出动态障碍分割占据栅格生成方法，在占据建图阶段区分动静态障碍物，降低了动态目标对地图污染的影响。同年，Schmid等提出Panoptic Multi-TSDFs，采用多TSDF表示实现在线多分辨率体素建图，提升了长期动态场景中的一致性\cite{schmidPanopticMultiTSDFsFlexible2022}；Kantaros和Pappas则将不确定语义地图与时序逻辑任务约束结合，提升了复杂任务下规划的形式化可达性\cite{kantarosPerceptionBasedTemporalLogic2022}。
 
-2023年，Triest等通过逆强化学习构建风险感知代价地图，并在闭环导航任务中验证了学习型代价函数在复杂地形避障中的有效性\cite{triestLearningRiskAwareCostmaps2023}。同年，姚陈鹏等对移动机器人导航技术进行了系统综述，指出动态障碍处理和不确定环境下的安全约束规划是后续研究重点\cite{yaoOverviewMobileRobot2023}。
+2023年，Triest等通过逆强化学习构建风险感知代价地图，并在闭环导航任务中验证了学习型代价函数在复杂地形避障中的有效性\cite{triestLearningRiskAwareCostmaps2023}，其风险感知代价地图学习框架如图~\ref{fig:Triest风险感知代价地图学习框架}所示。同年，姚陈鹏等对移动机器人导航技术进行了系统综述，指出动态障碍处理和不确定环境下的安全约束规划是后续研究重点\cite{yaoOverviewMobileRobot2023}。
 
-2024年，Roth等提出ViPlanner，将视觉语义信息与可微代价地图结合，实现学习驱动的局部规划，在复杂户外场景中获得了更好的路径可行性与鲁棒性\cite{rothViPlannerVisualSemantic2024}。Chen等提出基于粒子的连续动态占据映射方法，增强了动态环境下障碍物时空表示的一致性\cite{chenContinuousOccupancyMapping2024}。Lang等提出BEV-TP框架，将视觉感知与轨迹预测统一在BEV空间，提高了动态交通场景下预测与规划协同能力\cite{langBEVTPEndtoEndVisual2024}。
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\textwidth]{figures/chapter01/Triest风险感知代价地图学习框架.png}
+  \caption{Triest风险感知代价地图学习框架\cite{triestLearningRiskAwareCostmaps2023}}
+  \label{fig:Triest风险感知代价地图学习框架}
+\end{figure}
 
-2025年，Gao等提出Seq-BEV方法，利用序列图像生成更大视场的语义BEV地图，为低速场景下持续规划提供更稳定的环境表示\cite{gaoSeqBEVSemanticBirdEyeView2025}。Chen等提出TrackOcc任务与方法，实现基于相机输入的4D全景占据跟踪，推动了动态障碍建模从静态分割向时空联合建模发展\cite{chenTrackOccCameraBased4D2025}。
+2024年，Roth等提出ViPlanner，将视觉语义信息与可微代价地图结合，实现学习驱动的局部规划，在复杂户外场景中获得了更好的路径可行性与鲁棒性\cite{rothViPlannerVisualSemantic2024}，其视觉语义地图与代价建图示例如图~\ref{fig:ViPlanner语义代价建图示例}所示。Chen等提出基于粒子的连续动态占据映射方法，增强了动态环境下障碍物时空表示的一致性\cite{chenContinuousOccupancyMapping2024}。Lang等提出BEV-TP框架，将视觉感知与轨迹预测统一在BEV空间，提高了动态交通场景下预测与规划协同能力\cite{langBEVTPEndtoEndVisual2024}。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\textwidth]{figures/chapter01/ViPlanner语义地图与代价建图示例.jpg}
+  \caption{ViPlanner语义地图与代价建图示例\cite{rothViPlannerVisualSemantic2024}}
+  \label{fig:ViPlanner语义代价建图示例}
+\end{figure}
+
+2025年，Gao等提出Seq-BEV方法，利用序列图像生成更大视场的语义BEV地图，为低速场景下持续规划提供更稳定的环境表示\cite{gaoSeqBEVSemanticBirdEyeView2025}。Chen等提出TrackOcc任务与方法，实现基于相机输入的4D全景占据跟踪，推动了动态障碍建模从静态分割向时空联合建模发展\cite{chenTrackOccCameraBased4D2025}，其跟踪结果示例如图~\ref{fig:TrackOcc4D占据跟踪结果}所示。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\textwidth]{figures/chapter01/TrackOcc相机输入4D占据跟踪结果.jpg}
+  \caption{TrackOcc相机输入的4D占据跟踪结果示例\cite{chenTrackOccCameraBased4D2025}}
+  \label{fig:TrackOcc4D占据跟踪结果}
+\end{figure}
 
 总体来看，自主行驶及避障研究已从“几何避障”发展为“语义理解、动态建图与风险约束规划”协同优化。对于本课题公园场景，后续应重点围绕双目感知精度、动态障碍建模实时性和局部规划安全约束开展一体化设计，以提升系统在真实场景中的稳定性与可部署性。
 

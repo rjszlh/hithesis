@@ -79,3 +79,4 @@ test_texlive_latest.yml
 examples/hitbook/chinese/svg-inkscape
 
 .vscode/
+examples/hitbook/chinese/thesis.synctex.gz.sum.synctex
