@@ -18,13 +18,6 @@
 
 （5）行驶安全性：在自动行驶模式下，应具备环境感知、路径规划及动态避障能力，确保在复杂多变的公园环境中实现安全、顺畅的通行。
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.9\textwidth]{figures/chapter02/载人两轮平衡车总体设计方案.png}
-  \caption{载人两轮平衡车总体设计方案}
-  \label{载人两轮平衡车总体设计方案}
-\end{figure}
-
 基于上述需求分析，本课题提出了一种载人两轮平衡车的设计方案，如图\ref{载人两轮平衡车总体设计方案}所示。从整体架构上看，载人两轮平衡车系统主要由三大核心部分组成：机械结构、控制系统与自主导航系统。三者密切协作、相互配合，共同实现平衡车的稳定运行与自主行驶。各部分的具体功能与组成如下：
 
 （1）机械结构：载人两轮平衡车机械结构为车体提供结构支撑，并为整车的行驶与平衡控制提供动力。其主要包括车体框架、驱动模块以及稳定模块；
@@ -32,6 +25,13 @@
 （2）控制系统：载人两轮平衡车的控制系统主要负责整车的运动与姿态控制。系统能够接收运动指令，实时采集运动传感器数据，进行控制计算，调节电机输出，实现车辆的平衡控制与行驶操作；
 
 （3）自主导航系统：载人两轮平衡车的自主导航系统主要功能是通过传感器实现定位与环境感知，进而进行路径规划与避障控制，保障车辆在复杂环境中的自主导航与安全行驶。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\textwidth]{figures/chapter02/载人两轮平衡车总体设计方案.png}
+  \caption{载人两轮平衡车总体设计方案}
+  \label{载人两轮平衡车总体设计方案}
+\end{figure}
 
 \begin{figure}[htbp]
   \centering
@@ -107,23 +107,6 @@
 
 力矩控制陀螺是一种通过改变飞轮方向以产生控制力矩的装置，广泛应用于航天器姿态控制和高动态平衡系统中。力矩控制陀螺的结构主要包括高速旋转的飞轮、陀螺壳体以及外部安装框架。如图\ref{陀螺力矩方向示意图}所示飞轮绕自身主轴（图中 $y$ 轴）以角速度 $\omega_y$ 高速旋转，形成稳定的角动量矢量。当通过控制电机驱动其绕垂直于飞轮轴线的 $z$ 轴以角速度 $\omega_z$ 进动时，根据角动量守恒定律，系统将产生垂直于两轴的进动力矩 $\tau$，其方向沿 $x$ 轴指向。
 
-\begin{figure}[htbp]
-  \centering
-  \begin{minipage}[t]{0.40\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/chapter02/陀螺力矩方向示意图.png}
-    \caption{陀螺力矩方向示意图}
-    \label{陀螺力矩方向示意图}
-  \end{minipage}
-  \centering
-  \begin{minipage}[t]{0.50\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/chapter02/双CMG结构示意图.png}
-    \caption{双CMG结构示意图}
-    \label{双CMG结构示意图}
-  \end{minipage}
-\end{figure}
-
 力矩控制陀螺产生的进动力矩来源于角动量的变化率。设飞轮角动量L为：
 \begin{equation}
 L = I_y \omega_y \mathbf{e}_y
@@ -146,6 +129,23 @@ L = I_y \omega_y \mathbf{e}_y
 \end{tabularx}\vspace{3.15bp}
 
 然而单个CMG在产生进动力矩的同时，也会由于结构偏置产生附加力矩分量，影响整体系统的稳定性。如图\ref{双CMG结构示意图}所示在存在倾角 $\theta$ 的情况下，CMG所产生的进动力矩 $\tau$ 可分解为沿 $x$ 轴方向的分力矩 $\tau \cos\theta$，从而引入非期望的扭矩分布。为此采用对称双CMG布置结构是一种有效的抑制手段。两组CMG沿相同轴线对称放置，飞轮自转方向相反，进动方向也相反，最后产生的合力矩的方向沿绝对坐标系 $X$，两个陀螺在绝对坐标 $Y$ 轴方向产生的分力矩相互抵消。采用双陀螺布置的力矩控制陀螺装置产生的控制力矩为：
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[t]{0.40\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/陀螺力矩方向示意图.png}
+    \caption{陀螺力矩方向示意图}
+    \label{陀螺力矩方向示意图}
+  \end{minipage}
+  \centering
+  \begin{minipage}[t]{0.50\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/双CMG结构示意图.png}
+    \caption{双CMG结构示意图}
+    \label{双CMG结构示意图}
+  \end{minipage}
+\end{figure}
+
 \begin{equation}
 \tau = 2 I_y \omega_y \omega_z \mathbf{e}_x \cos\theta
 \label{eq:ch2-cmg-double}
@@ -385,6 +385,8 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 稳定模块的陀螺框架主要承受陀螺装置产生的控制扭矩以及其重量。陀螺框架、回形架和车体框架均采用6061铝合金，其密度为2.70g/cm³，泊松比0.33，杨氏模量为68.9GPa。
 
+设进动角速度为 $\omega_z = 4.17\,\mathrm{rad/s}$（$40\,\mathrm{rpm}$），由式~\eqref{eq:ch2-cmg-double}计算得控制扭矩353.71N·m，陀螺装置及进动电机的总重量234.459N。在陀螺框架两侧的上下连接轴安装位置施加扭矩及重力载荷，并添加标准地球重力。在空心轴孔处设置了圆柱形约束，限制其径向和切向位移；在丝杠孔处则施加了轴向位移约束。仿真分析结果如图\ref{陀螺框架等效应力图}和图\ref{陀螺框架总变形图}所示，最大等效应力出现在丝杠孔附近，为23.142MPa，远小于材料的屈服强度276MPa。最大变形发生在上端连接轴安装位置的边缘，仅为0.10mm，变形量极小，对整体结构性能影响可忽略不计。
+
 \begin{figure}[htbp]
   \centering
   \begin{minipage}[t]{0.48\textwidth}
@@ -401,8 +403,6 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
     \label{陀螺框架总变形图}
   \end{minipage}
 \end{figure}
-
-设进动角速度为 $\omega_z = 4.17\,\mathrm{rad/s}$（$40\,\mathrm{rpm}$），由式~\eqref{eq:ch2-cmg-double}计算得控制扭矩353.71N·m，陀螺装置及进动电机的总重量234.459N。在陀螺框架两侧的上下连接轴安装位置施加扭矩及重力载荷，并添加标准地球重力。在空心轴孔处设置了圆柱形约束，限制其径向和切向位移；在丝杠孔处则施加了轴向位移约束。仿真分析结果如图\ref{陀螺框架等效应力图}和图\ref{陀螺框架总变形图}所示，最大等效应力出现在丝杠孔附近，为23.142MPa，远小于材料的屈服强度276MPa。最大变形发生在上端连接轴安装位置的边缘，仅为0.10mm，变形量极小，对整体结构性能影响可忽略不计。
 
 （2）稳定模块的回形架
 

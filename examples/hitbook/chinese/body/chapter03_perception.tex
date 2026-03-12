@@ -1,10 +1,7 @@
 ﻿% !Mode:: "TeX:UTF-8"
 
 \chapter{基于双目视觉的感知技术研究}
-% todo 补充引用
-环境感知一直以来是自动行驶的重点与难点。现有方法中，基于激光雷达的感知手段虽然精度较高，但其设备成本昂贵；而基于单目视觉的深度估计则存在精度不足和稳定性差的问题。另一方面，仅依赖基于目标识别的环境感知方法容易受到漏检和误检的影响，难以满足高可靠性的自动行驶感知需求。
-
-根据环境感知的需求，研究基于深度学习的立体匹配算法，在保证处理速度的前提下获取高质量的视差图，并通过双目相机参数计算得到深度图；研究基于深度学习的目标检测算法，制作专用数据集并实现对障碍物目标的精准检测；设计算法将深度图与目标检测结果结合，对障碍物目标的空间定位。最终实现对环境的有效感知。
+环境感知一直以来是自动行驶的重点与难点。现有方法中，基于激光雷达的感知手段虽然精度较高，但其设备成本昂贵；而基于单目视觉的深度估计则存在精度不足和稳定性差的问题。另一方面，仅依赖基于目标识别的环境感知方法容易受到漏检和误检的影响，难以满足高可靠性的自动行驶感知需求。根据环境感知的需求，研究基于深度学习的立体匹配算法，在保证处理速度的前提下获取高质量的视差图，并通过双目相机参数计算得到深度图；研究基于深度学习的目标检测算法，制作专用数据集并实现对障碍物目标的精准检测；设计算法将深度图与目标检测结果结合，对障碍物目标的空间定位。最终实现对环境的有效感知。
 
 \section{基于深度学习的立体匹配}
 
@@ -94,16 +91,16 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 
 该机制赋予几何可靠区域更高权重，抑制不确定区域，使代价体在构建阶段即具备更强的几何一致性，从而提升聚合阶段的匹配稳定性与边界一致性。
 
+（2）用于2D代价聚合的covntxv2聚合块
+
+先前的二维代价聚合研究多以轻量卷积结构为核心，通过深度可分离卷积与倒置残差块（如MobileNet系列\cite{sandlerMobilenetv2InvertedResiduals2018}）在聚合阶段压缩计算开销。相关思路已在MobileNetStereo-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}以及以MobileNetV2\cite{sandlerMobilenetv2InvertedResiduals2018}为骨干的LightStereo\cite{guoLightstereoChannelBoost2025}中得到验证，表明该类方法在嵌入式算力受限场景下表现出较好的速度-精度折中特性。然而，此类以局部卷积运算为主的轻量结构在建模长程空间依赖及复杂几何关系方面仍存在一定局限，易导致代价聚合阶段的特征表征能力受限。基于上述考虑，本文在二维代价聚合网络中引入ConvNeXtV2\cite{wooConvnextV2Codesigning2023a}风格的轻量残差块，在保持整体计算复杂度可控的前提下，通过大核卷积、规范化与非线性激活的协同设计增强空间与通道维度的表达能力，从而提升聚合特征对复杂匹配模式的建模能力。其整体结构示意如图\ref{不同代价卷积块对比}所示。
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter03/不同代价卷积块对比.png}
   \caption{不同代价卷积块对比}
   \label{不同代价卷积块对比}
 \end{figure}
-
-（2）用于2D代价聚合的covntxv2聚合块
-
-先前的二维代价聚合研究多以轻量卷积结构为核心，通过深度可分离卷积与倒置残差块（如MobileNet系列\cite{sandlerMobilenetv2InvertedResiduals2018}）在聚合阶段压缩计算开销。相关思路已在MobileNetStereo-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}以及以MobileNetV2\cite{sandlerMobilenetv2InvertedResiduals2018}为骨干的LightStereo\cite{guoLightstereoChannelBoost2025}中得到验证，表明该类方法在嵌入式算力受限场景下表现出较好的速度-精度折中特性。然而，此类以局部卷积运算为主的轻量结构在建模长程空间依赖及复杂几何关系方面仍存在一定局限，易导致代价聚合阶段的特征表征能力受限。基于上述考虑，本文在二维代价聚合网络中引入ConvNeXtV2\cite{wooConvnextV2Codesigning2023a}风格的轻量残差块，在保持整体计算复杂度可控的前提下，通过大核卷积、规范化与非线性激活的协同设计增强空间与通道维度的表达能力，从而提升聚合特征对复杂匹配模式的建模能力。其整体结构示意如图\ref{不同代价卷积块对比}所示。
 
 设输入代价体。该模块首先通过深度卷积扩大感受野，以增强对局部上下文的建模能力（式~\eqref{eq:ch3-conv1}）：
 \begin{equation}\label{eq:ch3-conv1}
@@ -302,13 +299,6 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/HAGVNet在KITTI2015部分结果对比.png}
-  \caption{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
-  \label{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
-\end{figure}
-
-\begin{figure}[htbp]
-  \centering
   \includegraphics[width=0.48\textwidth]{figures/chapter03/SceneFlow性能与FLOPs对比.png}
   \hfill
   \includegraphics[width=0.48\textwidth]{figures/chapter03/KITTI2015性能与FLOPs对比.png}
@@ -317,6 +307,13 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 \end{figure}
 
 在SceneFlow数据集上，HAGVNet在仅$20.08\,\mathrm{GFLOPs}$的条件下取得$0.73\,\mathrm{px}$的$EPE$，在计算量显著低于多数方法的情况下保持了具有竞争力的精度表现；在KITTI 2012与KITTI 2015数据集上，HAGVNet的整体性能优于StereoNet\cite{khamisStereonetGuidedHierarchical2018a}、DeepPrunerFast\cite{duggalDeepprunerLearningEfficient2019a}、MobileStereoNet-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}与AANet\cite{xuAANetAdaptiveAggregation2020}等方法。与HITNet\cite{tankovichHitnetHierarchicalIterative2021a}及Fast-ACVNet系列\cite{xuAccurateEfficientStereo2023}相比，HAGVNet在$D1$-all指标上仅高出约0.2\%--0.3\%，但其计算复杂度仅为$20.08\,\mathrm{GFLOPs}$，分别约为HITNet（$50.23\,\mathrm{GFLOPs}$）的40\%和Fast-ACVNet（$79.34\,\mathrm{GFLOPs}$）的25\%，在保持接近精度的同时显著降低了计算开销。图\ref{HAGVNet与多种主流方法在KITTI数据集上的部分表现}给出了部分定性结果对比，可见在弱纹理区域与大面积平坦区域，HAGVNet能较好保持结构连续性并抑制局部匹配噪声。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/chapter03/HAGVNet在KITTI2015部分结果对比.png}
+  \caption{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
+  \label{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
+\end{figure}
 
 \begin{table}[htbp]
   \centering
@@ -391,14 +388,14 @@ YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测�
 
 在YOLOv11系列的不同规模模型中，YOLO11n（nano版本）在精度与推理时间之间取得了较优折中。其推理延迟达到毫秒级水平，同时仍保持较高的mAP@0.5指标。在相同硬件与量化条件下，YOLO11n相较于YOLOv10n、YOLOv9n等轻量模型在综合性能指标上表现更优，尤其在保持低延迟的同时未显著牺牲检测精度。因此，综合工程可部署性与系统整体算力预算，最终选定YOLO11n作为本系统的目标检测模型。
 
+YOLO11n的整体结构如图\ref{YOLO11n整体结构}所示，主要包括以下三个部分：1、Backbone（主干网络）用于提取输入图像的多尺度特征表示。通过轻量化卷积模块与跨层连接结构，提高特征表达能力的同时控制参数规模和计算复杂度。2、Neck（特征融合网络）采用改进的特征金字塔结构（FPN/PAN类结构），实现不同尺度特征之间的自顶向下与自底向上融合，增强对小目标与远距离目标的检测能力。3、Head（检测头）负责输出边界框回归参数、目标置信度及类别概率。检测头通常采用解耦设计，将分类分支与回归分支分离，以提高收敛稳定性与定位精度。
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter03/YOLO11n整体结构.png}
   \caption{YOLO11n整体结构\cite{jocherUltralyticsYOLO112024}}
   \label{YOLO11n整体结构}
 \end{figure}
-
-YOLO11n的整体结构如图\ref{YOLO11n整体结构}所示，主要包括以下三个部分：1、Backbone（主干网络）用于提取输入图像的多尺度特征表示。通过轻量化卷积模块与跨层连接结构，提高特征表达能力的同时控制参数规模和计算复杂度。2、Neck（特征融合网络）采用改进的特征金字塔结构（FPN/PAN类结构），实现不同尺度特征之间的自顶向下与自底向上融合，增强对小目标与远距离目标的检测能力。3、Head（检测头）负责输出边界框回归参数、目标置信度及类别概率。检测头通常采用解耦设计，将分类分支与回归分支分离，以提高收敛稳定性与定位精度。
 
 在本系统中，YOLO11n输出的二维边界框信息将作为后续深度ROI提取与目标距离估计的空间约束基础。通过与双目立体匹配得到的深度图进行融合，可实现“目标检测—区域筛选—距离估计”的闭环感知流程，为微型移动载具提供稳定、可部署的障碍物检测与测距能力。
 

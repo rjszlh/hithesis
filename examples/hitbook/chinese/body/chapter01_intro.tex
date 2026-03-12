@@ -13,7 +13,6 @@
 本课题围绕两轮平衡车关键技术开展研究，主要包括整车总体设计、基于双目视觉与深度学习的障碍物感知方法，以及自主导航系统设计与开发。研究目标为：整车额定载荷达到100\,kg，最高车速达到10\,km/h；完成双目视觉感知模块开发，实现对尺寸大于50$\times$50$\times$50\,cm障碍物的稳定感知，并在15\,m范围内识别典型障碍物。
 
 \section{国内外研究现状}
-% todo 图片也需要引用
 \subsection{两轮平衡车结构的国内外研究现状}
 
 两轮平衡车的结构设计是影响其性能的关键因素。合理的机械布局和平衡方式能够提升车辆的稳定性和操控性，因此，如何优化两轮平衡车的结构成为研究的重点方向。
@@ -33,12 +32,9 @@
 
 2005年，哈尔滨工业大学王晓宇等人研制了两轮直立自平衡机器人，如图~\ref{fig:王晓宇HitBot两轮机器人}所示。该研究利用拉格朗日方法建立动力学模型，并设计自适应控制器实现动态平衡；同时采用Levenberg-Marquardt最小二乘迭代法建立传感器误差模型，并结合两级分散式异构卡尔曼滤波算法实现组合导航。此外，研究还比较了摩擦补偿、能量回收和行驶策略优化等降耗方法\cite{WangXiaoYuLiangLunZiPingHengJiQiRenDeYanJiu2008}。
 
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.45\textwidth]{figures/chapter01/王晓宇设计的HitBot两轮机器人.png}
-%   \caption{王晓宇设计的HitBot两轮机器人}
-%   \label{fig:王晓宇HitBot两轮机器人}
-% \end{figure}
+2009年，北京工业大学阮晓钢、赵建伟研究了直立式自平衡两轮机器人，并在控制系统中引入PWM（Pulse-width Modulation）直流伺服方案。研究基于Matlab设计LQR（Linear Quadratic Regulator）平衡控制器，并开展数值仿真与实物实验，结果表明该机器人可实现直立平衡行走\cite{RuanXiaoGangJiYuPWMSiFuKongZhiJiLQRDeLiangLunZiPingHengYiDongJiQiRen2009}。
+
+2005年，日本千叶大学Minh-Quan DAO和Kang-Zhi LIU等在独轮车基础上增设一对上下分布的力矩陀螺。两陀螺以相反角速度高速旋转，通过反向进动产生陀螺力矩以维持侧向平衡，并通过车轮驱动力矩实现俯仰平衡。该研究采用拉格朗日方法建模，并使用LQR、$H_\infty$及常数限$H_\infty$等控制方法，实验实现了姿态控制和纵向轨迹控制\cite{daoGainScheduledStabilizationControl2005}，模型如图~\ref{fig:力矩陀螺独轮车}所示。
 
 \begin{figure}[htbp]
   \centering
@@ -56,17 +52,6 @@
     \label{fig:力矩陀螺独轮车}
   \end{minipage}
 \end{figure}
-
-2009年，北京工业大学阮晓钢、赵建伟研究了直立式自平衡两轮机器人，并在控制系统中引入PWM（Pulse-width Modulation）直流伺服方案。研究基于Matlab设计LQR（Linear Quadratic Regulator）平衡控制器，并开展数值仿真与实物实验，结果表明该机器人可实现直立平衡行走\cite{RuanXiaoGangJiYuPWMSiFuKongZhiJiLQRDeLiangLunZiPingHengYiDongJiQiRen2009}。
-
-2005年，日本千叶大学Minh-Quan DAO和Kang-Zhi LIU等在独轮车基础上增设一对上下分布的力矩陀螺。两陀螺以相反角速度高速旋转，通过反向进动产生陀螺力矩以维持侧向平衡，并通过车轮驱动力矩实现俯仰平衡。该研究采用拉格朗日方法建模，并使用LQR、$H_\infty$及常数限$H_\infty$等控制方法，实验实现了姿态控制和纵向轨迹控制\cite{daoGainScheduledStabilizationControl2005}，模型如图~\ref{fig:力矩陀螺独轮车}所示。
-
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.45\textwidth]{figures/chapter01/力矩陀螺的独轮车.png}
-%   \caption{力矩陀螺的独轮车}
-%   \label{fig:力矩陀螺独轮车}
-% \end{figure}
 
 2009年，北京邮电大学的刘大亮、孙汉旭和贾庆轩共同研发了一种具备动态平衡和载人行走能力的两轮机器人\cite{LiuDaLiangYiZhongKeZaiRenXingZouDeShuangLunJiQiRen2009}。该机器人由两个独立驱动的同轴车轮、可转动的厢体和固定在厢体上的操纵杆组成。通过操纵杆的倾斜，机器人能够实现前进、后退和转向动作，同时保持动态平衡。该机器人的设计注重安全性，允许在出现异常时，操作者能够安全地跳离车体，避免被操作机构绊倒。
 
@@ -90,65 +75,38 @@
 
 2015年，戴福全在北京理工大学设计并研制了具有多自由度和可变重心的两轮机器人，如图~\ref{fig:可变重心两轮机器人}所示\cite{DaiFuQuanDuoZiYouDuLiangLunZiPingHengJiQiRenJiShuYanJiu2015}。该机器人采用卡尔曼滤波与摩擦补偿等方法实现滑模控制，进一步提升了控制性能。
 
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.35\textwidth]{figures/chapter01/可变重心的两轮机器人.png}
-%   \caption{可变重心的两轮机器人}
-%   \label{fig:可变重心两轮机器人}
-% \end{figure}
-
 2016年，泰国亚洲理工学院Surachat Chantarachit、Manukid Parnichkun等人设计了具备力矩陀螺机构的独轮车机器人，如图~\ref{fig:亚洲理工独轮车机器人}所示。该方案在左右两侧布置两个力矩陀螺，通过控制力矩陀螺实现侧向平衡，并利用车轮驱动力矩实现俯仰平衡\cite{chantarachitDevelopmentControlUnicycle2016}。
 
 \begin{figure}[htbp]
   \centering
-  \begin{minipage}[t]{0.30\textwidth}
+
+  \begin{minipage}[c][0.31\textwidth][c]{0.25\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter01/可变重心的两轮机器人.png}
-    \caption{可变重心的两轮机器人\cite{DaiFuQuanDuoZiYouDuLiangLunZiPingHengJiQiRenJiShuYanJiu2015}}
-    \label{fig:可变重心两轮机器人}
-  \end{minipage}
-  \hfill
-  \begin{minipage}[t]{0.60\textwidth}
+  \end{minipage}\hfill
+  \begin{minipage}[c][0.31\textwidth][c]{0.70\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter01/亚洲理工学院设计的独轮车机器人.png}
+  \end{minipage}
+
+  \vspace{0.5em}
+
+  \begin{minipage}[t]{0.25\textwidth}
+    \caption{可变重心的两轮机器人\cite{DaiFuQuanDuoZiYouDuLiangLunZiPingHengJiQiRenJiShuYanJiu2015}}
+    \label{fig:可变重心两轮机器人}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.70\textwidth}
     \caption{亚洲理工学院设计的独轮车机器人\cite{chantarachitDevelopmentControlUnicycle2016}}
     \label{fig:亚洲理工独轮车机器人}
   \end{minipage}
 \end{figure}
 
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.65\textwidth]{figures/chapter01/亚洲理工学院设计的独轮车机器人.png}
-%   \caption{亚洲理工学院设计的独轮车机器人}
-%   \label{fig:亚洲理工独轮车机器人}
-% \end{figure}
 
 2018年，桂林电子科技大学黄用华设计了变结构两轮车机器人，如图~\ref{fig:黄用华两轮车机器人}所示\cite{HuangYongHuaLiangLunZiXingCheJiQiRenSuoBaPingHengDingWeiKongZhiFangZhen2018}。该研究采用Chaplygin方法建立动力学模型，使用部分反馈线性化控制器，并开展了不同车把固定角度和行进过程车轮角度切换等实验。
 
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.45\textwidth]{figures/chapter01/黄用华设计的两轮车机器人.png}
-%   \caption{黄用华设计的两轮车机器人}
-%   \label{fig:黄用华两轮车机器人}
-% \end{figure}
-
 2019年，Kunitoshi Tanaka和Sumito Nagasawa提出了一种利用CMG获得恢复力的倒立摆机器人，如图~\ref{fig:KunitoshiTanakaCMG倒立摆机器人}所示\cite{tanakaPostureStabilityControl2020}。研究表明，CMG可降低机器人倾倒速度，使其在不移动条件下维持平衡，并可将姿态稳定控制与轨迹跟踪控制进行解耦。
 
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.40\textwidth]{figures/chapter01/KunitoshiTanaka设计的基于CMG的倒立摆机器人.png}
-%   \caption{Kunitoshi Tanaka设计的基于CMG的倒立摆机器人}
-%   \label{fig:KunitoshiTanakaCMG倒立摆机器人}
-% \end{figure}
-
 2020年，苏黎世联邦理工学院设计并开发了轮腿机器人Ascento\cite{AscentoTwoWheeledJumping}，如图~\ref{fig:Ascento轮腿机器人}所示。该机器人具备行走、奔跑、跳跃等机动能力，采用多驱动腿部结构与高效电驱系统，在复杂地形下表现出较好的敏捷性与稳定性。
-
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.45\textwidth]{figures/chapter01/Ascento轮腿机器人.png}
-%   \caption{Ascento轮腿机器人}
-%   \label{fig:Ascento轮腿机器人}
-% \end{figure}
 
 \begin{figure}[htbp]
   \centering
@@ -169,31 +127,26 @@
 
 2023年，Ahmed Ami和Moustafa A. Fouz等人设计了一种配置剪刀式成对控制力矩陀螺的两轮倒立摆机器人，旨在通过车轮驱动力矩维持稳定倾角\cite{aminLQRStabilityControl2023}。研究将数学模型划分为稳定性子系统和运动性子系统，其中稳定性子系统在零状态附近线性化得到状态空间模型，并采用LQR优化全状态反馈增益以实现平衡；运动子系统独立完成力矩控制。
 
+2024年，Gökhan Çetin通过拉格朗日方程推导了CMG机器人的运动方程，并使用Matlab模拟了未受控陀螺的平衡性能，以确定机电系统设计的期望配置。然后，将LQR应用于选定的CMG配置，并在RecurDyn的仿真中进行比较，其所设计的结构如图~\ref{fig:GokhanCetin力矩控制陀螺两轮机器人}所示。LQR控制器被用来防止在武器后坐力作用下双CMG的振荡运动。仿真结果表明，采用LQR控制器的陀螺两轮机器人在静态下具有出色的性能，实现了显著的平衡改善\cite{cetinGyroscopicPrecessionControl2024}。
+
 \begin{figure}[htbp]
   \centering
-  \begin{minipage}[t]{0.50\textwidth}
+  \begin{minipage}[t]{0.40\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter01/Ascento轮腿机器人.png}
     \caption{Ascento轮腿机器人\cite{AscentoTwoWheeledJumping}}
     \label{fig:Ascento轮腿机器人}
   \end{minipage}
-  \hfill
-  \begin{minipage}[t]{0.40\textwidth}
+  \centering
+  \hspace{0.10\textwidth}
+  \begin{minipage}[t]{0.30\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figures/chapter01/GokhanCetin设计的装备有武器系统的力矩控制陀螺两轮机器人.png}
-    \caption{Gökhan Çetin设计的装备有武器系统的力矩控制陀螺两轮机器人\cite{cetinGyroscopicPrecessionControl2024}}
-    \label{fig:GokhanCetin武器系统陀螺两轮机器人}
+    \includegraphics[width=\textwidth]{figures/chapter01/GokhanCetin设计的力矩控制陀螺两轮机器人.png}
+    \caption{Gökhan Çetin设计的力矩控制陀螺两轮机器人\cite{cetinGyroscopicPrecessionControl2024}}
+    \label{fig:GokhanCetin力矩控制陀螺两轮机器人}
   \end{minipage}
 \end{figure}
-
-2024年，Gökhan Çetin通过拉格朗日方程推导了CMG机器人的运动方程，并使用Matlab模拟了未受控陀螺的平衡性能，以确定机电系统设计的期望配置。然后，将LQR应用于选定的CMG配置，并在RecurDyn的仿真中进行比较，其所设计的结构如图~\ref{fig:GokhanCetin武器系统陀螺两轮机器人}所示。LQR控制器被用来防止在武器后坐力作用下双CMG的振荡运动。仿真结果表明，采用LQR控制器的陀螺两轮机器人在静态下具有出色的性能，实现了显著的平衡改善\cite{cetinGyroscopicPrecessionControl2024}。
-
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.40\textwidth]{figures/chapter01/GokhanCetin设计的装备有武器系统的力矩控制陀螺两轮机器人.png}
-%   \caption{Gökhan Çetin设计的装备有武器系统的力矩控制陀螺两轮机器人}
-%   \label{fig:GokhanCetin武器系统陀螺两轮机器人}
-% \end{figure}
+\FloatBarrier
 
 \subsection{基于双目视觉的障碍物感知国内外研究现状}
 
@@ -203,16 +156,9 @@
 
 从代表性工作看，2015年前后基于CNN学习匹配代价的方法开启了深度双目研究；2017年的GC-Net和2018年的PSMNet确立了“代价体构建+上下文聚合”的主流范式；2021年RAFT-Stereo将迭代优化思想引入立体匹配并取得较好精度与效率平衡；2022年的CREStereo和2023年的IGEV-Stereo进一步提升了复杂场景和实时部署能力；2025年出现的FoundationStereo等工作开始探索大规模预训练与zero-shot泛化能力，体现了双目感知向“基础模型化”和跨域鲁棒方向的发展趋势\cite{kendallEndtoendLearningGeometry2017a,changPyramidStereoMatching2018,lipsonRAFTStereoMultilevelRecurrent2021,liPracticalStereoMatching2022,xuIterativeGeometryEncoding2023,wenFoundationStereoZeroShotStereo2025}。
 
-% \begin{figure}[htbp]
-%   \centering
-%   \includegraphics[width=0.7\textwidth]{figures/chapter01/检测演算流程.png}
-%   \caption{检测演算流程\cite{estiloObstacleDetectionLocalization2016}}
-%   \label{fig:检测演算流程}
-% \end{figure}
-
-% 国内在该领域的研究更强调面向具体应用场景的工程化实现，尤其在园区车辆、果园车辆、AGV和农业装备等场景中，形成了“目标检测+双目测距”的实用技术路线。2016年，Jonathan David Estilo等人提出模块化障碍物检测系统，将双目立体视觉与运动场分析结合，验证了特征丰富目标的有效检测能力，但在无明显纹理障碍物场景中仍存在不足\cite{estiloObstacleDetectionLocalization2016}，其检测流程如图~\ref{fig:检测演算流程}所示。
-
 国内在该领域的研究更强调面向具体应用场景的工程化实现，尤其在园区车辆、果园车辆、AGV和农业装备等场景中，形成了“目标检测+双目测距”的实用技术路线。2016年，Jonathan David Estilo等人提出模块化障碍物检测系统，将双目立体视觉与运动场分析结合，验证了特征丰富目标的有效检测能力，但在无明显纹理障碍物场景中仍存在不足\cite{estiloObstacleDetectionLocalization2016}。
+
+2018年，胡颖等提出基于孪生CNN的视差估计与道路线提取方法，并结合光栅扫描实现障碍物分割，提升了路面障碍识别的召回率与准确率\cite{HuYingJuanJiShenJingWangLuoShuangMuShiJueLuMianZhangAiWuJianCe2018}，如图~\ref{fig:光栅扫描分割障碍物与道路}所示。同年，彭秋辰、宋亦旭提出基于Mask R-CNN的双目目标识别与定位方案，通过实例分割约束匹配区域，提高了准实时定位性能\cite{PengQiuChenJiYuMaskRCNNDeWuTiShiBieHeDingWei2019}，其结果示例如图~\ref{fig:MaskRCNN识别分割示例}所示。
 
 \begin{figure}[htbp]
   \centering
@@ -230,8 +176,6 @@
     \label{fig:MaskRCNN识别分割示例}
   \end{minipage}
 \end{figure}
-
-2018年，胡颖等提出基于孪生CNN的视差估计与道路线提取方法，并结合光栅扫描实现障碍物分割，提升了路面障碍识别的召回率与准确率\cite{HuYingJuanJiShenJingWangLuoShuangMuShiJueLuMianZhangAiWuJianCe2018}，如图~\ref{fig:光栅扫描分割障碍物与道路}所示。同年，彭秋辰、宋亦旭提出基于Mask R-CNN的双目目标识别与定位方案，通过实例分割约束匹配区域，提高了准实时定位性能\cite{PengQiuChenJiYuMaskRCNNDeWuTiShiBieHeDingWei2019}，其结果示例如图~\ref{fig:MaskRCNN识别分割示例}所示。
 
 
 2019年，王帅等面向泊车机器人提出双目视觉障碍检测系统，采用双目标定、立体校正和YOLO目标检测联动立体匹配区域，检测平均耗时0.463s、1.4m至2.1m范围误差控制在50mm内\cite{WangShuaiJiYuShuangMuShiJueDeBoCheJiQiRenZhangAiWuJianCeXiTong2019}，其流程如图~\ref{fig:改进立体匹配算法流程图}所示。
@@ -254,14 +198,14 @@
 
 2021年以来，国内研究进一步向复杂工况与轻量部署推进。魏建胜等在农业车辆中实现改进YOLOv3与深度估计融合，动态场景深度估计平均误差比4.66\%、平均耗时0.573s\cite{WeiJianShengNongYeCheLiangShuangMuShiJueZhangAiWuGanZhiXiTongSheJiYuShiYan2021}；Liu Siyao等在果园场景中通过三目-双目融合提高了行间导航与障碍测距精度\cite{liuObstacleAvoidanceOrchard2022}。
 
+2022年，王峥等在AGV场景中加入静动态障碍信息估计，提高了避障决策可靠性\cite{WangZhengJiYuShuangMuShiJueDeAGVZhangAiWuJianCeYuBiZhang2018a}。2023年，CAI L和ZHOU C面向强光、夜间、雨雪等条件提出改进YOLOv5+双目立体匹配的杆状障碍物检测方案，在3m至15m范围内距离误差小于7\%\cite{caiBinocularVisionBasedPoleShaped2023}，如图~\ref{fig:杆状障碍物检测方法}所示；陈成坤等在Jetson Xavier NX平台实现双目+YOLOv4实时检测定位，验证了嵌入式部署可行性\cite{ChenChengKunJiYuShuangMuShiJueDeGuoYuanZhangAiWuJianCeYuDingWei2023}，如图~\ref{fig:双目视觉障碍物检测原理图}所示。
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.75\textwidth]{figures/chapter01/杆状障碍物检测方法.jpeg}
   \caption{杆状障碍物检测方法\cite{caiBinocularVisionBasedPoleShaped2023}}
   \label{fig:杆状障碍物检测方法}
 \end{figure}
-
-2022年，王峥等在AGV场景中加入静动态障碍信息估计，提高了避障决策可靠性\cite{WangZhengJiYuShuangMuShiJueDeAGVZhangAiWuJianCeYuBiZhang2018a}。2023年，CAI L和ZHOU C面向强光、夜间、雨雪等条件提出改进YOLOv5+双目立体匹配的杆状障碍物检测方案，在3m至15m范围内距离误差小于7\%\cite{caiBinocularVisionBasedPoleShaped2023}，如图~\ref{fig:杆状障碍物检测方法}所示；陈成坤等在Jetson Xavier NX平台实现双目+YOLOv4实时检测定位，验证了嵌入式部署可行性\cite{ChenChengKunJiYuShuangMuShiJueDeGuoYuanZhangAiWuJianCeYuDingWei2023}，如图~\ref{fig:双目视觉障碍物检测原理图}所示。
 
 \begin{figure}[htbp]
   \centering
@@ -270,7 +214,7 @@
   \label{fig:双目视觉障碍物检测原理图}
 \end{figure}
 
-2024年，陈泉淦等将YOLOv5与SGBM融合用于机耕船自动驾驶障碍感知，在精度、速度和模型体量之间取得了较好平衡\cite{ChenQuanGanJiYuYOLOv5DeJiGengChuanShuangMuShiJueZhangAiGanZhiYanJiu2024}，其测距流程如图~\ref{fig:YOLOv5SGBM测距流程}所示。
+2024年，陈泉淦等将YOLOv5与SGBM融合用于机耕船自动驾驶障碍感知，在精度、速度和体量之间取得了较好平衡\cite{ChenQuanGanJiYuYOLOv5DeJiGengChuanShuangMuShiJueZhangAiGanZhiYanJiu2024}，其测距流程如图~\ref{fig:YOLOv5SGBM测距流程}所示。
 
 \begin{figure}[htbp]
   \centering
@@ -330,7 +274,7 @@
 
 2025年，Gao等提出Seq-BEV方法，利用序列图像生成更大视场的语义BEV地图，为低速场景下持续规划提供更稳定的环境表示\cite{gaoSeqBEVSemanticBirdEyeView2025}。Chen等提出TrackOcc任务与方法，实现基于相机输入的4D全景占据跟踪，推动了动态障碍建模从静态分割向时空联合建模发展\cite{chenTrackOccCameraBased4D2025}，其跟踪结果示例如图~\ref{fig:TrackOcc4D占据跟踪结果}所示。
 
-\begin{figure}[htbp]
+\begin{figure}[hbp]
   \centering
   \includegraphics[width=0.92\textwidth]{figures/chapter01/TrackOcc相机输入4D占据跟踪结果.jpg}
   \caption{TrackOcc相机输入的4D占据跟踪结果示例\cite{chenTrackOccCameraBased4D2025}}
@@ -357,38 +301,21 @@
 
 根据功能需求和具体指标分析，对两轮平衡车进行总体设计，包含对两轮平衡车的机械结构设计和校核，以及电机和传感器的选型和布局；然后基于单片机开发控制系统。
 
-\begin{itemize}
-  \item 两轮平衡车的总体设计
-  \item 两轮平衡车机械结构的设计
-  \item 两轮平衡车控制系统的设计
-\end{itemize}
-
 （2）基于双目视觉的感知技术研究
 
-根据环境感知的需求，研究基于深度学习的立体匹配算法，在保证处理速度的前提下获取符合精度要求的视差图；研究基于深度学习的目标检测算法，制作专用数据集并实现对障碍物目标的精准检测；设计算法将深度信息与目标检测结果结合，实现对目标的空间定位，从而完成对环境的有效感知。
-
-\begin{itemize}
-  \item 基于深度学习的立体匹配算法的研究
-  \item 基于深度学习的目标检测算法的研究
-  \item 基于双目视觉的目标空间定位算法的研究
-\end{itemize}
+根据环境感知的需求，研究基于深度学习的立体匹配算法，在保证处理速度的前提下获取符合精度要求的视差图；研究基于深度学习的目标检测算法，制作专用数据集并实现对障碍物目标的精准检测；设计算法将深度信息与目标检测结果结合，实现对目标的空间定位，从而完成对环境的有效感知。总体技术路线如图~\ref{fig:总体技术路线图}所示。
 
 （3）两轮平衡车自主导航系统开发
 
 两轮平衡车自动行驶的实现依赖于自主导航系统，该系统主要包括融合定位、环境感知与路径规划等功能模块。在接收到目的地信息后，系统结合定位数据与环境感知结果规划合适路线，并生成相应运动控制指令发送至控制系统，从而实现自动行驶。
 
-\begin{itemize}
-  \item 两轮平衡车自主导航系统的设计
-  \item 两轮平衡车自主导航系统的硬件环境搭建
-  \item 两轮平衡车自主导航系统的软件开发
-\end{itemize}
-
 （4）两轮平衡车的实验研究
 
 对两轮平衡车系统的整体性能进行实验验证。测试两轮平衡车在不同路面条件和控制指令下的基本行驶性能，评估其稳定性和响应能力；对双目视觉环境感知算法进行测试，验证目标检测的准确率以及障碍物测距的精度；在实际场景中测试两轮平衡车的自动行驶能力，通过导航路径的执行情况和避障成功率，评估其在真实环境中的自动行驶性能。
 
-\begin{itemize}
-  \item 两轮平衡车基本行驶性能的测试实验
-  \item 双目视觉环境感知算法的测试实验
-  \item 两轮平衡车自动行驶能力的测试实验
-\end{itemize}
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=0.99\textwidth]{figures/chapter01/总体技术路线图.svg}
+  \caption{总体技术路线图}
+  \label{fig:总体技术路线图}
+\end{figure}
