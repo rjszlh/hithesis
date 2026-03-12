@@ -53,7 +53,7 @@
   \caption[两轮平衡车设计指标]{两轮平衡车设计指标}
   \label{两轮平衡车设计指标}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{ccc}
+  \begin{thesistabular}{ccc}
     \toprule
     指标分类 & 指标项目 & 具体要求 \\
     \midrule
@@ -65,7 +65,7 @@
      & 最大加速度 & 2m/s2 \\
      & 爬坡性能 & 15° \\
     \bottomrule
-  \end{tabular}
+  \end{thesistabular}
 \end{table}
 
 本课题设计的载人两轮平衡车需兼顾安全性与舒适性。传统两轮平衡车通常基于倒立摆原理实现平衡控制，但该结构本质上属于不稳定系统，易在速度变化或外部扰动时产生倾斜与位移。以Segway为代表的传统平衡车利用这一特性，通过人体倾斜改变重心以控制运动。而本课题中的平衡车面向乘坐式应用，用户通过控制器发送运动指令进行操控，不再依赖身体姿态调节，这对车辆的稳定性和响应性提出更高要求。为了提升系统在复杂工况下的稳定性与乘坐舒适性，本设计在传统倒立摆控制基础上引入力矩控制陀螺（Control Moment Gyroscope，CMG），通过提供快速、精确的姿态调节力矩，有效应对由加减速或外部扰动引起的倾斜问题，从而增强整体的动态平衡性能。因此，本课题采用倒立摆控制与力矩控制陀螺联合控制方案，以实现更高水平的稳定性与操控性。
@@ -222,13 +222,13 @@ T = \frac{J_z \omega_z}{t_{\alpha}}
   \caption[进动电机技术参数]{进动电机技术参数}
   \label{进动电机技术参数}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{cccccc}
+  \begin{thesistabular}{cccccc}
     \toprule
     型号 & 额定电压 & 额定转速 & 额定扭矩 & 峰值扭矩 & 额定功率 \\
     \midrule
     RobStride03 & 48V & 180RPM & 20Nm & 60Nm & 380w \\
     \bottomrule
-  \end{tabular}
+  \end{thesistabular}
 \end{table}
 
 \subsection{驱动模块设计}
@@ -266,7 +266,7 @@ F_r = c_r m g
   \caption[各种路面滚动摩擦系数]{各种路面滚动摩擦系数}
   \label{各种路面滚动摩擦系数}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{cccc}
+  \begin{thesistabular}{cccc}
     \toprule
     路面类型 & 滚动摩擦系数 & 路面类型 & 滚动摩擦系数 \\
     \midrule
@@ -276,7 +276,7 @@ F_r = c_r m g
     良好的卵石路面 & 0.025-0.030 & 结冰路面 & 0.015-0.030 \\
     坑洼路面 & 0.035-0.050 & 压紧的雪道 & 0.030-0.050 \\
     \bottomrule
-  \end{tabular}
+  \end{thesistabular}
 \end{table}
 
 平衡车的质量为$70\,\mathrm{kg}$，最大载荷为$75\,\mathrm{kg}$，可得最大总载荷$m=145\,\mathrm{kg}$，重力加速度$g=9.81\,\mathrm{N/kg}$，公园或社区的路面为良好的沥青或混凝土路面，由表\ref{各种路面滚动摩擦系数}取阻力系数$c_r=0.015$。由式~\eqref{eq:ch2-fr}计算得平衡车行驶时的滚动摩擦阻力$F_r=21.34\,\mathrm{N}$。
@@ -368,13 +368,13 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption[轮毂电机WYQ-17技术参数]{轮毂电机WYQ-17技术参数}
   \label{轮毂电机WYQ-17技术参数}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{ccccccc}
+  \begin{thesistabular}{ccccccc}
     \toprule
     型号 & 额定电压 & 额定转速 & 额定扭矩 & 峰值扭矩 & 额定功率 & 峰值功率 \\
     \midrule
     WYQ-17 & 48V & 150RPM & 70Nm & 120Nm & 1000w & 1600W \\
     \bottomrule
-  \end{tabular}
+  \end{thesistabular}
 \end{table}
 
 \subsection{机械结构有限元分析}
@@ -560,7 +560,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \caption[控制系统软件任务分析]{控制系统软件任务分析}
   \label{控制系统软件任务分析}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{ccccc}
+  \begin{thesistabular}{ccccc}
     \toprule
     编号 & 任务 & 实时性 & 驱动方式 & 运行周期 \\
     \midrule
@@ -570,7 +570,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
     4 & 电机驱动控制 & 中 & 周期 & 10ms \\
     5 & 状态反馈 & 低 & 中断 & 无 \\
     \bottomrule
-  \end{tabular}
+  \end{thesistabular}
 \end{table}
 
 为了实现任务的高效调度与资源的合理分配，系统采用实时操作系统 FreeRTOS，结合STM32 HAL库，构建了轻量级、可扩展的多任务并行处理框架。由于系统中各类任务的实时性要求差异较大，尤其是姿态控制相关任务对确定性和响应速度要求高，基于中断或简单时间片轮转的调度机制难以满足其性能需求。
@@ -610,7 +610,7 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
   \caption[电机控制模式设置]{电机控制模式设置}
   \label{电机控制模式设置}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{cc}
+  \begin{thesistabular}{cc}
     \toprule
     电机种类 & 控制模式 \\
     \midrule
@@ -619,7 +619,7 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
     丝杠电机 & 脉冲控制模式 \\
     高速电机 & 位置控制模式 \\
     \bottomrule
-  \end{tabular}
+  \end{thesistabular}
 \end{table}
 
 此外，IMU（惯性测量单元）的滤波参数与输出配置由上位机完成设置；各电机的CAN通信地址同样由上位机下发设定。系统在初始化开始和结束时将通过蜂鸣器发出提示音，以提示操作人员当前状态。
@@ -653,7 +653,7 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
   \caption[状态反馈报文内容]{状态反馈报文内容}
   \label{状态反馈报文内容}
   \vspace{0.5em}\wuhao
-  \begin{tabular}{cccccc}
+  \begin{thesistabular}{cccccc}
     \toprule
     Index & 说明 & 类型 & Index & 说明 & 类型 \\
     \midrule
@@ -674,7 +674,7 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
     21 & 左侧轮毂电机目标转矩 & float & 37 & 数据校验码（16位CRC） & uint16\_t \\
     22 & 右侧轮毂电机目标转矩 & float & 38 & 测试字段 & uint16\_t \\
     \bottomrule
-  \end{tabular}
+  \end{thesistabular}
 \end{table}
 
 （3）设备数据处理

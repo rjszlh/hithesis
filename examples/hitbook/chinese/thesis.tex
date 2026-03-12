@@ -112,9 +112,39 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{hithesis}
 \usepackage{svg}
-\usepackage[colorinlistoftodos]{todonotes}
 
 \graphicspath{{figures/}}
+
+% 重设三线表线宽
+% 对应关系为：
+% \toprule -> \heavyrulewidth
+% \midrule -> \lightrulewidth
+% \cmidrule -> \cmidrulewidth
+% \bottomrule -> \heavyrulewidth
+\setlength{\heavyrulewidth}{1.5pt} % \toprule / \bottomrule
+\setlength{\lightrulewidth}{0.75pt} % \midrule
+\setlength{\cmidrulewidth}{0.5pt}  % \cmidrule
+
+% 仅在真实表格中调整行高，避免影响公式中的 array 等环境
+\newcommand{\thesistablearraystretch}{1.2}
+\ExplSyntaxOn
+\NewDocumentEnvironment{thesistabular}{ O{} m }
+  {
+    \begingroup
+    \renewcommand{\arraystretch}{\thesistablearraystretch}
+    \tl_if_blank:nTF {#1}
+      { \begin{tabular}{#2} }
+      { \begin{tabular}[#1]{#2} }
+  }
+  {
+    \end{tabular}
+    \endgroup
+  }
+\ExplSyntaxOff
+
+% 设置公式引用括号为中文全角括号
+% \renewcommand{\eqref}[1]{\textup{（\ref{#1}）}}
+
 
 \begin{document}
 \frontmatter
