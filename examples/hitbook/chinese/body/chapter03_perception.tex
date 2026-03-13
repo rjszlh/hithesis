@@ -9,7 +9,7 @@
 
 \subsection{双目测距原理及相机标定}
 
-在相机参数固定的条件下，视差与深度呈反比关系，理想双目模型如图\ref{理想双目模型}所示,由此可实现从像素坐标到三维空间坐标的映射。
+在相机参数固定的条件下，视差与深度呈反比关系。理想双目成像模型如图\ref{理想双目模型}所示，在该模型下可建立像素坐标与三维空间坐标之间的几何映射关系。
 
 \begin{figure}[htbp]
   \centering
@@ -18,22 +18,20 @@
   \label{理想双目模型}
 \end{figure}
 
-双目视觉测距基于针孔成像几何模型。假设左右相机光轴平行、成像平面共面，双目基线沿水平方向布置，且图像已完成极线对齐。在该理想模型下，空间点，在左右相机中的像素坐标分别为，，其纵向坐标满足 ，仅在水平方向存在视差。根据相似三角形关系，空间点深度与视差的关系如式~\eqref{eq:ch3-geometry}所示：
+双目视觉测距基于针孔成像几何模型。为便于分析，假设左右相机光轴平行、成像平面共面，双目基线沿水平方向布置，且图像已完成极线校正。在该理想条件下，空间点$P$在左右相机像平面上的像素坐标分别记为$P_l(x_l,y_l)$和$P_r(x_r,y_r)$，对应点满足$y_l=y_r$，视差仅沿水平方向产生。根据相似三角形关系，可得到空间点深度与视差之间的关系，如式~\eqref{eq:ch3-geometry}所示：
 \begin{equation}\label{eq:ch3-geometry}
-P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\quad Z=\frac{fB}{d}
+Z=\frac{fB}{d}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $P=(X,Y,Z)$ & 空间点在相机坐标系下的三维坐标；\\
-& $P_l(u_l,v_l),\,P_r(u_r,v_r)$ & 空间点在左右相机像平面的像素坐标；\\
-& $d=u_l-u_r$ & 左右图像对应点的水平视差；\\
+式中& $P$ & 空间点在相机坐标系下的三维点；\\
+& $P_l(x_l,y_l),\,P_r(x_r,y_r)$ & 空间点在左右相机像平面上的像素坐标；\\
+& $Z$ & 空间点到相机的深度值；\\
+& $d$ & 左右图像对应点的水平视差；\\
 & $f$ & 相机有效焦距；\\
 & $B$ & 双目基线长度；\\
-& $Z=\frac{fB}{d}$ & 深度与视差的几何关系。\\
 \end{tabularx}\vspace{3.15bp}
 
-实际双目系统中普遍存在镜头畸变与安装误差，若不进行标定将导致测距结果偏离理想几何模型。为此，本文采用张正友标定方法，通过MATLAB的Stereo Camera Calibrator应用对双目相机进行标定与校正。通过采集多组棋盘格图像，估计左右相机的内参及畸变参数，并计算双目系统的外参关系，包括旋转矩阵与平移向量，标定结果如图\ref{双目相机标定结果}所示。
-
-基于标定结果，对左右图像进行去畸变与立体校正处理，使其极线对齐至水平方向，从而满足双目测距的几何假设，校正效果如图\ref{图像校正处理结果}所示。校正后的图像可稳定用于视差估计与深度计算，为后续障碍物检测与测距算法提供可靠的几何基础。
+实际双目系统中普遍存在镜头畸变与安装误差，若不进行标定将导致测距结果偏离理想几何模型。为此，本文采用张正友标定方法，利用MATLAB的Stereo Camera Calibrator采集多组棋盘格图像进行双目标定。标定后可获得左右相机的内参矩阵$\mathbf{K}_l,\mathbf{K}_r$、畸变参数$\mathbf{D}_l,\mathbf{D}_r$以及双目系统的相对位姿$\mathbf{R},\mathbf{t}$，标定结果如图\ref{双目相机标定结果}所示。
 
 \begin{figure}[htbp]
   \centering
@@ -44,7 +42,56 @@ P=(X,Y,Z),\quad P_l(u_l,v_l),\quad P_r(u_r,v_r),\quad v_l=v_r,\quad d=u_l-u_r,\q
   \label{双目相机标定结果}
 \end{figure}
 
-\begin{figure}[htbp]
+相机内参矩阵，其形式如式~\eqref{eq:ch3-intrinsic}所示，其用于建立相机坐标系与像素坐标系之间的映射关系，并为图像去畸变和立体校正提供投影参数。
+\begin{equation}\label{eq:ch3-intrinsic}
+\mathbf{K}=
+\begin{bmatrix}
+f_x & 0 & c_x \\
+0 & f_y & c_y \\
+0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $\mathbf{K}$ & 相机内参矩阵；\\
+& $f_x,f_y$ & 分别为$x$、$y$方向的等效焦距；\\
+& $c_x,c_y$ & 主点坐标。\\
+\end{tabularx}\vspace{3.15bp}
+
+内参矩阵用于建立相机坐标系与像素坐标系之间的映射关系，并为图像去畸变和立体校正提供投影参数，其在校正过程中的作用可表示为式~\eqref{eq:ch3-rectify}：
+\begin{equation}\label{eq:ch3-rectify}
+\tilde{\mathbf{p}}' \sim \mathbf{H}\tilde{\mathbf{p}},\quad \mathbf{H}=\mathbf{K}'\mathbf{R}_{\mathrm{rect}}\mathbf{K}^{-1}
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $\tilde{\mathbf{p}}$ & 原始图像中的像素齐次坐标；\\
+& $\tilde{\mathbf{p}}'$ & 校正后的像素齐次坐标；\\
+& $\mathbf{H}$ & 图像校正单应矩阵；\\
+& $\mathbf{K}'$ & 校正后相机内参矩阵；\\
+& $\mathbf{R}_{\mathrm{rect}}$ & 立体校正旋转矩阵。\\
+\end{tabularx}\vspace{3.15bp}
+
+其中，$\mathbf{K}$和$\mathbf{K}'$分别参与原始图像与校正图像的投影变换，$\mathbf{R}_{\mathrm{rect}}$由双目标定得到的相对位姿计算获得。在此基础上，首先根据内参矩阵和畸变参数对原始图像进行去畸变处理，以消除镜头畸变对成像位置的影响。设畸变像素点为$\tilde{\mathbf{p}}_d$，无畸变像素点为$\tilde{\mathbf{p}}_u$，则去畸变过程可表示为式~\eqref{eq:ch3-undistort}：
+\begin{equation}\label{eq:ch3-undistort}
+\tilde{\mathbf{p}}_u=\mathcal{D}^{-1}(\tilde{\mathbf{p}}_d)
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $\tilde{\mathbf{p}}_d,\tilde{\mathbf{p}}_u$ & 去畸变前后的像素齐次坐标；\\
+& $\mathcal{D}^{-1}(\cdot)$ & 由标定获得的畸变参数确定的去畸变映射。\\
+\end{tabularx}\vspace{3.15bp}
+
+随后，根据双目系统的相对位姿对左右图像进行立体校正，使两相机成像平面尽可能共面，并使对应点落在同一水平极线上。对应点仍满足极几何约束，如式~\eqref{eq:ch3-epipolar}所示：
+\begin{equation}\label{eq:ch3-epipolar}
+\tilde{\mathbf{p}}_r^{\mathrm{T}}\mathbf{F}\tilde{\mathbf{p}}_l=0
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $\mathbf{F}$ & 基础矩阵；\\
+& $\tilde{\mathbf{p}}_l,\tilde{\mathbf{p}}_r$ & 左右图像中对应点的齐次像素坐标。\\
+\end{tabularx}\vspace{3.15bp}
+
+经过去畸变与立体校正后，左右图像中同一空间点的投影将尽可能落在同一水平扫描线上，即满足$y_l' \approx y_r'$。由此可将对应点匹配由二维搜索简化为沿水平方向的一维搜索，从而提高视差估计的稳定性。
+
+基于标定结果，对左右图像进行去畸变与立体校正处理后，其极线能够较好地对齐至水平方向，校正效果如图\ref{图像校正处理结果}所示。校正后的图像可稳定用于视差估计与深度计算，为后续障碍物检测与测距算法提供可靠的几何基础。
+
+\begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter03/图像校正处理结果.png}
   \caption{图像校正处理结果}
@@ -93,7 +140,7 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 
 （2）用于2D代价聚合的covntxv2聚合块
 
-先前的二维代价聚合研究多以轻量卷积结构为核心，通过深度可分离卷积与倒置残差块（如MobileNet系列\cite{sandlerMobilenetv2InvertedResiduals2018}）在聚合阶段压缩计算开销。相关思路已在MobileNetStereo-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}以及以MobileNetV2\cite{sandlerMobilenetv2InvertedResiduals2018}为骨干的LightStereo\cite{guoLightstereoChannelBoost2025}中得到验证，表明该类方法在嵌入式算力受限场景下表现出较好的速度-精度折中特性。然而，此类以局部卷积运算为主的轻量结构在建模长程空间依赖及复杂几何关系方面仍存在一定局限，易导致代价聚合阶段的特征表征能力受限。基于上述考虑，本文在二维代价聚合网络中引入ConvNeXtV2\cite{wooConvnextV2Codesigning2023a}风格的轻量残差块，在保持整体计算复杂度可控的前提下，通过大核卷积、规范化与非线性激活的协同设计增强空间与通道维度的表达能力，从而提升聚合特征对复杂匹配模式的建模能力。其整体结构示意如图\ref{不同代价卷积块对比}所示。
+先前的二维代价聚合研究多以轻量卷积结构为核心，通过深度可分离卷积与倒置残差块（如MobileNet系列\cite{sandlerMobilenetv2InvertedResiduals2018}）在聚合阶段压缩计算开销。相关思路已在MobileNetStereo-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}以及以MobileNetV2\cite{sandlerMobilenetv2InvertedResiduals2018}为骨干的LightStereo\cite{guoLightstereoChannelBoost2025}中得到验证，表明该类方法在嵌入式算力受限场景下表现出较好的速度-精度折中特性。然而，此类以局部卷积运算为主的轻量结构在建模长程空间依赖及复杂几何关系方面仍存在一定局限，易导致代价聚合阶段的特征表征能力受限。基于上述考虑，本文在二维代价聚合网络中引入ConvNeXtV2\cite{wooConvnextV2Codesigning2023a}风格的轻量残差块，在保持整体计算复杂度可控的前提下，通过大核卷积、规范化与非线性激活的协同设计增强空间与通道维度的表达能力，从而提升聚合特征对复杂匹配模式的建模能力。其整体结构示意如图\ref{不同代价卷积块对比}(d)所示。
 
 \begin{figure}[htbp]
   \centering
@@ -167,7 +214,7 @@ C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
 
 3）代价聚合
 
-代价聚合阶段对粗尺度代价体 与细尺度代价体 分别采用相同的 ConvNeXtV2 风格残差块进行层次化聚合。两条聚合分支仅在输入分辨率与通道数上不同，均对输入代价体（）进行逐级 1/2 与 1/4 下采样，并通过 U-Net 式的对称上采样与跨尺度跳连融合多层级信息，从而提升代价体的空间一致性与几何关联性。
+代价聚合阶段分别对粗尺度代价体与细尺度代价体进行层次化聚合，二者采用相同的 ConvNeXtV2 风格残差块。两条聚合分支仅在输入分辨率与通道数上存在差异。每条分支均以输入代价体为起点，逐级进行 1/2 与 1/4 下采样，并结合 U-Net 式对称上采样和跨尺度跳连融合多层级信息，从而增强代价体的空间一致性与几何关联性，其整体结构如图\ref{代价聚合结构图}所示。
 
 \begin{figure}[htbp]
   \centering
@@ -299,18 +346,24 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.48\textwidth]{figures/chapter03/SceneFlow性能与FLOPs对比.png}
-  \hfill
-  \includegraphics[width=0.48\textwidth]{figures/chapter03/KITTI2015性能与FLOPs对比.png}
-  \caption{SceneFlow（左）和KITTI15（右）数据集上的性能与FLOPs对比}
-  \label{SceneFlow（左）和KITTI15（右）数据集上的性能与FLOPs对比}
+  \includegraphics[width=0.99\textwidth]{figures/chapter03/SceneFlow性能与FLOPs对比.png}
+  \caption{SceneFlow数据集上的性能与FLOPs对比}
+  \label{SceneFlow数据集上的性能与FLOPs对比}
 \end{figure}
-
-在SceneFlow数据集上，HAGVNet在仅$20.08\,\mathrm{GFLOPs}$的条件下取得$0.73\,\mathrm{px}$的$EPE$，在计算量显著低于多数方法的情况下保持了具有竞争力的精度表现；在KITTI 2012与KITTI 2015数据集上，HAGVNet的整体性能优于StereoNet\cite{khamisStereonetGuidedHierarchical2018a}、DeepPrunerFast\cite{duggalDeepprunerLearningEfficient2019a}、MobileStereoNet-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}与AANet\cite{xuAANetAdaptiveAggregation2020}等方法。与HITNet\cite{tankovichHitnetHierarchicalIterative2021a}及Fast-ACVNet系列\cite{xuAccurateEfficientStereo2023}相比，HAGVNet在$D1$-all指标上仅高出约0.2\%--0.3\%，但其计算复杂度仅为$20.08\,\mathrm{GFLOPs}$，分别约为HITNet（$50.23\,\mathrm{GFLOPs}$）的40\%和Fast-ACVNet（$79.34\,\mathrm{GFLOPs}$）的25\%，在保持接近精度的同时显著降低了计算开销。图\ref{HAGVNet与多种主流方法在KITTI数据集上的部分表现}给出了部分定性结果对比，可见在弱纹理区域与大面积平坦区域，HAGVNet能较好保持结构连续性并抑制局部匹配噪声。
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/HAGVNet在KITTI2015部分结果对比.png}
+  \includegraphics[width=0.99\textwidth]{figures/chapter03/KITTI2015性能与FLOPs对比.png}
+  \caption{KITTI 2015数据集上的性能与FLOPs对比}
+  \label{KITTI2015数据集上的性能与FLOPs对比}
+\end{figure}
+\FloatBarrier
+
+在SceneFlow数据集上，HAGVNet在仅$20.08\,\mathrm{GFLOPs}$的条件下取得$0.73\,\mathrm{px}$的$EPE$，在计算量显著低于多数方法的情况下保持了具有竞争力的精度表现，其精度与复杂度关系如图\ref{SceneFlow数据集上的性能与FLOPs对比}所示；在KITTI 2012与KITTI 2015数据集上，HAGVNet的整体性能优于StereoNet\cite{khamisStereonetGuidedHierarchical2018a}、DeepPrunerFast\cite{duggalDeepprunerLearningEfficient2019a}、MobileStereoNet-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}与AANet\cite{xuAANetAdaptiveAggregation2020}等方法。与HITNet\cite{tankovichHitnetHierarchicalIterative2021a}及Fast-ACVNet系列\cite{xuAccurateEfficientStereo2023}相比，HAGVNet在$D1$-all指标上仅高出约0.2\%--0.3\%，但其计算复杂度仅为$20.08\,\mathrm{GFLOPs}$，分别约为HITNet（$50.23\,\mathrm{GFLOPs}$）的40\%和Fast-ACVNet（$79.34\,\mathrm{GFLOPs}$）的25\%，在保持接近精度的同时显著降低了计算开销，其在KITTI 2015数据集上的性能与FLOPs关系如图\ref{KITTI2015数据集上的性能与FLOPs对比}所示。图\ref{HAGVNet与多种主流方法在KITTI数据集上的部分表现}给出了部分定性结果对比，可见在弱纹理区域与大面积平坦区域，HAGVNet能较好保持结构连续性并抑制局部匹配噪声。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.99\textwidth]{figures/chapter03/HAGVNet在KITTI2015部分结果对比.png}
   \caption{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
   \label{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
 \end{figure}
@@ -324,15 +377,15 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
     \toprule
     方法 & FLOPs (G) & Params (M) & EPE (px) \\
     \midrule
-    StereoNet & 85.93 & 0.40 & 1.10 \\
-    \shortstack{DeepPruner\\Fast} & 219.12 & 7.47 & 1.25 \\
-    AANet & 152.86 & 2.97 & 0.87 \\
-    HITNet & 50.23 & 0.42 & 0.55 \\
-    CoEx & 53.39 & 2.72 & 0.67 \\
-    \shortstack{MobileStereo\\Net-2D} & 128.84 & 2.23 & 1.11 \\
-    Fast-ACVNet & 79.34 & 3.08 & 0.64 \\
-    Fast-ACVNet+ & 93.08 & 3.20 & 0.59 \\
-    IINet & 90.16 & 19.54 & 0.54 \\
+    StereoNet\cite{khamisStereonetGuidedHierarchical2018a} & 85.93 & 0.40 & 1.10 \\
+    DeepPrunerFast\cite{duggalDeepprunerLearningEfficient2019a} & 219.12 & 7.47 & 1.25 \\
+    AANet\cite{xuAANetAdaptiveAggregation2020} & 152.86 & 2.97 & 0.87 \\
+    HITNet\cite{tankovichHitnetHierarchicalIterative2021a} & 50.23 & 0.42 & 0.55 \\
+    CoEx\cite{bangunharcanaCorrelateandexciteRealtimeStereo2021a} & 53.39 & 2.72 & 0.67 \\
+    MobileStereoNet-2D\cite{shamsafarMobilestereonetLightweightDeep2022a} & 128.84 & 2.23 & 1.11 \\
+    Fast-ACVNet\cite{xuAccurateEfficientStereo2023} & 79.34 & 3.08 & 0.64 \\
+    Fast-ACVNet+\cite{xuAccurateEfficientStereo2023} & 93.08 & 3.20 & 0.59 \\
+    IINet\cite{liIinetImplicitIntrainter2024} & 90.16 & 19.54 & 0.54 \\
     HAGVNet（ours） & 20.08 & 3.78 & 0.73 \\
     \bottomrule
   \end{thesistabular}
@@ -347,18 +400,19 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
   \setlength{\tabcolsep}{3pt}
   \begin{thesistabular}{ccccccccc}
     \toprule
-    方法 & KITTI 2012 & KITTI 2015 & FLOPs(G) &  &  &  &  &  \\
-     & 3-noc & 3-all & 4-noc & 4-noc & D1-bg & D1-fg & D1-all &  \\
+    \multirow{2}{*}{方法} & \multicolumn{4}{c}{KITTI 2012} & \multicolumn{3}{c}{KITTI 2015} & \multirow{2}{*}{FLOPs(G)} \\
+    \cmidrule(lr){2-5}\cmidrule(lr){6-8}
+     & 3-noc & 3-all & 4-noc & 4-all & D1-bg & D1-fg & D1-all &  \\
     \midrule
-    StereoNet & - & - & - & - & 4.30 & 7.45 & 4.83 & 85.93 \\
-    \shortstack{DeepPruner\\Fast} & - & - & - & - & 2.32 & 3.91 & 2.59 & 219.12 \\
-    AANet & 1.91 & 2.42 & 1.46 & 1.87 & 1.99 & 5.39 & 2.55 & 152.86 \\
-    HITNet & 1.41 & 1.89 & 1.14 & 1.53 & 1.74 & 3.20 & 1.98 & 50.23 \\
-    CoEx & 1.55 & 1.93 & 1.15 & 1.42 & 1.79 & 3.82 & 2.13 & 53.39 \\
-    \shortstack{MobileStereo\\Net-2D} & - & - & - & - & 2.49 & 4.53 & 2.83 & 128.84 \\
-    Fast-ACVNet & 1.68 & 2.13 & 1.23 & 1.56 & 1.82 & 3.93 & 2.17 & 79.34 \\
-    Fast-ACVNet+ & 1.45 & 1.85 & 1.06 & 1.36 & 1.70 & 3.53 & 2.01 & 93.08 \\
-    IINet & 1.81 & 2.21 & 1.35 & 1.65 & 2.02 & 3.39 & 2.25 & 90.16 \\
+    StereoNet\cite{khamisStereonetGuidedHierarchical2018a} & - & - & - & - & 4.30 & 7.45 & 4.83 & 85.93 \\
+    DeepPrunerFast\cite{duggalDeepprunerLearningEfficient2019a} & - & - & - & - & 2.32 & 3.91 & 2.59 & 219.12 \\
+    AANet\cite{xuAANetAdaptiveAggregation2020} & 1.91 & 2.42 & 1.46 & 1.87 & 1.99 & 5.39 & 2.55 & 152.86 \\
+    HITNet\cite{tankovichHitnetHierarchicalIterative2021a} & 1.41 & 1.89 & 1.14 & 1.53 & 1.74 & 3.20 & 1.98 & 50.23 \\
+    CoEx\cite{bangunharcanaCorrelateandexciteRealtimeStereo2021a} & 1.55 & 1.93 & 1.15 & 1.42 & 1.79 & 3.82 & 2.13 & 53.39 \\
+    MobileStereoNet-2D\cite{shamsafarMobilestereonetLightweightDeep2022a} & - & - & - & - & 2.49 & 4.53 & 2.83 & 128.84 \\
+    Fast-ACVNet\cite{xuAccurateEfficientStereo2023} & 1.68 & 2.13 & 1.23 & 1.56 & 1.82 & 3.93 & 2.17 & 79.34 \\
+    Fast-ACVNet+\cite{xuAccurateEfficientStereo2023} & 1.45 & 1.85 & 1.06 & 1.36 & 1.70 & 3.53 & 2.01 & 93.08 \\
+    IINet\cite{liIinetImplicitIntrainter2024} & 1.81 & 2.21 & 1.35 & 1.65 & 2.02 & 3.39 & 2.25 & 90.16 \\
     HAGVNet（ours） & 1.87 & 2.27 & 1.32 & 1.62 & 1.86 & 3.76 & 2.18 & 20.08 \\
     \bottomrule
   \end{thesistabular}
@@ -519,7 +573,7 @@ O_i=(c_i,s_i,X_i,Y_i,Z_i)
 & $s_i$ & 检测置信度；\\
 \end{tabularx}\vspace{3.15bp}
 
-目标检测与定位的效果如图\ref{障碍物检测与定位效果图}所示。
+目标检测与定位结果如图\ref{障碍物检测与定位效果图}所示。图中上方为左视图，中间为深度图，其中颜色由蓝到红表示目标距离由近到远；下方为检测结果，检测框标示出识别到的目标，标签中给出了类别、置信度及其坐标信息。
 
 \begin{figure}[htbp]
   \centering
@@ -531,11 +585,5 @@ O_i=(c_i,s_i,X_i,Y_i,Z_i)
 
 \section{本章小节}
 
-本章围绕双目视觉环境感知需求，完成了立体匹配、目标检测与空间定位算法
-的设计与验证。在立体匹配方面，基于双目测距原理与相机标定方法，提出轻量化
-模型 HAGVNet。该模型通过分层注意力引导代价体构建机制，在较低计算量下提
-升匹配稳定性与精度，满足嵌入式平台实时测距需求。在目标检测方面，采用轻量
-化一阶段模型 YOLO11n，实现典型障碍物的快速识别与边界框输出。结合检测结
-果与深度信息，构建目标级空间定位方法，实现由二维检测到三维距离估计的转换。
-本章完成了双目视觉感知算法体系的构建，为整车系统集成与实验验证提供了算
-法基础。
+本章围绕双目视觉环境感知需求，完成了双目标定与校正、立体匹配、目标检测与空间定位算法的设计与验证。在双目测距基础部分，基于双目成像几何模型与相机标定方法，完成了双目标定与校正，为后续视差估计与深度计算提供了可靠的几何基础。在立体匹配方面，提出轻量化模型 HAGVNet。该模型通过分层注意力引导代价体构建机制，在较低计算量下提升匹配稳定性与精度，满足嵌入式平台实时测距需求。在目标检测方面，采用轻量化一阶段模型 YOLO11n，实现典型障碍物的快速识别与边界框输出。结合检测结果与深度信息，构建目标级空间定位方法，实现由二维检测到三维距离估计的转换。本章完成了双目视觉感知算法体系的构建，为整车系统集成与实验验证提供了算法基础。
+

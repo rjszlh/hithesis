@@ -28,17 +28,17 @@
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\textwidth]{figures/chapter02/载人两轮平衡车总体设计方案.png}
+  \includegraphics[width=0.99\textwidth]{figures/chapter02/载人两轮平衡车总体设计方案.png}
   \caption{载人两轮平衡车总体设计方案}
   \label{载人两轮平衡车总体设计方案}
 \end{figure}
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.7\textwidth]{figures/chapter02/载人两轮平衡车系统功能组成图.png}
-  \caption{载人两轮平衡车系统功能组成图}
-  \label{载人两轮平衡车系统功能组成图}
-\end{figure}
+% \begin{figure}[htbp]
+%   \centering
+%   \includegraphics[width=0.7\textwidth]{figures/chapter02/载人两轮平衡车系统功能组成图.png}
+%   \caption{载人两轮平衡车系统功能组成图}
+%   \label{载人两轮平衡车系统功能组成图}
+% \end{figure}
 
 \section{机械结构设计}
 
@@ -502,7 +502,9 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
   \includegraphics[width=0.65\textwidth]{figures/chapter02/控制系统电源电路连接.png}
   \caption{控制系统供电电路连接}
   \label{控制系统供电电路连接}
+  \marginnote{\textcolor{red}{Note：可以左右布置节省空间}}[-2cm]
 \end{figure}
+
 
 \subsection{控制系统硬件环境搭建}
 
@@ -510,14 +512,14 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 \begin{figure}[htbp]
   \centering
-  \begin{minipage}[t]{0.40\textwidth}
+  \begin{minipage}[t]{0.45\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter02/STM32F407工业控制板.png}
     \caption{科鑫STM32F407ZGT6工控板}
     \label{科鑫STM32F407ZGT6工控板}
   \end{minipage}
   \hfill
-  \begin{minipage}[t]{0.48\textwidth}
+  \begin{minipage}[t]{0.45\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter02/维特智能H30惯导模块.png}
     \caption{Wheeltec-H30惯性导航模块}
@@ -531,9 +533,9 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.40\textwidth]{figures/chapter02/FS-i6遥控器.png}
-  \hfill
-  \includegraphics[width=0.35\textwidth]{figures/chapter02/FS-IA10B接收机模块.png}
+  \includegraphics[width=0.30\textwidth]{figures/chapter02/FS-i6遥控器.png}
+  \hspace{3.15bp}
+  \includegraphics[width=0.20\textwidth]{figures/chapter02/FS-IA10B接收机模块.png}
   \caption{富斯FS-i6遥控器和FS-iA10B接收模块}
   \label{富斯FS-i6遥控器和FS-iA10B接收模块}
 \end{figure}
@@ -626,7 +628,7 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.55\textwidth]{figures/chapter02/外设初始化流程图.png}
+  \includegraphics[width=0.45\textwidth]{figures/chapter02/外设初始化流程图.png}
   \caption{外部设备初始化流程}
   \label{外部设备初始化流程}
 \end{figure}
@@ -637,7 +639,7 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.7\textwidth]{figures/chapter02/设备通信流程图.png}
+  \includegraphics[width=0.65\textwidth]{figures/chapter02/设备通信流程图.png}
   \caption{控制系统设备通信流程图}
   \label{控制系统设备通信流程图}
 \end{figure}
@@ -646,36 +648,38 @@ FreeRTOS提供了任务调度、优先级管理、定时器控制与资源同步
 
 CAN通信主要用于与轮毂电机、高速电机和进动电机等部件之间的数据交互。系统启动后进入接收状态，当接收到来自电机的CAN数据帧时，将触发CAN接收中断。中断服务程序从接收缓冲区中读取数据帧内容，提取帧ID用以识别对应电机设备类型，并将数据发送至相应的数据处理消息队列，由后台线程异步完成后续解析与处理。最后，系统清除中断标志，完成本次中断处理流程。
 
-UDP通信主要负责与自主导航系统之间的数据交互。当系统接收到来自导航系统的UDP数据报时，将立即触发相应的处理流程：首先将接收到的消息内容转发至指定的数据处理消息队列，供后台线程进行解析处理；随后，根据解析结果生成系统状态反馈报文并发送回上位机。反馈报文的具体结构如表\ref{状态反馈报文内容}所示。最后，完成当前UDP通信处理流程。
+UDP通信主要负责与自主导航系统之间的数据交互。当系统接收到来自导航系统的UDP数据报时，将立即触发相应的处理流程：首先将接收到的消息内容转发至指定的数据处理消息队列，供后台线程进行解析处理；然后根据解析结果生成系统状态反馈报文并发送回上位机，完成此次UDP通信处理。
 
-\begin{table}[htbp]
-  \centering
-  \caption[状态反馈报文内容]{状态反馈报文内容}
-  \label{状态反馈报文内容}
-  \vspace{0.5em}\wuhao
-  \begin{thesistabular}{cccccc}
-    \toprule
-    Index & 说明 & 类型 & Index & 说明 & 类型 \\
-    \midrule
-    0 & 报文编号 & uint32\_t & 23 & 左侧轮毂电机当前转速 & float \\
-    1–8 & 当前系统状态变量数组 & float[8] & 24 & 右侧轮毂电机当前转速 & float \\
-    9 & 进动电机目标输出转矩 & float & 25 & 左侧轮毂电机电流 & float \\
-    10 & 进动电机的目标转速 & float & 26 & 右侧轮毂电机电流 & float \\
-    11 & 左侧进动电机角度 & float & 27 & 左侧高速电机转速 & float \\
-    12 & 右侧进动电机角度 & float & 28 & 右侧高速电机转速 & float \\
-    13 & 左侧进动电机速度 & float & 29 & 左侧高速电机电流 & float \\
-    14 & 右侧进动电机速度 & float & 30 & 右侧高速电机电流 & float \\
-    15 & 左侧进动电机输出转矩 & float & 31 & 左侧高速电机错误代码 & float \\
-    16 & 右侧进动电机输出转矩 & float & 32 & 右侧高速电机错误代码 & float \\
-    17 & 左侧进动电机温度 & float & 33 & 步进电机的目标位置 & float \\
-    18 & 右侧进动电机温度 & float & 34 & 步进电机当前位置 & float \\
-    19 & 左侧进动电机错误代码 & uint32\_t & 35 & 步进电机当前速度 & float \\
-    20 & 右侧进动电机错误代码 & uint32\_t & 36 & 步进电机限位开关状态 & uint32\_t \\
-    21 & 左侧轮毂电机目标转矩 & float & 37 & 数据校验码（16位CRC） & uint16\_t \\
-    22 & 右侧轮毂电机目标转矩 & float & 38 & 测试字段 & uint16\_t \\
-    \bottomrule
-  \end{thesistabular}
-\end{table}
+% UDP通信主要负责与自主导航系统之间的数据交互。当系统接收到来自导航系统的UDP数据报时，将立即触发相应的处理流程：首先将接收到的消息内容转发至指定的数据处理消息队列，供后台线程进行解析处理；随后，根据解析结果生成系统状态反馈报文并发送回上位机。反馈报文的具体结构如表\ref{状态反馈报文内容}所示。最后，完成当前UDP通信处理流程。
+
+% \begin{table}[htbp]
+%   \centering
+%   \caption[状态反馈报文内容]{状态反馈报文内容}
+%   \label{状态反馈报文内容}
+%   \vspace{0.5em}\wuhao
+%   \begin{thesistabular}{cccccc}
+%     \toprule
+%     Index & 说明 & 类型 & Index & 说明 & 类型 \\
+%     \midrule
+%     0 & 报文编号 & uint32\_t & 23 & 左侧轮毂电机当前转速 & float \\
+%     1–8 & 当前系统状态变量数组 & float[8] & 24 & 右侧轮毂电机当前转速 & float \\
+%     9 & 进动电机目标输出转矩 & float & 25 & 左侧轮毂电机电流 & float \\
+%     10 & 进动电机的目标转速 & float & 26 & 右侧轮毂电机电流 & float \\
+%     11 & 左侧进动电机角度 & float & 27 & 左侧高速电机转速 & float \\
+%     12 & 右侧进动电机角度 & float & 28 & 右侧高速电机转速 & float \\
+%     13 & 左侧进动电机速度 & float & 29 & 左侧高速电机电流 & float \\
+%     14 & 右侧进动电机速度 & float & 30 & 右侧高速电机电流 & float \\
+%     15 & 左侧进动电机输出转矩 & float & 31 & 左侧高速电机错误代码 & float \\
+%     16 & 右侧进动电机输出转矩 & float & 32 & 右侧高速电机错误代码 & float \\
+%     17 & 左侧进动电机温度 & float & 33 & 步进电机的目标位置 & float \\
+%     18 & 右侧进动电机温度 & float & 34 & 步进电机当前位置 & float \\
+%     19 & 左侧进动电机错误代码 & uint32\_t & 35 & 步进电机当前速度 & float \\
+%     20 & 右侧进动电机错误代码 & uint32\_t & 36 & 步进电机限位开关状态 & uint32\_t \\
+%     21 & 左侧轮毂电机目标转矩 & float & 37 & 数据校验码（16位CRC） & uint16\_t \\
+%     22 & 右侧轮毂电机目标转矩 & float & 38 & 测试字段 & uint16\_t \\
+%     \bottomrule
+%   \end{thesistabular}
+% \end{table}
 
 （3）设备数据处理
 

@@ -61,31 +61,34 @@
   estudenttype={Master of Engineering},
   %
   % 关键词用“英文逗号”分割
-  ckeywords={载人两轮平衡车, 双目视觉, 环境感知, 自主导航, 动态避障},
-  ekeywords={manned two-wheeled self-balancing vehicle, stereo vision, environmental perception, autonomous navigation, dynamic obstacle avoidance},
+  ckeywords={载人两轮平衡车, 力矩控制陀螺, 双目视觉, 立体匹配, 自主导航},
+  ekeywords={manned two-wheeled self-balancing vehicle, control moment gyroscope, stereo vision, stereo matching, autonomous navigation},
 }
 
 \begin{cabstract}
+近年来，随着智能化出行技术的发展，面向园区、景区、社区等封闭场景的低速载人代步装备受到广泛关注。此类场景具有道路形式多样、行人干扰频繁、安全要求较高等特点，对车辆运行稳定性、环境感知能力以及自主通行能力提出更高要求。
 
-针对公园、景区等封闭场景中低速载人代步工具对安全性、舒适性与智能化的综合需求，本文开展了基于双目视觉的载人两轮平衡车关键技术研究，完成了整车结构与控制系统设计、环境感知算法研究、自主导航系统开发及实验验证。
+两轮平衡车具有结构紧凑、机动灵活、占用空间小等特点，在低速短距离载人代步场景中具有应用基础。然而，坐姿载人条件下对两轮平衡车姿态稳定性与乘坐舒适性的要求更高，仅依赖倒立摆原理难以保持稳定平衡。与此同时，微型载具普遍受限于成本、功耗与算力条件，因此需要面向嵌入式平台构建轻量化、可部署的测距方案。
 
-在整车设计方面，围绕载人场景的稳定性与操控性要求，提出由机械结构、控制系统与自主导航系统组成的总体方案；在传统倒立摆控制基础上引入力矩控制陀螺稳定模块，完成车体框架、驱动模块及稳定模块的结构设计与关键部件选型，为车辆平稳运行提供硬件基础。
+本文围绕两轮平衡车开展总体设计。在机械结构方面，采用对称双力矩控制陀螺布置与车轮倒立摆控制相结合的载人平衡方案，并对关键部件进行强度校核与有限元分析；在控制系统方面，以STM32F407单片机和FreeRTOS软件框架为基础，完成硬件线路设计与软件环境搭建。
 
-在环境感知方面，构建了基于双目视觉的障碍物感知方法。采用深度学习立体匹配算法获取视差与深度信息，结合目标检测网络实现典型障碍物识别，并通过深度图与检测结果融合完成目标测距与空间定位。针对嵌入式部署需求，对立体匹配与检测模型进行TensorRT加速，在640$\times$480分辨率下实现约30 Hz端到端感知刷新频率。实验结果表明，在2--10 m测距范围内，系统整体平均相对误差为3.52\%，能够满足低速自动行驶场景的感知需求。
+在环境感知方面，围绕双目视觉感知开展研究。立体匹配部分提出轻量化HAGVNet模型用于视差估计，其中分层注意力引导代价体用于引入粗尺度几何先验并增强细尺度代价体构建过程中的几何一致性，ConvNeXtV2风格二维代价聚合模块用于提升代价聚合阶段的特征表达能力；目标检测部分采用YOLO11n模型识别典型障碍物，并结合深度图信息实现障碍物检测、测距与空间定位，同时完成立体匹配与目标检测模型的TensorRT加速部署。
 
-在自主导航方面，基于ROS构建导航软件架构，设计并实现地图、定位、感知、通信、交互与主控等模块。定位模块融合GPS、IMU与轮速计信息并采用卡尔曼滤波进行状态估计；规划与控制模块结合感知结果完成路径规划与动态避障；系统通过UDP与下位机通信，并支持RViz与小程序交互。
+在自主导航方面，基于ROS构建两轮平衡车自主导航系统。定位部分采用卡尔曼滤波融合GPS、IMU和轮速计信息进行位姿估计；导航部分采用Dijkstra算法进行全局路径规划，采用TEB算法进行局部轨迹优化与动态避障；感知部分采用人工势场中斥力场的思想，将障碍物列表映射至局部代价地图并参与路径规划。
 
-实验结果表明，所研制两轮平衡车具备稳定的基本行驶能力，能够完成加减速、转向、越障等动作；在动态行人干扰场景下，系统可实现障碍物检测、路径重规划与平滑绕行，保持安全距离，验证了“感知--规划--控制”闭环系统的可行性与稳定性。
+通过基本行驶性能、双目视觉环境感知和闭环避障实验，对两轮平衡车系统进行验证。实验结果表明，所设计两轮平衡车具备基本行驶、环境感知与自主避障能力，实现了感知、规划与控制闭环运行。
 \end{cabstract}
 
 \begin{eabstract}
-This thesis investigates key technologies of a manned two-wheeled self-balancing vehicle based on stereo vision for enclosed low-speed scenarios such as parks and scenic areas, where safety, comfort, and intelligent operation are all required. The work covers vehicle structure and control system design, visual perception algorithm development, autonomous navigation system implementation, and experimental validation.
+In recent years, with the development of intelligent mobility technologies, low-speed manned vehicles for enclosed scenarios such as parks, scenic areas, and communities have attracted increasing attention. These scenarios are characterized by diverse road conditions, frequent pedestrian interference, and high safety requirements, which place higher demands on vehicle motion stability, environmental perception, and autonomous traveling capability.
 
-For the vehicle platform, an overall architecture consisting of mechanical structure, control system, and autonomous navigation system is proposed. To improve stability and ride comfort in manned operation, a control moment gyroscope (CMG) stabilization module is introduced on top of the conventional inverted-pendulum balancing scheme. The vehicle frame, drive module, stabilization module, and key component selections are completed to provide the hardware foundation for stable motion.
+The two-wheeled self-balancing vehicle features a compact structure, good maneuverability, and a small footprint, and therefore has application potential in low-speed short-distance manned transportation. However, under seated manned conditions, higher requirements are imposed on attitude stability and ride comfort, and it is difficult to maintain stable balance by relying only on the inverted-pendulum principle. Meanwhile, micro vehicles are generally constrained by cost, power consumption, and computing resources, which makes it necessary to develop lightweight and deployable ranging solutions for embedded platforms.
 
-For environmental perception, a stereo-vision-based obstacle perception method is developed. A deep-learning stereo matching network is used to generate disparity and depth, and a target detection network is used to recognize typical obstacles. Depth information is then fused with detection results for distance estimation and spatial localization. For embedded deployment, both stereo matching and detection models are accelerated with TensorRT. At an input resolution of 640$\times$480, the complete perception pipeline achieves an end-to-end refresh rate of about 30 Hz. Field tests show an overall average relative ranging error of 3.52\% within 2--10 m, which meets the perception requirements of low-speed autonomous driving.
+This thesis carries out the overall design of a two-wheeled self-balancing vehicle. In terms of mechanical structure, a manned balancing scheme combining a symmetric dual control moment gyroscope configuration with wheel inverted-pendulum control is adopted, and strength checking and finite-element analysis are performed for key components. In terms of the control system, hardware circuit design and software environment development are completed based on the STM32F407 microcontroller and the FreeRTOS software framework.
 
-For autonomous navigation, a ROS-based software architecture is built with mapping, localization, perception, communication, interaction, and main control modules. The localization module fuses GPS, IMU, and wheel-speed information with a Kalman filter. The planning and control modules use perception results for path planning and dynamic obstacle avoidance. The system communicates with the lower controller through UDP and supports both RViz and mini-program interaction.
+In environmental perception, research is conducted on stereo-vision-based perception. For stereo matching, a lightweight HAGVNet model is proposed for disparity estimation, in which the hierarchical attention-guided cost volume introduces coarse-scale geometric priors and enhances the geometric consistency of fine-scale cost volume construction, while the ConvNeXtV2-style 2D cost aggregation module improves feature representation in the cost aggregation stage. For target detection, YOLO11n is used to recognize typical obstacles, and obstacle detection, ranging, and spatial localization are achieved by combining the detection results with depth information. TensorRT acceleration deployment is further completed for the stereo matching and target detection models.
 
-Experimental results show that the developed vehicle performs stable basic motions, including acceleration/deceleration, steering, and obstacle crossing. In dynamic pedestrian interference scenarios, the system can detect obstacles, replan paths, and bypass smoothly while maintaining a safe distance, demonstrating the feasibility and stability of the closed-loop perception-planning-control system.
+In autonomous navigation, a ROS-based navigation system for the two-wheeled self-balancing vehicle is constructed. The localization module adopts Kalman-filter-based fusion of GPS, IMU, and wheel-speed information for pose estimation. The navigation module uses the Dijkstra algorithm for global path planning and the TEB algorithm for local trajectory optimization and dynamic obstacle avoidance. In the perception-related part, obstacle lists are mapped to the local costmap according to the repulsive-field concept in the artificial potential field method and then incorporated into path planning.
+
+The system is validated through experiments on basic driving performance, stereo-vision-based environmental perception, and closed-loop obstacle avoidance. The results show that the designed two-wheeled self-balancing vehicle possesses basic driving, environmental perception, and autonomous obstacle-avoidance capabilities, and realizes the closed-loop operation of perception, planning, and control.
 \end{eabstract}

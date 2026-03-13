@@ -113,6 +113,16 @@
 \usepackage{hithesis}
 \usepackage{svg}
 
+
+\usepackage{marginnote}
+% 页边注区域宽度：调大后 marginnote 更容易正常换行
+\setlength{\marginparwidth}{2.5cm}
+% 正文和页边注之间的间距
+\setlength{\marginparsep}{0.2cm}
+% 最终输出前记得关闭页边注；取消下一行注释后，所有 \marginnote 都会被隐藏。
+% \renewcommand{\marginnote}[2][]{}
+
+
 \graphicspath{{figures/}}
 
 % 重设三线表线宽
