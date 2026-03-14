@@ -5,7 +5,7 @@
 
 自主导航系统的结构如图\ref{自主导航系统总体设计}所示，整体由主控计算单元、传感器与信号转换模块、通信连接模块、电源模块四部分构成。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includesvg[width=0.8\textwidth]{figures/chapter04/自主导航系统总体设计}
 \caption{自主导航系统总体设计}
@@ -32,7 +32,7 @@
 
 分析自主导航系统硬件供电需求可知，主控电脑需要19V DC电源供电，而传感器及信号转换元件等需要5V DC电源供电，电路连接如图\ref{自主导航系统电源模块}所示。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includesvg[width=0.8\textwidth]{figures/chapter04/自主导航系统电源模块}
 \caption{自主导航系统电源模块}
@@ -42,14 +42,14 @@
 
 自主导航系统的信号连接如图\ref{自主导航系统信号电路连接}所示。主控电脑作为核心处理单元，通过多个USB接口与双目相机、IMU、GPS等传感与通信设备进行数据交互。其中，双目相机直接连接主控电脑以保证带宽和实时性，其他设备则通过USB拓展坞接入，以提升接口扩展能力。此外，主控电脑通过USB-485转换器将USB信号转换为RS-485信号，进而连接超声波雷达转接模块，实现对多路超声波雷达（UART接口）的统一管理与数据采集。同时，主控电脑通过以太网口与控制系统STM32F407微控制器通信，完成自主导航系统与控制系统之间的信息交互。上述信号连接设计有效整合了各类传感器与执行单元，保障了数据传输的实时性与稳定性。自主导航系统硬件平台实物如图\ref{自主导航系统硬件平台实物图}所示。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includesvg[width=0.8\textwidth]{figures/chapter04/自主导航系统信号连接}
 \caption{自主导航系统信号电路连接}
 \label{自主导航系统信号电路连接}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/chapter04/自主导航系统硬件平台实物图.png}
 \caption{自主导航系统硬件平台实物图}
@@ -60,7 +60,7 @@
 
 自主导航系统是实现两轮平衡车自动行驶的核心模块之一。该系统承上启下，既需准确获取环境与自身状态信息，又需据此完成路径规划与任务执行。自主导航系统软件结构如图\ref{自主导航系统软件结构}所示，整体划分为地图模块、定位模块、感知模块、通讯模块、交互模块与主控模块六大部分。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includesvg[width=0.95\textwidth]{figures/chapter04/自主导航系统软件结构}
 \caption{自主导航系统软件结构}
@@ -77,7 +77,7 @@
 
 交互模块如图\ref{交互界面}所示。系统选用RViz作为主要可视化开发与测试工具。RViz是ROS中的三维可视化平台，既可实现外部信息的图形化显示，也可用于发布控制信息，从而实现对机器人的监测与控制。通过RViz可直观展示车辆在地图中的位置、运动轨迹及传感器数据，便于开发人员调试与功能验证。此外，为实现与用户端（如手机小程序）的实时交互，系统采用MQTT协议进行加密通信。上位机可通过MQTT协议将车辆当前位置等状态信息实时发送至小程序端，用户亦可通过小程序下发目的地指令，系统接收后自动执行目标导航。该设计有效提升了系统的人机交互能力与操作便利性。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \subfigure[RViz界面]{\includegraphics[width=0.62\textwidth]{figures/chapter04/RViz界面.png}}
 \hfill
@@ -88,36 +88,30 @@
 
 \subsection{定位模块}
 
-在公园、封闭社区等典型应用场景中，由于环境结构复杂、遮挡物较多，单一传感器往往难以实现稳定、连续的高精度定位。为了克服这一问题，本系统定位模块基于多传感器融合策略进行设计，主要集成了GPS、IMU以及轮速传感器，并采用卡尔曼滤波算法对多源信息进行时序融合，以提升系统的定位鲁棒性与精度。
-
-不同传感器具有各自的优势与局限性。GPS可提供全局坐标系下的绝对位置，具备长期定位的能力，但其更新率较低，且在建筑物遮挡或室内环境下易发生信号中断；IMU可高频采集加速度与角速度数据，适合用于姿态估计和短时运动推算，但受限于积分误差的累积，存在长期漂移问题；轮速传感器能够精确测量轮子线速度，但在出现打滑等工况时，其测量结果将偏离实际情况，无法独立支撑完整定位。
-
-针对以上特性，本定位模块以IMU构建高频运动预测模型，在每个时间步中基于当前姿态估计与速度信息进行状态预测；引入轮速传感器的观测数据周期性修正线速度估计，进而抑制IMU短期内的积分漂移；GPS作为低频全局观测源，用于修正整体位置估计的长期偏移。在此基础上，卡尔曼滤波框架通过预测---修正的迭代机制，有效融合上述信息，提升定位系统的稳定性和抗干扰能力。
+在公园、封闭社区等典型场景中，由于环境复杂且遮挡较多，单一传感器难以实现稳定、连续的高精度定位。为此，本系统采用多传感器融合策略，并基于卡尔曼滤波实现车辆位姿估计。
 
 （1）定位模块的设计
 
-本模块的整体运行流程如图\ref{定位模块流程图}所示，根据卡尔曼滤波的原理，设计主要包括系统初始化、时间更新、观测更新等步骤。
+本模块的整体运行流程如图\ref{定位模块流程图}所示，主要包括系统初始化、时间更新和观测更新三个环节。系统融合GPS、IMU和轮速传感器三类信息，其中GPS可提供全局绝对位置，但更新率较低且在遮挡环境下易失效；IMU可高频输出加速度和角速度信息，适用于短时运动估计，但存在积分漂移；轮速传感器可直接反映车辆线速度，实时性较好，但在打滑等工况下误差会增大。基于此，系统在卡尔曼滤波框架下以IMU信息完成状态预测，并结合轮速传感器与GPS信息对预测结果进行修正，从而兼顾状态估计的连续性与长期稳定性。
 
-系统启动后，首先完成传感器驱动和状态矩阵的初始化，随后进入主循环。在循环中，系统基于时间更新周期与观测更新周期交替驱动状态估计与输出控制。
+系统启动后，首先完成传感器驱动和状态矩阵初始化，随后进入主循环。在每个时间更新周期内，系统读取IMU与轮速传感器数据，并基于运动模型预测车辆的位置、姿态角和线速度，以获得连续的高频状态输出。
 
-在每个时间更新周期到达时，系统首先读取IMU与轮速传感器数据，利用运动模型进行一次状态预测，用于推算车辆当前位置、姿态角和线速度。该步骤提供连续且高频的状态输出。
+当观测更新周期到达时，系统进一步读取GPS数据并进行信号质量判断。若GPS质量满足设定阈值，则利用其对预测状态进行观测修正，以减小累积误差；若GPS质量较差或信号丢失，则跳过本次修正，直接保留预测结果进入下一轮循环。
 
-接着系统判断是否到达观测更新周期。若尚未到达，则进入下一轮时间更新；若已经到达，则进一步读取GPS数据，并对其信号质量进行判断。如果GPS质量满足设定阈值，系统会基于GPS信息执行观测修正，从而校正状态预测中的累积误差；若GPS质量较差或信号丢失，则跳过修正，直接维持预测状态。
+每轮更新结束后，系统都会将当前融合得到的位姿信息输出至主控模块，包括位置、速度和姿态角等关键参数，从而为导航与控制任务提供连续、稳定的状态输入。
 
-无论是否执行观测修正，系统都会将当前状态中的位姿信息输出至主控模块，包括车辆的位置、速度和姿态角等关键参数。通过该机制，主控模块可按固定频率获得融合估计后的状态信息，确保导航与控制任务的连续性和一致性。
-
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includesvg[width=0.85\textwidth]{figures/chapter04/定位模块流程图}
 \caption{定位模块流程图}
 \label{定位模块流程图}
 \end{figure}
 
-两种周期交替作用，确保了系统在不同精度与频率层次上的信息融合。时间更新周期以高频率提供连续、平滑的状态估计；观测更新周期以低频率提供全局位置校准，从而实现系统在动态环境中的高鲁棒性和精度保持。
+两种周期交替作用，使系统能够在不同频率下完成状态预测与观测修正，从而兼顾估计结果的连续性与全局一致性。
 
 （2）卡尔曼融合定位的实现
 
-为提高复杂场景下车辆位姿估计的连续性与稳定性，本文采用卡尔曼滤波方法对GPS、IMU与轮速传感器的观测信息进行融合。该方法以系统状态空间模型为基础，按照“预测-更新”的递推方式，在每个采样时刻对车辆状态进行估计。其中，车辆在时刻$k$的状态向量定义如式~\eqref{eq:ch4-state-vector}所示：
+在上述运行流程基础上，进一步建立卡尔曼融合定位的状态空间模型。为便于表述，先定义车辆在时刻$k$的状态向量，如式~\eqref{eq:ch4-state-vector}所示：
 \begin{equation}
 \label{eq:ch4-state-vector}
 x_{k}=
@@ -126,24 +120,34 @@ p_{x} & p_{y} & p_{z} & v_{x} & v_{y} & v_{z} & a_{x} & a_{y} & a_{z}
 \end{bmatrix}^{T}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $p_x,p_y,p_z$ & GPS坐标；\\
-& $a_x,a_y,a_z$ & IMU加速度；\\
-& $v_x,v_y,v_z$ & 轮速传感器推算线速度。\\
+式中& $p_x,p_y,p_z$ & 车辆在全局坐标系下的位置分量；\\
+& $v_x,v_y,v_z$ & 车辆速度分量；\\
+& $a_x,a_y,a_z$ & 车辆加速度分量。\\
 \end{tabularx}\vspace{3.15bp}
 
-在预测阶段，首先依据车辆运动学模型对下一时刻状态进行先验估计，其状态转移关系可表示为式~\eqref{eq:ch4-state-predict}：
+卡尔曼滤波的状态方程和测量方程分别如式~\eqref{eq:ch4-state-predict}和式~\eqref{eq:ch4-measurement-model}所示：
 \begin{equation}
 \label{eq:ch4-state-predict}
-x_{k + 1} = F_{k}x_{k} + B_{k}u_{k} + w_{k}
+x_{k+1} = F_{k}x_{k} + B_{k}u_{k} + w_{k}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $F_k$ & 状态转移矩阵，用于从当前状态推算下一时刻的状态；\\
-& $B_k$ & 控制输入矩阵（设为零）；\\
-& $u_k$ & 外部输入控制（设为零）；\\
-& $w_k$ & 过程噪声，假设为零均值高斯噪声，协方差为$Q_k$。\\
+式中& $F_k$ & 状态转移矩阵；\\
+& $B_k$ & 控制输入矩阵，本文取零；\\
+& $u_k$ & 外部控制输入，本文取零；\\
+& $w_k$ & 过程噪声，假设为零均值高斯噪声，其协方差为$Q_k$。\\
 \end{tabularx}\vspace{3.15bp}
 
-考虑到车辆在相邻采样周期内的运动变化较为平缓，本文采用匀加速度离散模型构建状态转移矩阵，其具体形式如式~\eqref{eq:ch4-state-transition}所示：
+\begin{equation}
+\label{eq:ch4-measurement-model}
+z_{k} = H_{k}x_{k} + v_{k}
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $z_k$ & 测量值向量，由GPS、IMU和轮速传感器观测构成；\\
+& $H_k$ & 测量矩阵，用于将状态向量映射到测量空间，本文取单位矩阵；\\
+& $v_k$ & 测量噪声。\\
+\end{tabularx}\vspace{3.15bp}
+
+考虑到车辆在相邻采样周期内运动状态变化较为平缓，本文采用匀加速度离散模型构建状态转移矩阵，其具体形式如式~\eqref{eq:ch4-state-transition}所示：
 \begin{equation}
 \label{eq:ch4-state-transition}
 F_{k} = \begin{bmatrix}
@@ -162,13 +166,7 @@ F_{k} = \begin{bmatrix}
 式中& $\Delta t$ & 采样时间。\\
 \end{tabularx}\vspace{3.15bp}
 
-在得到先验状态估计后，预测协方差矩阵按照式~\eqref{eq:ch4-cov-predict}进行更新：
-\begin{equation}
-\label{eq:ch4-cov-predict}
-P_{k + 1} = F_{k}P_{k}{F_{k}}^{T} + Q_{k}
-\end{equation}
-
-其中，$Q_k$表示过程噪声协方差矩阵，其设置如式~\eqref{eq:ch4-process-noise}所示，用于描述建模误差与系统随机扰动对预测结果的影响：
+其中，$Q_k$为过程噪声协方差矩阵，其设置如式~\eqref{eq:ch4-process-noise}所示，用于表征建模误差与随机扰动对预测结果的影响，其参数结合系统运动模型误差、传感器噪声水平及实验调参结果确定：
 \begin{equation}
 \label{eq:ch4-process-noise}
 Q_{k} = \begin{bmatrix}
@@ -183,19 +181,11 @@ Q_{k} = \begin{bmatrix}
 0 & 0 & 0.25\Delta t & 0 & 0 & 0 & 0 & 0 & 0.25
 \end{bmatrix}
 \end{equation}
-
-在更新阶段，将传感器观测值引入滤波器，对预测结果进行反馈修正。若观测模型满足线性形式，则测量方程可表示为式~\eqref{eq:ch4-measurement-model}：
-\begin{equation}
-\label{eq:ch4-measurement-model}
-z_{k} = H_{k}x_{k} + v_{k}
-\end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $z_k$ & 测量值向量（GPS位置、IMU加速度和轮速推算的速度）；\\
-& $H_k$ & 测量矩阵，它将状态向量映射到测量空间，$H_k=E$；\\
-& $v_k$ & 测量噪声。\\
+式中& $Q_k$ & 过程噪声协方差矩阵。\\
 \end{tabularx}\vspace{3.15bp}
 
-测量噪声协方差矩阵$R_k$用于表征各传感器观测噪声水平，其取值如式~\eqref{eq:ch4-measurement-noise}所示：
+测量噪声协方差矩阵$R_k$用于表征各传感器的观测噪声水平，其取值如式~\eqref{eq:ch4-measurement-noise}所示，主要依据GPS、IMU和轮速传感器的实际测量波动范围并结合实验标定结果确定：
 \begin{equation}
 \label{eq:ch4-measurement-noise}
 R_{k} = \begin{bmatrix}
@@ -210,41 +200,75 @@ R_{k} = \begin{bmatrix}
 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0.0025
 \end{bmatrix}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $R_k$ & 测量噪声协方差矩阵。\\
+\end{tabularx}\vspace{3.15bp}
 
-基于预测协方差与测量噪声协方差，可进一步计算卡尔曼增益，如式~\eqref{eq:ch4-kalman-gain}所示：
+按照标准离散卡尔曼滤波递推过程，先在第$k$时刻利用观测信息对先验估计进行更新。卡尔曼增益计算如式~\eqref{eq:ch4-kalman-gain}所示：
 \begin{equation}
 \label{eq:ch4-kalman-gain}
-K_{k} = P_{k}{H_{k}}^{T}\left( H_{k}P_{k}{H_{k}}^{T} + R_{k} \right)^{-1}
+K_{k} = P_{k|k-1}{H_{k}}^{T}\left( H_{k}P_{k|k-1}{H_{k}}^{T} + R_{k} \right)^{-1}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $K_k$ & 第$k$时刻的卡尔曼增益；\\
+& $P_{k|k-1}$ & 第$k$时刻的先验误差协方差矩阵；\\
+& $R_k$ & 测量噪声协方差矩阵。\\
+\end{tabularx}\vspace{3.15bp}
 
-根据式~\eqref{eq:ch4-kalman-gain}得到的增益矩阵，可对状态向量进行更新，其表达式如式~\eqref{eq:ch4-state-update}所示：
+随后完成状态更新，其表达式如式~\eqref{eq:ch4-state-update}所示：
 \begin{equation}
 \label{eq:ch4-state-update}
-x_{k} = x_{k} + K_{k}\left( z_{k} - H_{k}x_{k} \right)
+x_{k|k} = x_{k|k-1} + K_{k}\left( z_{k} - H_{k}x_{k|k-1} \right)
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $x_{k|k-1}$ & 第$k$时刻的先验状态估计；\\
+& $x_{k|k}$ & 第$k$时刻的后验状态估计；\\
+& $z_k-H_kx_{k|k-1}$ & 观测残差。\\
+\end{tabularx}\vspace{3.15bp}
 
-与此同时，估计误差协方差矩阵按照式~\eqref{eq:ch4-cov-update}进行更新，以反映融合后状态不确定性的变化：
+同时，估计误差协方差矩阵按照式~\eqref{eq:ch4-cov-update}进行更新，以反映融合后状态不确定性的变化：
 \begin{equation}
 \label{eq:ch4-cov-update}
-P_{k} = \left( I - K_{k}H_{k} \right)P_{k}
+P_{k|k} = \left( I - K_{k}H_{k} \right)P_{k|k-1}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $P_{k|k}$ & 第$k$时刻的后验误差协方差矩阵；\\
+& $I$ & 单位矩阵。\\
+\end{tabularx}\vspace{3.15bp}
 
-综上，卡尔曼滤波通过式~\eqref{eq:ch4-state-predict}至式~\eqref{eq:ch4-cov-update}构成完整的状态递推过程。其中，预测阶段主要依赖IMU与轮速信息提供高频、连续的运动估计，更新阶段则利用GPS观测对系统长时累计误差进行校正，从而兼顾定位结果的实时性、平滑性与全局一致性。
+在完成第$k$时刻更新后，可进一步预测第$k+1$时刻的先验状态和先验误差协方差，其表达式分别如式~\eqref{eq:ch4-state-time-update}和式~\eqref{eq:ch4-cov-predict}所示：
+\begin{equation}
+\label{eq:ch4-state-time-update}
+x_{k+1|k} = F_{k}x_{k|k} + B_{k}u_{k}
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $x_{k+1|k}$ & 由第$k$时刻后验估计得到的第$k+1$时刻先验状态估计。\\
+\end{tabularx}\vspace{3.15bp}
+
+\begin{equation}
+\label{eq:ch4-cov-predict}
+P_{k+1|k} = F_{k}P_{k|k}{F_{k}}^{T} + Q_{k}
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $P_{k+1|k}$ & 第$k+1$时刻的先验误差协方差矩阵。\\
+\end{tabularx}\vspace{3.15bp}
+
+综上，式~\eqref{eq:ch4-kalman-gain}至式~\eqref{eq:ch4-cov-predict}共同构成了“第$k$时刻更新、第$k+1$时刻预测”的递推过程。其中，更新阶段主要融合GPS、IMU和轮速传感器观测信息以修正当前状态，预测阶段则基于运动学模型外推下一时刻状态，从而兼顾定位结果的实时性与全局一致性。
 
 （3）定位效果
 
 系统运行后，基于卡尔曼滤波的融合定位效果如图\ref{卡尔曼融合定位效果图}所示。在GPS出现波动的直角拐弯路段，融合定位能够滤除干扰并输出平稳位姿信息。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/chapter04/卡尔曼融合定位结果.png}
 \caption{卡尔曼融合定位效果图}
 \label{卡尔曼融合定位效果图}
 \end{figure}
 
-室内外定位切换效果如图\ref{室内室外切换效果图}所示。红色轨迹为GPS原始轨迹，黄色轨迹为融合结果。图\subref{室内室外切换效果图:outdoor}所示为车辆在室外运行时的定位结果，此时GPS虽存在一定波动，但融合轨迹整体保持平稳；图\subref{室内室外切换效果图:indoor}所示为车辆进入室内后的定位结果，在GPS信号丢失后，系统仍可依靠IMU和轮速计维持连续定位，轨迹依然较为平稳。
+室内外定位切换效果如图\ref{室内室外切换效果图}所示。红色轨迹为GPS原始轨迹，黄色轨迹为融合结果。图\subref{室内室外切换效果图:outdoor}所示为车辆在室外运行时的定位结果，此时GPS虽存在一定波动，但融合轨迹整体保持平稳；图\subref{室内室外切换效果图:indoor}所示为车辆进入室内后的定位结果，在GPS信号丢失后，系统仍可依靠IMU和轮速计维持连续定位，轨迹依然平稳。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \subfigure[室内环境\label{室内室外切换效果图:indoor}]{\includegraphics[width=0.4\textwidth]{figures/chapter04/室内环境切换结果.png}}
 % \hfill
@@ -268,7 +292,7 @@ Navigation框架的核心组成包括地图服务器（map\_server）、定位�
 
 坐标变换信息由ROS的tf坐标系统提供。该系统负责维护地图坐标系（map）、里程计坐标系（odom）与车体坐标系（base\_link）之间的变换关系，使导航模块各组成部分能够在统一空间基准下完成计算。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includesvg[width=0.8\textwidth]{figures/chapter04/导航模块功能结构}
 \caption{导航模块功能结构图}
@@ -288,7 +312,7 @@ Navigation框架的核心组成包括地图服务器（map\_server）、定位�
 系统启动后，导航模块首先完成地图服务、代价地图、规划器及坐标变换系统等子模块初始化，并建立相应的话题与服务通信关系。随后加载静态地图数据，为全局路径规划提供基础环境信息。
 
 导航任务开始后，模块从交互端接收用户或上位系统设定的目标点，并借助tf坐标变换系统将其转换到统一坐标系下。与此同时，系统持续接收定位模块输出的车辆当前位姿，并实时更新至导航框架。
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includesvg[width=0.8\textwidth]{figures/chapter04/导航任务流程图}
 \caption{导航任务流程图}
@@ -366,7 +390,7 @@ include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 
 规划效果如图\ref{导航规划效果}所示。图中黑色方框表示平衡车当前位置及车体外轮廓，黑色长线表示全局规划器基于Dijkstra算法生成的全局参考路径，用于描述车辆由当前位置驶向目标点的整体行驶方向；红色箭头表示局部规划器基于TEB算法在当前时刻生成的一系列局部轨迹点及其朝向信息，用于反映车辆在局部环境约束下对全局路径的实时跟踪与动态调整结果。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includegraphics[width=0.6\textwidth]{figures/chapter04/导航规划结果.png}
 \caption{导航规划效果}
@@ -422,7 +446,7 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 
 障碍物列表在代价地图上的映射效果如图\ref{障碍物列表在代价地图上的映射}所示。可以看出，不同宽度的障碍物在代价地图中形成了范围不同的高代价区域，且代价值由障碍物中心向外逐渐衰减。该映射方式能够较好反映障碍物实际占据范围对局部路径规划的影响，并为后续动态避障提供有效约束。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/chapter04/障碍物列表代价地图映射.png}
 \caption{障碍物列表在代价地图上的映射}
@@ -437,7 +461,7 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 
 环境点云在代价地图上的映射效果如图\ref{环境点云在代价地图上的映射}所示。图中下方黑色矩形表示车辆当前位置，前方左右两侧的红黄色点云簇对应环境中检测到的障碍物；其周围形成的高代价区域清晰反映了障碍物在局部代价地图中的空间占据关系。与此同时，道路边界位置也被映射为连续分布的高代价带，使局部规划器在跟踪目标路径时能够同时避开离散障碍物与道路边缘，从而提高局部导航的安全性与稳定性。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/chapter04/点云代价地图映射.png}
 \caption{环境点云在代价地图上的映射}
