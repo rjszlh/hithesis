@@ -100,7 +100,9 @@ f_x & 0 & c_x \\
 
 \subsection{轻量化立体匹配模型}
 
-现有轻量化立体匹配研究主要围绕降低代价建模与聚合开销展开：StereoNet\cite{khamisStereonetGuidedHierarchical2018a}通过低分辨率匹配表示并结合逐级细化实现粗到细估计，AANet\cite{xuAANetAdaptiveAggregation2020}采用自适应聚合在多尺度上动态调制代价融合，MobileNetStereo-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}以轻量化骨干配合二维聚合策略压缩计算量，HITNet\cite{tankovichHitnetHierarchicalIterative2021a}通过假设驱动的迭代推理逐步优化视差以减少对显式重型代价正则化的依赖，Fast-ACVNet\cite{xuAccurateEfficientStereo2023}与IINet\cite{liIinetImplicitIntrainter2024}则分别从高效代价体构建/聚合与左右特征交互优化角度提升信息利用效率。尽管上述方法在实时性方面取得进展，但在轻量化约束下，代价体构建阶段对多尺度几何信息的利用往往仍较为有限，粗尺度几何先验对细尺度匹配的引导作用有进一步挖掘空间。基于此，HAGVNet的核心思路在于构建分层注意力引导的代价体（HierarchicalAttention-GuidedCostVolume,HAGV），利用粗尺度几何先验调制细尺度代价建模过程，并结合轻量化的ConvNeXtV2\cite{wooConvnextV2Codesigning2023a}风格二维代价聚合模块实现端到端立体匹配；模型整体结构如图\ref{HAGVNet结构图}所示。
+现有轻量化立体匹配研究主要围绕降低代价建模与聚合开销展开：StereoNet\cite{khamisStereonetGuidedHierarchical2018a}通过低分辨率匹配表示并结合逐级细化实现粗到细估计，AANet\cite{xuAANetAdaptiveAggregation2020}采用自适应聚合在多尺度上动态调制代价融合，MobileNetStereo-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}以轻量化骨干配合二维聚合策略压缩计算量，HITNet\cite{tankovichHitnetHierarchicalIterative2021a}通过假设驱动的迭代推理逐步优化视差以减少对显式重型代价正则化的依赖，Fast-ACVNet\cite{xuAccurateEfficientStereo2023}与IINet\cite{liIinetImplicitIntrainter2024}则分别从高效代价体构建/聚合与左右特征交互优化角度提升信息利用效率。尽管上述方法在实时性方面取得进展，但在轻量化约束下，代价体构建阶段对多尺度几何信息的利用往往仍较为有限，粗尺度几何先验对细尺度匹配的引导作用仍有进一步挖掘空间。
+
+针对上述问题，本文设计了轻量化立体匹配模型HAGVNet。该模型以分层注意力引导代价体HAGV（Hierarchical Attention-Guided Cost Volume）为核心，通过粗尺度几何先验调制细尺度代价建模过程，并结合轻量化的ConvNeXtV2\cite{wooConvnextV2Codesigning2023a}风格二维代价聚合模块，在保证计算复杂度可控的前提下提升匹配精度与场景鲁棒性，其整体结构如图\ref{HAGVNet结构图}所示。
 
 \begin{figure}[h]
   \centering
@@ -113,7 +115,7 @@ f_x & 0 & c_x \\
 
 与直接在单尺度上构建代价体的方法不同，本文在代价建模阶段显式引入粗尺度几何先验，对细尺度代价体进行调制。传统轻量化立体匹配模型通常仅依赖单尺度特征构建相关性代价体，缺乏来自粗尺度几何结构的约束，在弱纹理、重复纹理及遮挡区域易导致代价分布不稳定。为提升细尺度匹配的稳定性与几何一致性，本文提出分层注意力引导的代价体构建方法（Hierarchical Attention-Guided Cost Volume, HAGV）。该方法首先在粗尺度上获取稳定的几何先验，并将其作为一种弱几何约束前置到代价体构建阶段，用于调制细尺度代价建模过程。由此，使细尺度代价体在生成阶段即具备一定的几何一致性，而非仅依赖后续聚合阶段进行补偿，从而为后续代价聚合与视差回归提供更稳定、物理约束更强的输入。
 
-在该流程中，模型首先从backbone提取多尺度左右图像特征，使用原图分辨率1/4和1/8特征并分别构建粗尺度代价体与细尺度代价体。粗代价体经轻量聚合和视差回归得到粗视差，作为稳定的几何先验。随后将其上采样至细尺度，记为，基于此生成平滑的高斯注意力先验。高斯注意力形式见式~\eqref{eq:ch3-attention}：
+在该流程中，模型首先由骨干网络提取左右图像的多尺度特征，并分别利用原图$1/8$分辨率与$1/4$分辨率特征构建粗尺度代价体与细尺度代价体。粗尺度代价体经轻量聚合与视差回归后得到粗尺度视差先验$d_{\text{coarse}}$。随后，将$d_{\text{coarse}}$上采样至细尺度，并据此生成平滑的高斯注意力先验。高斯注意力形式见式~\eqref{eq:ch3-attention}：
 \begin{equation}\label{eq:ch3-attention}
 A=\exp\left(-\frac{(d_{\text{coarse}}-\mu)^2}{2\sigma^2}\right)
 \end{equation}
@@ -124,7 +126,7 @@ A=\exp\left(-\frac{(d_{\text{coarse}}-\mu)^2}{2\sigma^2}\right)
 & $\sigma$ & 尺度相关的平滑系数。\\
 \end{tabularx}\vspace{3.15bp}
 
-随后利用注意力先验对细尺度代价体进行调制。设细代价体为，并由一个轻量级卷积分支提取得到，加性残差融合形式如式~\eqref{eq:ch3-fusion}所示：
+随后利用注意力先验对细尺度代价体$C_{\text{fine}}$进行调制，并由轻量级卷积分支提取残差信息$\Delta C$，加性残差融合形式如式~\eqref{eq:ch3-fusion}所示：
 \begin{equation}\label{eq:ch3-fusion}
 C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 \end{equation}
@@ -138,7 +140,7 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 
 该机制赋予几何可靠区域更高权重，抑制不确定区域，使代价体在构建阶段即具备更强的几何一致性，从而提升聚合阶段的匹配稳定性与边界一致性。
 
-（2）用于2D代价聚合的covntxv2聚合块
+（2）用于2D代价聚合的ConvNeXtV2聚合块
 
 先前的二维代价聚合研究多以轻量卷积结构为核心，通过深度可分离卷积与倒置残差块（如MobileNet系列\cite{sandlerMobilenetv2InvertedResiduals2018}）在聚合阶段压缩计算开销。相关思路已在MobileNetStereo-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}以及以MobileNetV2\cite{sandlerMobilenetv2InvertedResiduals2018}为骨干的LightStereo\cite{guoLightstereoChannelBoost2025}中得到验证，表明该类方法在嵌入式算力受限场景下表现出较好的速度-精度折中特性。然而，此类以局部卷积运算为主的轻量结构在建模长程空间依赖及复杂几何关系方面仍存在一定局限，易导致代价聚合阶段的特征表征能力受限。基于上述考虑，本文在二维代价聚合网络中引入ConvNeXtV2\cite{wooConvnextV2Codesigning2023a}风格的轻量残差块，在保持整体计算复杂度可控的前提下，通过大核卷积、规范化与非线性激活的协同设计增强空间与通道维度的表达能力，从而提升聚合特征对复杂匹配模式的建模能力。其整体结构示意如图\ref{不同代价卷积块对比}(d)所示。
 
@@ -149,7 +151,7 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
   \label{不同代价卷积块对比}
 \end{figure}
 
-设输入代价体。该模块首先通过深度卷积扩大感受野，以增强对局部上下文的建模能力，如式~\eqref{eq:ch3-conv1}所示：
+设输入代价体为$X$。该模块首先通过深度卷积扩大感受野，以增强对局部上下文的建模能力，如式~\eqref{eq:ch3-conv1}所示：
 \begin{equation}\label{eq:ch3-conv1}
 X_1=DWConv_{7\times 7}(X)
 \end{equation}
@@ -189,15 +191,15 @@ Y=X+X_5
 
 （3）网络整体结构
 
-现在描述整个HAGVNet架构，它由五个组件组成：特征提取、代价计算、代价聚合、视差回归和损失函数。
+综合上述设计，本文提出的HAGVNet主要由特征提取、代价体构建、代价聚合、视差回归和损失函数五个部分组成。
 
 1）多尺度特征提取
 
-设输入左右图像分别为与。本文采用在ImageNet\cite{dengImagenetLargescaleHierarchical2009a}上预训练的MobileNetV2\cite{sandlerMobilenetv2InvertedResiduals2018}作为骨干网络，对输入图像进行逐级下采样以提取多尺度结构与纹理特征。在骨干网络输出的基础上，引入双向特征金字塔（BiFPN\cite{tanEfficientdetScalableEfficient2020b}），用于在高、低分辨率特征之间进行有效的信息融合，从而增强多尺度几何结构的一致性。最终在与分辨率下分别获得左右图像的特征图与，并分别用于细尺度与粗尺度代价体的构建。
+设输入左右图像分别为$I_l$与$I_r$。本文采用在ImageNet\cite{dengImagenetLargescaleHierarchical2009a}上预训练的MobileNetV2\cite{sandlerMobilenetv2InvertedResiduals2018}作为骨干网络，对输入图像进行逐级下采样以提取多尺度结构与纹理特征。在骨干网络输出的基础上，引入双向特征金字塔（BiFPN\cite{tanEfficientdetScalableEfficient2020b}），用于在高、低分辨率特征之间进行有效的信息融合，从而增强多尺度几何结构的一致性。最终在$1/4$与$1/8$分辨率下分别获得左右图像的特征图，并分别用于细尺度与粗尺度代价体的构建。
 
 2）代价体构建
 
-设用于构建代价体的左右特征分别为和，对应的视差搜索范围为，在该视差范围内，对于每个视差，将右特征在水平方向平移个像素，并与左特征逐通道计算归一化相似度。代价体定义如式~\eqref{eq:ch3-cost}所示：
+设用于构建代价体的左右特征分别为$F_l$和$F_r$，对应的视差搜索范围为$d\in[0,D_{\max}-1]$。在该范围内，对于每个视差$d$，将右特征在水平方向平移$d$个像素，并与左特征逐通道计算归一化相似度。代价体定义如式~\eqref{eq:ch3-cost}所示：
 \begin{equation}\label{eq:ch3-cost}
 C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
 \end{equation}
@@ -225,7 +227,7 @@ C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
 
 4）视差回归
 
-在完成代价聚合后，对代价体采用soft-argmax操作预测最终视差图。具体而言，首先对每个像素位置上所有视差对应的代价施加softmax归一化，得到视差概率分布，如式~\eqref{eq:ch3-prob}所示：
+在完成代价聚合后，对代价体采用soft-argmax操作预测最终视差图。具体而言，首先对每个像素位置处所有视差对应的代价值施加softmax归一化，得到视差概率分布，如式~\eqref{eq:ch3-prob}所示：
 \begin{equation}\label{eq:ch3-prob}
 p(d\mid x,y)=\frac{\exp[-C(x,y,d)]}{\sum_{k=0}^{D_{\max}-1}\exp[-C(x,y,k)]}
 \end{equation}
@@ -237,7 +239,7 @@ d(x,y)=\sum_{d=0}^{D_{\max}-1} d\cdot p(d\mid x,y)
 
 5）损失函数
 
-首先定义单尺度视差预测的基本损失形式。设真实视差为，视差回归为，在共有个有效像素的位置上，采用Smooth L1损失度量二者之间的差异，如式~\eqref{eq:ch3-loss-single}所示：
+首先定义单尺度视差预测的基本损失形式。设预测视差为$d$，真实视差为$d^*$，在共有$N$个有效像素的位置上，采用Smooth L1损失度量二者之间的差异，如式~\eqref{eq:ch3-loss-single}所示：
 \begin{equation}\label{eq:ch3-loss-single}
 L(d,d^*)=\frac{1}{N}\sum_{i=1}^{N}\mathrm{SmoothL1}(d_i-d_i^*)
 \end{equation}
@@ -247,7 +249,7 @@ L(d,d^*)=\frac{1}{N}\sum_{i=1}^{N}\mathrm{SmoothL1}(d_i-d_i^*)
 & $d_i^*$ & 第$i$个像素的真实视差。\\
 \end{tabularx}\vspace{3.15bp}
 
-在此基础上，模型采用粗尺度与最终尺度的联合监督策略，以进一步提升几何一致性与训练稳定性。设最终尺度视差预测为，粗尺度视差预测为，则联合损失写为式~\eqref{eq:ch3-loss-total}
+在此基础上，模型采用粗尺度与最终尺度的联合监督策略，以进一步提升几何一致性与训练稳定性。设最终尺度视差预测为$d$，粗尺度视差预测为$d_{\text{coarse}}$，则联合损失写为式~\eqref{eq:ch3-loss-total}：
 \begin{equation}\label{eq:ch3-loss-total}
 L_{\text{total}}=L(d,d^*)+\lambda L(d_{\text{coarse}},d^*)
 \end{equation}
@@ -258,9 +260,11 @@ L_{\text{total}}=L(d,d^*)+\lambda L(d_{\text{coarse}},d^*)
 
 其中$\lambda$在训练阶段用于引入额外的几何先验约束。
 
+综上，本文提出的HAGVNet围绕粗尺度几何先验引导细尺度匹配这一核心思路，对代价体构建、聚合与监督方式进行了统一设计。其中，HAGV模块用于增强弱纹理、重复纹理及遮挡区域的匹配稳定性，ConvNeXtV2风格聚合块用于在有限计算开销下提升特征表达能力，联合监督策略则进一步保证训练过程的稳定性。上述设计共同构成了本文双目感知模块的核心基础，并为后续训练配置、消融实验、对比分析以及整车测距应用提供了方法支撑。
+
 \subsection{立体匹配模型的训练及评价指标}
 
-为验证所构建立体匹配模型的有效性与泛化能力，本文采用“合成数据预训练+真实数据微调”的两阶段训练策略，并结合主流评价指标对模型性能进行定量分析。
+为验证上述轻量化立体匹配模型的有效性与泛化能力，本文采用“合成数据预训练+真实数据微调”的两阶段训练策略，并结合主流评价指标对模型性能进行定量分析。相关训练配置与评价标准不仅用于考察模型的匹配性能，也作为后文消融实验、对比实验及嵌入式部署分析的统一实验依据。
 
 （1）预训练阶段
 
@@ -274,7 +278,7 @@ EPE=\frac{1}{N}\sum_{i=1}^{N}\left|d_i^{pred}-d_i^{gt}\right|
 & $d_i^{gt}$ & 第$i$个像素对应的真实视差。\\
 \end{tabularx}\vspace{3.15bp}
 
-EPE实质为像素级视差绝对误差的平均值，能够直接反映整体匹配精度。预训练阶段批量大小设为 12，优化器采用 AdamW，学习率调度策略为OneCycleLR，最大学习率设为 ，共训练90个轮次，数据增强方式以随机裁剪为主。
+EPE实质为像素级视差绝对误差的平均值，能够直接反映整体匹配精度。预训练阶段批量大小设为12，优化器采用AdamW，学习率调度策略为OneCycleLR，共训练90个轮次，数据增强方式以随机裁剪为主。
 
 （2）微调与测试阶段
 
@@ -291,9 +295,9 @@ D1\text{-all}=\frac{\left|\left\{i:\left|d_i^{pred}-d_i^{gt}\right|>3\ \text{or}
 
 $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱纹理及动态场景下的鲁棒性。
 
-微调阶段训练500个轮次，批量大小设为2，继续采用OneCycleLR调度策略，最大学习率设为。同时引入颜色抖动、随机擦除、随机缩放与随机裁剪等数据增强方法，以提升模型对复杂真实环境的适应能力。
+微调阶段训练500个轮次，批量大小设为2，继续采用OneCycleLR调度策略。同时引入颜色抖动、随机擦除、随机缩放与随机裁剪等数据增强方法，以提升模型对复杂真实环境的适应能力。
 
-通过上述指标的公式化定义与分阶段训练策略，可系统评价模型在精度与鲁棒性方面的综合表现。
+通过上述评价指标与分阶段训练策略，可系统分析模型在精度、鲁棒性及真实场景泛化能力方面的表现，并为后续消融实验和方法对比验证提供依据。
 
 \subsection{立体匹配模型实验结果与分析}
 
@@ -455,7 +459,9 @@ YOLO11n的整体结构如图\ref{YOLO11n整体结构}所示，主要包括以下
 
 \subsection{目标检测模型的训练及评价指标}
 
-本研究使用Win10操作系统，显卡型号为Nvidia GeForce RTX 4090 32GB，处理器型号为Intel(R) Core(TM) i5-9600KF CPU @ 3.80GHz 3.79 GHz，深度学习框架采用PyTorch1.9，编程平台为PyCharm，编程语言为Python3.8，所有对比算法均在相同环境下运行。
+为验证所选YOLO11n目标检测模型在本文障碍物识别任务中的检测性能，并为后续目标空间定位与测距融合提供可靠的前端感知结果，本文对目标检测模型的训练过程及评价指标进行统一说明。模型训练与对比实验均在相同软硬件环境下完成，具体包括：Win10操作系统、NVIDIA GeForce RTX 4090显卡、Intel Core i5-9600KF处理器，深度学习框架采用PyTorch 1.9，编程语言为Python 3.8。
+
+在目标检测任务中，常用评价指标包括精确率（Precision）、召回率（Recall）和平均精度均值（mAP）。其中，精确率表示预测为正样本的目标中真正为正样本的比例，如式~\eqref{eq:ch3-precision}所示：
 \begin{equation}\label{eq:ch3-precision}
 Precision=\frac{TP}{TP+FP}
 \end{equation}
@@ -465,7 +471,7 @@ Precision=\frac{TP}{TP+FP}
 Recall=\frac{TP}{TP+FN}
 \end{equation}
 
-在式~\eqref{eq:ch3-precision}和式~\eqref{eq:ch3-recall}中使用的符号说明如下。$mAP$就是对所有类别的平均精度值求平均值，如式~\eqref{eq:ch3-map}所示。
+在式~\eqref{eq:ch3-precision}和式~\eqref{eq:ch3-recall}中使用的符号说明如下。$mAP$表示各类别平均精度（Average Precision, AP）的均值，用于综合评价模型在多类别检测任务中的整体性能，如式~\eqref{eq:ch3-map}所示。
 \begin{equation}\label{eq:ch3-map}
 mAP=\frac{1}{N}\sum_{c=1}^{N} AP_c
 \end{equation}
@@ -477,7 +483,7 @@ mAP=\frac{1}{N}\sum_{c=1}^{N} AP_c
 & $AP_c$ & 第$c$类在Precision-Recall曲线下的面积。\\
 \end{tabularx}\vspace{3.15bp}
 
-\subsection{目标检测模型实验结果与分析}
+上述评价指标可从检测准确性、召回能力及整体识别性能三个方面对YOLO11n进行量化分析，并为后续目标空间定位提供前端感知质量依据。
 
 \section{基于双目视觉的目标空间定位算法研究}
 
