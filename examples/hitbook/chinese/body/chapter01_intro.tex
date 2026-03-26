@@ -6,7 +6,7 @@
 
 随着智能化技术的快速发展，城市公园、景区、社区等封闭场景对休闲代步工具的需求持续增长。用户对低速、安全、稳定且可随时召唤的智能交通工具需求尤为突出。然而，传统代步工具在上述环境中往往难以同时兼顾灵活性、安全性与便捷性。在此背景下，两轮平衡车凭借结构紧凑、操控灵活等优势，成为公园场景中的重要候选方案。如何保障两轮平衡车在复杂场景下的稳定行驶并实现可靠环境感知，已成为该领域的重要研究问题。
 
-为实现灵活、安全与舒适的综合目标，两轮平衡车的结构设计至关重要。当前常见方案包括以轮系控制为核心的Segway式平衡车、由Segway演化而来的变结构两轮车、通过重心调节实现平衡的结构，以及采用控制力矩陀螺（Control Moment Gyroscope, CMG）的倒立摆机器人等。Segway式结构技术成熟、操控性较好，但平衡过程依赖车体位移，在静态保持和抗冲击能力方面存在局限；变结构方案提升了形态灵活性，但系统稳定性仍需加强；CMG方案具备更精细的姿态调节能力，但存在能耗和噪声较高等问题。总体而言，现有结构在灵活性、安全性与乘坐舒适性之间仍难兼顾，亟需面向应用场景开展进一步优化研究。
+为实现灵活、安全与舒适的综合目标，两轮平衡车的结构设计至关重要。当前常见方案包括以轮系控制为核心的Segway式平衡车、由Segway演化而来的变结构两轮车、通过重心调节实现平衡的结构，以及采用控制力矩陀螺CMG（Control Moment Gyroscope）的倒立摆机器人等。Segway式结构技术成熟、操控性较好，但平衡过程依赖车体位移，在静态保持和抗冲击能力方面存在局限；变结构方案提升了形态灵活性，但系统稳定性仍需加强；CMG方案具备更精细的姿态调节能力，但存在能耗和噪声较高等问题。总体而言，现有结构在灵活性、安全性与乘坐舒适性之间仍难兼顾，亟需面向应用场景开展进一步优化研究。
 
 为确保两轮平衡车在复杂环境中准确感知障碍物并及时响应，环境感知技术是系统关键。当前主流方案包括激光雷达、毫米波雷达、ToF（Time of Flight）传感器和双目相机。激光雷达精度高但成本较高；毫米波雷达抗干扰能力强，尤其在恶劣天气下表现较好，但在复杂场景中的分辨率和细节表达能力有限；ToF传感器则易受光照与天气条件影响。综合成本、精度与鲁棒性等因素，双目视觉方案凭借视差测深能力和较高性价比，结合深度学习后可有效提升障碍物检测精度与鲁棒性，已成为复杂场景感知的重要研究方向。
 
@@ -15,11 +15,11 @@
 \section{国内外研究现状}
 \subsection{两轮平衡车结构的国内外研究现状}
 
-两轮平衡车的结构研究始终围绕“如何在有限尺寸和载荷条件下实现稳定平衡、灵活机动与安全乘行”这一核心问题展开。现有研究既包括基于倒立摆原理的同轴双轮结构，也包括通过引入力矩陀螺、可变重心与变结构机构提升姿态稳定性的方案，以及面向复杂地形和多任务需求的轮腿融合与高机动平台。不同结构方案在平衡机理、控制复杂度、能耗水平和工程实现难度等方面各有侧重，这也构成了国内外研究持续推进的重要方向。
+两轮平衡车的结构研究始终围绕“如何在有限尺寸和载荷条件下实现稳定平衡、灵活机动与安全乘行”这一核心问题展开。现有研究既包括基于倒立摆原理的同轴双轮结构，也包括通过引入控制力矩陀螺、可变重心与变结构机构提升姿态稳定性的方案，以及面向复杂地形和多任务需求的轮腿融合与高机动平台。不同结构方案在平衡机理、控制复杂度、能耗水平和工程实现难度等方面各有侧重，这也构成了国内外研究持续推进的重要方向。
 
 从研究脉络看，早期工作主要聚焦于验证两轮或独轮机器人在动力学意义上的可平衡性，并通过陀螺效应、反馈控制和系统建模奠定理论基础。随后，随着传感器、驱动器和控制算法的发展，Segway式载人平台和直立自平衡机器人逐步走向工程化实现。近年来，研究进一步拓展至可变结构、可变重心、CMG稳定机构以及轮腿复合构型等方向，更加关注静态平衡能力、复杂工况适应性与乘坐安全性之间的综合权衡。基于此，以下结合代表性工作，对两轮平衡车结构设计方向的研究进展进行梳理。
 
-1912年，英国学者提出了基于力矩陀螺保持平衡的两轮车概念。1988年，相关研究进一步发展为能够在运动过程中保持平衡的自行车机器人，通过配置一对控制力矩陀螺产生稳定力矩以维持车身姿态。上述工作验证了陀螺效应在平衡自行车机器人中的可行性\cite{ChenBaoTuoLuoJiaoSuDuKongZhiXiaDeDanCheLiangLunCheZiPingHengYanJiu2024}。
+1912年，英国学者提出了基于控制力矩陀螺保持平衡的两轮车概念。1988年，相关研究进一步发展为能够在运动过程中保持平衡的自行车机器人，通过配置一对控制力矩陀螺产生稳定力矩以维持车身姿态。上述工作验证了陀螺效应在平衡自行车机器人中的可行性\cite{ChenBaoTuoLuoJiaoSuDuKongZhiXiaDeDanCheLiangLunCheZiPingHengYanJiu2024}。
 
 较早实现工程化并产生广泛影响的两轮平衡车代表是Segway。其概念可追溯至1985年日本电通大学的相关构想，但受限于当时的硬件条件与控制理论，早期研发效果有限。进入21世纪后，Segway在国外逐步实现商业化，并在实际应用中取得较大成功\cite{ZhengJiaQiuJuYouKongZhiLiJuTuoLuoDeLiangLunCheJiQiRenYunDongGuiJiKongZhiFenXiYanJiu2022}。
 
@@ -36,7 +36,7 @@
 
 2009年，北京工业大学阮晓钢、赵建伟研究了直立式自平衡两轮机器人，并在控制系统中引入PWM（Pulse-width Modulation）直流伺服方案。该研究基于Matlab设计LQR（Linear Quadratic Regulator）平衡控制器，并开展数值仿真与实物实验，结果表明该机器人能够实现直立平衡行走\cite{RuanXiaoGangJiYuPWMSiFuKongZhiJiLQRDeLiangLunZiPingHengYiDongJiQiRen2009}。
 
-2005年，日本千叶大学Minh-Quan DAO和Kang-Zhi LIU等在独轮车基础上增设了一对上下分布的力矩陀螺。两个陀螺以相反角速度高速旋转，通过反向进动产生陀螺力矩以维持侧向平衡，并通过车轮驱动力矩实现俯仰平衡。该研究采用拉格朗日方法建模，并使用LQR、$H_\infty$及常数限$H_\infty$等控制方法，实验实现了姿态控制和纵向轨迹控制\cite{daoGainScheduledStabilizationControl2005}，其模型如图~\ref{fig:力矩陀螺独轮车}所示。
+2005年，日本千叶大学Minh-Quan DAO和Kang-Zhi LIU等在独轮车基础上增设了一对上下分布的控制力矩陀螺。两个陀螺以相反角速度高速旋转，通过反向进动产生陀螺力矩以维持侧向平衡，并通过车轮驱动力矩实现俯仰平衡。该研究采用拉格朗日方法建模，并使用LQR、$H_\infty$及常数限$H_\infty$等控制方法，实验实现了姿态控制和纵向轨迹控制\cite{daoGainScheduledStabilizationControl2005}，其模型如图~\ref{fig:控制力矩陀螺独轮车}所示。
 
 \begin{figure}[h]
   \centering
@@ -50,8 +50,8 @@
   \begin{minipage}[t]{0.48\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter01/力矩陀螺的独轮车.png}
-    \caption{力矩陀螺的独轮车\cite{daoGainScheduledStabilizationControl2005}}
-    \label{fig:力矩陀螺独轮车}
+    \caption{控制力矩陀螺独轮车\cite{daoGainScheduledStabilizationControl2005}}
+    \label{fig:控制力矩陀螺独轮车}
   \end{minipage}
 \end{figure}
 
@@ -66,7 +66,7 @@
   \label{fig:变结构两轮车样机}
 \end{figure}
 
-2012年，美国加州Lit Motor公司推出了两轮电动摩托车概念产品C-1，如图~\ref{fig:LitMotor内部结构}所示\cite{C1SelfbalancingElectric}。该车采用全封闭外观，并在底盘增设一对高速旋转的力矩陀螺，使其在停止、行驶和转弯过程中保持车身稳定。
+2012年，美国加州Lit Motor公司推出了两轮电动摩托车概念产品C-1，如图~\ref{fig:LitMotor内部结构}所示\cite{C1SelfbalancingElectric}。该车采用全封闭外观，并在底盘增设一对高速旋转的控制力矩陀螺，使其在停止、行驶和转弯过程中保持车身稳定。
 
 \begin{figure}[h]
   \centering
@@ -77,7 +77,7 @@
 
 2015年，戴福全在北京理工大学设计并研制了具有多自由度和可变重心的两轮机器人，如图~\ref{fig:可变重心两轮机器人}所示\cite{DaiFuQuanDuoZiYouDuLiangLunZiPingHengJiQiRenJiShuYanJiu2015}。该机器人采用卡尔曼滤波与摩擦补偿等方法实现滑模控制，进一步提升了系统控制性能。
 
-2016年，泰国亚洲理工学院Surachat Chantarachit、Manukid Parnichkun等人设计了具备力矩陀螺机构的独轮车机器人，如图~\ref{fig:亚洲理工独轮车机器人}所示。该方案在左右两侧布置两个力矩陀螺，通过控制力矩陀螺实现侧向平衡，并利用车轮驱动力矩实现俯仰平衡\cite{chantarachitDevelopmentControlUnicycle2016}。
+2016年，泰国亚洲理工学院Surachat Chantarachit、Manukid Parnichkun等人设计了具备控制力矩陀螺机构的独轮车机器人，如图~\ref{fig:亚洲理工独轮车机器人}所示。该方案在左右两侧布置两个控制力矩陀螺，通过控制力矩陀螺实现侧向平衡，并利用车轮驱动力矩实现俯仰平衡\cite{chantarachitDevelopmentControlUnicycle2016}。
 
 \begin{figure}[h]
   \centering
@@ -129,7 +129,7 @@
 
 2023年，Ahmed Ami和Moustafa A. Fouz等人设计了一种配置剪刀式成对控制力矩陀螺的两轮倒立摆机器人，旨在通过车轮驱动力矩维持稳定倾角\cite{aminLQRStabilityControl2023}。该研究将数学模型划分为稳定性子系统和运动性子系统，其中稳定性子系统在零状态附近线性化得到状态空间模型，并采用LQR优化全状态反馈增益以实现平衡；运动子系统则独立完成力矩控制。
 
-2024年，Gökhan Çetin通过拉格朗日方程推导了CMG机器人的运动方程，并利用Matlab模拟未受控陀螺的平衡性能，以确定机电系统设计的期望配置。随后，该研究将LQR应用于选定的CMG配置，并在RecurDyn仿真中进行比较，其所设计的结构如图~\ref{fig:GokhanCetin力矩控制陀螺两轮机器人}所示。LQR控制器被用于抑制武器后坐力作用下双CMG的振荡运动。仿真结果表明，采用LQR控制器的陀螺两轮机器人在静态条件下表现出较好的平衡性能\cite{cetinGyroscopicPrecessionControl2024}。
+2024年，Gökhan Çetin通过拉格朗日方程推导了CMG机器人的运动方程，并利用Matlab模拟未受控CMG的平衡性能，以确定机电系统设计的期望配置。随后，该研究将LQR应用于选定的CMG配置，并在RecurDyn仿真中进行比较，其所设计的结构如图~\ref{fig:GokhanCetinCMG两轮机器人}所示。LQR控制器被用于抑制武器后坐力作用下双CMG的振荡运动。仿真结果表明，采用LQR控制器的CMG两轮机器人在静态条件下表现出较好的平衡性能\cite{cetinGyroscopicPrecessionControl2024}。
 
 \begin{figure}[h]
   \centering
@@ -144,8 +144,8 @@
   \begin{minipage}[t]{0.30\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter01/GokhanCetin设计的力矩控制陀螺两轮机器人.png}
-    \caption{Gökhan Çetin设计的力矩控制陀螺两轮机器人\cite{cetinGyroscopicPrecessionControl2024}}
-    \label{fig:GokhanCetin力矩控制陀螺两轮机器人}
+    \caption{Gökhan Çetin设计的CMG两轮机器人\cite{cetinGyroscopicPrecessionControl2024}}
+    \label{fig:GokhanCetinCMG两轮机器人}
   \end{minipage}
 \end{figure}
 \FloatBarrier
@@ -289,7 +289,7 @@
 
 \subsection{国内外研究现状综述}
 
-总体来看，两轮平衡车相关研究在结构设计方面已形成较成熟的技术路线：Segway式结构工程实现成熟、成本较低，适合常规代步应用；CMG力矩控制结构具备静态平衡和抗冲击优势，但系统复杂度、能耗和控制约束较高。现阶段研究趋势是面向具体任务场景进行结构与控制协同优化，在稳定性、能效与工程可维护性之间取得平衡。
+总体来看，两轮平衡车相关研究在结构设计方面已形成较成熟的技术路线：Segway式结构工程实现成熟、成本较低，适合常规代步应用；CMG结构具备静态平衡和抗冲击优势，但系统复杂度、能耗和控制约束较高。现阶段研究趋势是面向具体任务场景进行结构与控制协同优化，在稳定性、能效与工程可维护性之间取得平衡。
 
 在环境感知方面，基于双目视觉的障碍物感知已由传统几何方法发展到深度学习主导的方法体系，并进一步向实时化、轻量化和跨场景泛化方向演进。国内外研究均表明，“立体匹配与目标识别融合”是提升感知性能的有效路径，但在复杂光照、弱纹理、动态遮挡等条件下，仍存在误检漏检与测距波动问题。对于嵌入式平台而言，感知算法的精度、速度和资源开销仍需统筹优化。
 
