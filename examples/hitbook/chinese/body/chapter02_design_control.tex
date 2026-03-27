@@ -63,7 +63,7 @@
     \multirow{4}{*}{运动性能} & 额定载荷 & 75kg \\
      & 最大运动速度 & 15km/h \\
      & 最大加速度 & 2m/s2 \\
-     & 爬坡性能 & 15° \\
+     & 爬坡性能 & $15^\circ$ \\
     \bottomrule
   \end{thesistabular}
 \end{table}
@@ -178,17 +178,20 @@ L = I_y \omega_y \mathbf{e}_y
 T_G = m_c g h_c \sin\beta + m_p g h_p \sin\beta
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $m_c$ & 平衡车自重；\\
-& $h_c$ & 平衡车重心高度；\\
-& $m_p$ & 人体质量；\\
-& $h_p$ & 人体乘坐时重心高度。\\
+式中& $T_G$ & 重力矩（N$\cdot$m）；\\
+& $m_c$ & 平衡车自重（kg）；\\
+& $h_c$ & 平衡车重心高度（m）；\\
+& $m_p$ & 人体质量（kg）；\\
+& $h_p$ & 人体乘坐时重心高度（m）；\\
+& $g$ & 重力加速度（m/s$^2$）；\\
+& $\beta$ & 平衡车前后方向倾斜角度（$^\circ$）。\\
 \end{tabularx}\vspace{3.15bp}
 
 根据总体结构设计，估算$m_c=70\,\mathrm{kg}$，$h_c=0.42\,\mathrm{m}$，取$m_p=75\,\mathrm{kg}$，$h_p=0.85\,\mathrm{m}$，当$\beta=20^\circ$时代入计算得$T_G=312.64\,\mathrm{N\cdot m}$。所以稳定模块产生的控制力矩应不小于$312.64\,\mathrm{N\cdot m}$。
 
-陀螺装置为根据车内空间设计的定制产品，其飞轮绕自转轴的转动惯量为$I_y=0.09\,\mathrm{kg/m^2}$，内部高速电机额定转速$\omega_y=471.24\,\mathrm{rad/s}$（4500rpm），CMG倾角$\theta=10^\circ$。由式~\eqref{eq:ch2-cmg-double}计算得进动角速度应不小于$3.75\,\mathrm{rad/s}$（35.81rpm）。
+陀螺装置为根据车内空间设计的定制产品，其飞轮绕自转轴的转动惯量为$I_y=0.09\,\mathrm{kg\cdot m^2}$，内部高速电机额定转速$\omega_y=471.24\,\mathrm{rad/s}$（$4500\,\mathrm{r/min}$），CMG倾角$\theta=10^\circ$。由式~\eqref{eq:ch2-cmg-double}计算得进动角速度应不小于$3.75\,\mathrm{rad/s}$（$35.81\,\mathrm{r/min}$）。
 
-设进动角速度为$\omega_z=3.77\,\mathrm{rad/s}$（36rpm），为达到100Hz的控制周期，故需要在$0.01\,\mathrm{s}$的时间内加速到目标转速，其加速功率计算公式：
+设进动角速度为$\omega_z=3.77\,\mathrm{rad/s}$（$36\,\mathrm{r/min}$），为达到$100\,\mathrm{Hz}$的控制周期，故需要在$0.01\,\mathrm{s}$的时间内加速到目标转速，其加速功率计算公式：
 \begin{equation}
 P_{\alpha} = \frac{\omega_z^2 J_z}{2 t_{\alpha}}
 \label{eq:ch2-power-acc}
@@ -196,7 +199,7 @@ P_{\alpha} = \frac{\omega_z^2 J_z}{2 t_{\alpha}}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $P_{\alpha}$ & 加速功率（W）；\\
 & $\omega_z$ & 进动角速度（rad/s）；\\
-& $J_z$ & 陀螺绕进动轴的转动惯量（kg/m$^2$）；\\
+& $J_z$ & 陀螺绕进动轴的转动惯量（kg$\cdot$m$^2$）；\\
 & $t_{\alpha}$ & 加速时间（s）。\\
 \end{tabularx}\vspace{3.15bp}
 
@@ -206,7 +209,7 @@ P = P_{\alpha}(1 + S)
 \label{eq:ch2-power-rated}
 \end{equation}
 
-由式~\eqref{eq:ch2-power-acc}和式~\eqref{eq:ch2-power-rated}计算得进动电机的额定功率应大于34.82W。
+由式~\eqref{eq:ch2-power-acc}和式~\eqref{eq:ch2-power-rated}计算得进动电机的额定功率应大于$34.82\,\mathrm{W}$。
 
 电机所需的转矩$T$为：
 \begin{equation}
@@ -226,7 +229,7 @@ T = \frac{J_z \omega_z}{t_{\alpha}}
     \toprule
     型号 & 额定电压 & 额定转速 & 额定扭矩 & 峰值扭矩 & 额定功率 \\
     \midrule
-    RobStride03 & 48V & 180RPM & 20Nm & 60Nm & 380w \\
+    RobStride03 & $48\,\mathrm{V}$ & $180\,\mathrm{r/min}$ & $20\,\mathrm{N\cdot m}$ & $60\,\mathrm{N\cdot m}$ & $380\,\mathrm{W}$ \\
     \bottomrule
   \end{thesistabular}
 \end{table}
@@ -385,7 +388,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 稳定模块的陀螺框架主要承受陀螺装置产生的控制扭矩以及其重量。陀螺框架、回形架和车体框架均采用6061铝合金，其密度为2.70g/cm³，泊松比0.33，杨氏模量为68.9GPa。
 
-设进动角速度为 $\omega_z = 4.17\,\mathrm{rad/s}$（$40\,\mathrm{rpm}$），由式~\eqref{eq:ch2-cmg-double}计算得控制扭矩353.71N·m，陀螺装置及进动电机的总重量234.459N。在陀螺框架两侧的上下连接轴安装位置施加扭矩及重力载荷，并添加标准地球重力。在空心轴孔处设置了圆柱形约束，限制其径向和切向位移；在丝杠孔处则施加了轴向位移约束。仿真分析结果如图\ref{陀螺框架等效应力图}和图\ref{陀螺框架总变形图}所示，最大等效应力出现在丝杠孔附近，为23.142MPa，远小于材料的屈服强度276MPa。最大变形发生在上端连接轴安装位置的边缘，仅为0.10mm，变形量极小，对整体结构性能影响可忽略不计。
+设进动角速度为 $\omega_z = 4.17\,\mathrm{rad/s}$（$40\,\mathrm{r/min}$），由式~\eqref{eq:ch2-cmg-double}计算得控制扭矩$353.71\,\mathrm{N\cdot m}$，陀螺装置及进动电机的总重量$234.459\,\mathrm{N}$。在陀螺框架两侧的上下连接轴安装位置施加扭矩及重力载荷，并添加标准地球重力。在空心轴孔处设置了圆柱形约束，限制其径向和切向位移；在丝杠孔处则施加了轴向位移约束。仿真分析结果如图\ref{陀螺框架等效应力图}和图\ref{陀螺框架总变形图}所示，最大等效应力出现在丝杠孔附近，为23.142MPa，远小于材料的屈服强度276MPa。最大变形发生在上端连接轴安装位置的边缘，仅为0.10mm，变形量极小，对整体结构性能影响可忽略不计。
 
 \begin{figure}[h]
   \centering
@@ -508,7 +511,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 在控制系统主控芯片的选型中，重点从接口资源和控制能力两方面进行考量。接口方面，系统需通过网口采用UDP协议与上位机通信；同时需多个串口与手柄接收机、姿态传感器等模块通信，以及CAN接口以连接多个电机驱动器；此外，还需PWM通道控制丝杠电机，以及若干GPIO用于读取光电开关等传感器信号。控制方面，系统需要较强的实时处理能力和稳定的数据处理性能，以满足姿态计算和运动控制等任务。综合上述需求，最终选用挑选科鑫STM32F407ZGT6工控板作为控制器。该芯片集成网口、UART、双路CAN、丰富的PWM和GPIO资源，并搭载168MHz的Cortex-M4内核，配备1MB Flash和192KB SRAM，能够满足系统在通信、控制与实时性方面的各项要求。
 
-姿态传感器需满足车辆对高频率、高精度姿态感知的需求。在本系统中，选用惯性测量单元（IMU）作为姿态传感器。IMU由三轴加速度计、三轴陀螺仪和三轴磁力计组成，通过对线加速度、角速度以及磁场等原始数据的采集，结合内置融合算法，实时计算出车辆的姿态角和角速度信息。综合考虑精度、响应速度、算法性能及系统兼容性，选用Wheeltec-H30惯性导航模块，其具备200Hz输出频率、0.1°角度分辨率，内置融合算法，可稳定输出姿态角与角速度，满足动态工况下的测量要求。
+姿态传感器需满足车辆对高频率、高精度姿态感知的需求。在本系统中，选用惯性测量单元（IMU）作为姿态传感器。IMU由三轴加速度计、三轴陀螺仪和三轴磁力计组成，通过对线加速度、角速度以及磁场等原始数据的采集，结合内置融合算法，实时计算出车辆的姿态角和角速度信息。综合考虑精度、响应速度、算法性能及系统兼容性，选用Wheeltec-H30惯性导航模块，其具备200Hz输出频率、$0.1^\circ$角度分辨率，内置融合算法，可稳定输出姿态角与角速度，满足动态工况下的测量要求。
 
 \begin{figure}[h]
   \centering
