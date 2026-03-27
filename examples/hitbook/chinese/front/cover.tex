@@ -68,13 +68,13 @@
 \begin{cabstract}
 近年来，随着智能化出行技术的发展，面向园区、景区、社区等封闭场景的低速载人代步装备受到广泛关注。此类场景具有道路形式多样、行人干扰频繁、安全要求较高等特点，对车辆运行稳定性、环境感知能力以及自主通行能力提出更高要求。
 
-两轮平衡车具有结构紧凑、机动灵活、占用空间小等特点，在低速短距离载人代步场景中具有应用基础。然而，坐姿载人条件下对两轮平衡车姿态稳定性与乘坐舒适性的要求更高，仅依赖倒立摆原理难以保持稳定平衡。与此同时，微型载具普遍受限于成本、功耗与算力条件，因此需要面向嵌入式平台构建轻量化、可部署的测距方案。
+传统两轮平衡车多依赖倒立摆原理实现动态平衡，难以兼顾结构稳定性和乘坐舒适性；基于双目视觉的障碍物感知方法已由传统几何方法发展到深度学习驱动的双目匹配与目标识别融合，但在嵌入式平台上仍面临感知精度与实时性难以统一的问题；自主行驶与避障研究则不断向动态障碍处理和安全决策优化发展，但在复杂动态环境下的可靠避障能力仍有待提升。
 
-本文围绕两轮平衡车开展总体设计。在机械结构方面，采用对称双控制力矩陀螺布置与车轮倒立摆控制相结合的载人平衡方案，并对关键部件进行强度校核与有限元分析；在控制系统方面，以STM32F407单片机和FreeRTOS软件框架为基础，完成硬件线路设计与软件环境搭建。
+本文围绕两轮平衡车开展总体设计。在机械结构方面，采用对称双控制力矩陀螺布置与车轮倒立摆控制相结合的载人平衡方案，并对关键部件进行强度校核与有限元分析；在控制系统方面，以STM32F407单片机和FreeRTOS软件框架为基础，进行硬件线路设计与搭建软件环境。
 
-在环境感知方面，围绕双目视觉感知开展研究。立体匹配部分提出轻量化HAGVNet模型用于视差估计，其中分层注意力引导代价体用于引入粗尺度几何先验并增强细尺度代价体构建过程中的几何一致性，ConvNeXtV2风格二维代价聚合模块用于提升代价聚合阶段的特征表达能力；目标检测部分采用YOLO11n模型识别典型障碍物，并结合深度图信息实现障碍物检测、测距与空间定位，同时完成立体匹配与目标检测模型的TensorRT加速部署。
+在环境感知方面围绕双目视觉感知开展研究。立体匹配部分提出轻量化HAGVNet模型用于视差估计，其中分层注意力引导代价体用于引入粗尺度几何先验并增强细尺度代价体构建过程中的几何一致性；采用ConvNeXtV2风格二维代价聚合模块，提升代价聚合阶段的特征表达能力；目标检测部分采用YOLO11n模型识别典型障碍物，并结合深度图信息实现障碍物检测、测距与空间定位，同时完成立体匹配与目标检测模型的TensorRT加速部署。
 
-在自主导航方面，基于ROS构建两轮平衡车自主导航系统。定位部分采用卡尔曼滤波融合GPS、IMU和轮速计信息进行位姿估计；导航部分采用Dijkstra算法进行全局路径规划，采用TEB算法进行局部轨迹优化与动态避障；感知部分采用人工势场中斥力场的思想，将障碍物列表映射至局部代价地图并参与路径规划。
+基于ROS构建两轮平衡车自主导航系统。定位部分采用卡尔曼滤波融合GPS、IMU和轮速计信息进行位姿估计；导航部分采用Dijkstra算法进行全局路径规划，采用TEB算法进行局部轨迹优化与动态避障；感知部分基于人工势场中斥力场的思想，将障碍物列表映射至局部代价地图并参与路径规划。
 
 通过基本行驶性能、双目视觉环境感知和闭环避障实验，对两轮平衡车系统进行验证。实验结果表明，所设计两轮平衡车具备基本行驶、环境感知与自主避障能力，实现了感知、规划与控制闭环运行。
 \end{cabstract}
@@ -82,7 +82,7 @@
 \begin{eabstract}
 In recent years, with the development of intelligent mobility technologies, low-speed manned vehicles for enclosed scenarios such as parks, scenic areas, and communities have attracted increasing attention. These scenarios are characterized by diverse road conditions, frequent pedestrian interference, and high safety requirements, which place higher demands on vehicle motion stability, environmental perception, and autonomous traveling capability.
 
-The two-wheeled self-balancing vehicle features a compact structure, good maneuverability, and a small footprint, and therefore has application potential in low-speed short-distance manned transportation. However, under seated manned conditions, higher requirements are imposed on attitude stability and ride comfort, and it is difficult to maintain stable balance by relying only on the inverted-pendulum principle. Meanwhile, micro vehicles are generally constrained by cost, power consumption, and computing resources, which makes it necessary to develop lightweight and deployable ranging solutions for embedded platforms.
+Traditional two-wheeled self-balancing vehicles mainly rely on the inverted-pendulum principle to maintain dynamic balance, and it remains difficult to jointly achieve structural stability and ride comfort. Stereo-vision-based obstacle perception has evolved from traditional geometric methods to deep-learning-based fusion of stereo matching and object recognition, but balancing perception accuracy and real-time performance on embedded platforms is still challenging. Autonomous driving and obstacle avoidance are also advancing toward better handling of dynamic obstacles and safer decision-making, while reliable obstacle avoidance in complex dynamic environments still needs further improvement.
 
 This thesis carries out the overall design of a two-wheeled self-balancing vehicle. In terms of mechanical structure, a manned balancing scheme combining a symmetric dual control moment gyroscope configuration with wheel inverted-pendulum control is adopted, and strength checking and finite-element analysis are performed for key components. In terms of the control system, hardware circuit design and software environment development are completed based on the STM32F407 microcontroller and the FreeRTOS software framework.
 
