@@ -154,15 +154,55 @@
 
 \subsection{基于双目视觉的障碍物感知国内外研究现状}
 
-双轮平衡车的安全性高度依赖障碍物感知能力。双目视觉的障碍物感知技术主线经历了“传统立体匹配与几何规则方法”到“深度学习视差估计与目标检测融合方法”，再到“面向嵌入式部署的实时化、轻量化与泛化增强方法”的演进。早期方法以块匹配、特征匹配和半全局匹配（SGBM）为代表，工程实现简单、解释性强，但在弱纹理、反光、遮挡等场景中稳定性不足；随着深度学习的发展，匹配代价学习、代价体构建与迭代优化逐步成为主流，显著提升了复杂环境下的深度估计精度与障碍检测鲁棒性\cite{zbontarComputingStereoMatching2015,kendallEndtoendLearningGeometry2017a}。
+双轮平衡车的运行安全高度依赖障碍物感知能力。现有研究主要集中于立体匹配技术演进和双目视觉障碍物检测测距应用两个方面。前者侧重深度信息恢复，后者侧重具体场景下的检测、定位与部署实现。
 
-国际上，双目立体匹配研究在2015年后进入快速发展阶段：由学习匹配代价的CNN方法，发展到显式代价体与3D卷积正则化，再演进到以迭代更新、注意力机制和跨域泛化为核心的高性能模型。近年来，实时立体匹配网络与置信度建模技术持续推进双目系统在自动驾驶和机器人中的落地，研究重点从“单纯提升精度”逐步转向“精度-速度-泛化能力”的综合平衡。
+\subsubsection{立体匹配技术研究进展}
 
-从代表性研究看，2015年前后基于CNN学习匹配代价的方法开启了深度双目研究；2017年的GC-Net和2018年的PSMNet确立了“代价体构建+上下文聚合”的主流范式；2021年RAFT-Stereo将迭代优化思想引入立体匹配并取得较好精度与效率平衡；2022年的CREStereo和2023年的IGEV-Stereo进一步提升了复杂场景和实时部署能力；2025年出现的FoundationStereo等工作开始探索大规模预训练与zero-shot泛化能力，体现了双目感知向“基础模型化”和跨域鲁棒方向的发展趋势\cite{kendallEndtoendLearningGeometry2017a,changPyramidStereoMatching2018,lipsonRAFTStereoMultilevelRecurrent2021,liPracticalStereoMatching2022,xuIterativeGeometryEncoding2023,wenFoundationStereoZeroShotStereo2025}。
+立体匹配是双目视觉感知的基础。早期研究主要采用块匹配、特征匹配、动态规划和半全局匹配等方法。其中，Hirschmuller于2008年提出的SGM方法在匹配精度与计算复杂度之间取得了较好平衡，后续工程中广泛应用的SGBM方法即沿袭了这一技术思路\cite{hirschmuller2008stereo,zhangReviewStereoMatching2024}。从处理流程看，传统立体匹配方法主要包括匹配代价构建、代价聚合、视差优化以及后处理与输出等基本环节，其基本流程如图~\ref{fig:传统立体匹配方法流程示意}所示。此类方法具有模型清晰、实现简洁且无需大规模训练数据等优点，但在弱纹理、重复纹理、反光和遮挡区域中易出现误匹配，难以满足复杂环境下高鲁棒深度估计的需求。
 
-国内在该领域的研究更强调面向具体应用场景的工程化实现，尤其在园区车辆、果园车辆、AGV和农业装备等场景中，形成了“目标检测+双目测距”的实用技术路线。2016年，Jonathan David Estilo等人提出模块化障碍物检测系统，将双目立体视觉与运动场分析结合，验证了特征丰富目标的有效检测能力，但在无明显纹理障碍物场景中仍存在不足\cite{estiloObstacleDetectionLocalization2016}。
+\begin{figure}[h]
+  \centering
+  \includesvg[width=0.86\textwidth]{figures/chapter01/传统立体匹配方法流程示意}
+  \caption{传统立体匹配方法流程示意}
+  \label{fig:传统立体匹配方法流程示意}
+\end{figure}
 
-2018年，胡颖等提出基于孪生CNN的视差估计与道路线提取方法，并结合光栅扫描实现障碍物分割，提升了路面障碍识别的召回率与准确率\cite{HuYingJuanJiShenJingWangLuoShuangMuShiJueLuMianZhangAiWuJianCe2018}，如图~\ref{fig:光栅扫描分割障碍物与道路}所示。同年，彭秋辰、宋亦旭提出基于Mask R-CNN的双目目标识别与定位方案，通过实例分割约束匹配区域，提高了准实时定位性能\cite{PengQiuChenJiYuMaskRCNNDeWuTiShiBieHeDingWei2019}，其结果示例如图~\ref{fig:MaskRCNN识别分割示例}所示。
+2015年，Zbontar和LeCun提出利用卷积神经网络学习匹配代价的方法，推动立体匹配由人工设计代价函数向数据驱动特征表征转变\cite{zbontarComputingStereoMatching2015}。2017年，GC-Net将代价体构建、3D卷积正则化和视差回归统一到端到端框架中，显著提升了视差估计精度\cite{kendallEndtoendLearningGeometry2017a}。
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{figures/chapter01/GCNet.png}
+  \caption{GC-Net网络结构示意\cite{kendallEndtoendLearningGeometry2017a}}
+  \label{fig:GCNet网络结构示意}
+\end{figure}
+
+2018年，PSMNet通过空间金字塔池化增强全局上下文建模能力，进一步确立了“特征提取+代价体构建+上下文聚合”的主流范式；同年的StereoNet则面向实时应用提出分层细化策略，反映出该领域开始同时关注精度与速度之间的平衡\cite{changPyramidStereoMatching2018,khamisStereonetGuidedHierarchical2018a}。
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{figures/chapter01/StereoNet.png}
+  \caption{StereoNet网络结构示意\cite{khamisStereonetGuidedHierarchical2018a}}
+  \label{fig:StereoNet网络结构示意}
+\end{figure}
+
+2021年前后，立体匹配研究进一步向全局建模与迭代优化发展。Li等从序列到序列视角引入Transformer思想，增强了长程依赖建模能力；RAFT-Stereo借鉴光流迭代更新机制，在多层相关体上反复优化视差场，在精度与效率之间取得了较好平衡\cite{liRevisitingStereoDepth2021,lipsonRAFTStereoMultilevelRecurrent2021}。2022年，CREStereo通过级联循环网络和自适应相关机制改善了大视差与复杂纹理场景下的匹配效果\cite{liPracticalStereoMatching2022}。
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=1\textwidth]{figures/chapter01/RAFTStereo.png}
+  \caption{RAFT-Stereo迭代更新框架示意\cite{lipsonRAFTStereoMultilevelRecurrent2021}}
+  \label{fig:RAFTStereo迭代更新框架示意}
+\end{figure}
+
+
+2023年，IGEV-Stereo利用迭代几何编码体强化几何先验表达，进一步提升了复杂场景中的稳定性\cite{xuIterativeGeometryEncoding2023}。这一阶段的研究表明，立体匹配方法已由单纯追求估计精度，逐步转向对几何建模能力、计算效率与复杂场景鲁棒性的综合优化。
+
+综上所述，立体匹配研究已经形成了由传统几何约束方法、深度代价体学习方法到迭代优化方法的清晰演进脉络。当前研究重点已不再局限于提升视差估计精度，而是更加重视复杂环境下精度、速度、鲁棒性与泛化能力之间的综合平衡。
+
+\subsubsection{双目视觉在障碍物感知中的应用研究}
+
+在双目视觉应用层面，相关研究主要围绕视差估计与道路结构提取、目标检测、实例分割、目标跟踪及嵌入式部署的融合展开，逐步形成了集识别、测距与定位于一体的障碍物感知技术链路。
+
+2016年，Jonathan David Estilo等人提出模块化障碍物检测系统，将双目立体视觉与运动场分析相结合，表明早期双目应用研究已开始关注障碍物检测与定位一体化问题，但对低纹理目标的适应性仍然有限\cite{estiloObstacleDetectionLocalization2016}。
+
+2018年至2020年，相关研究由路面障碍分割逐步拓展至实例分割约束匹配。胡颖等结合孪生CNN、道路线提取与光栅扫描方法，提高了路面障碍分割效果\cite{HuYingJuanJiShenJingWangLuoShuangMuShiJueLuMianZhangAiWuJianCe2018}，如图~\ref{fig:光栅扫描分割障碍物与道路}所示；彭秋辰、宋亦旭利用Mask R-CNN约束匹配区域，提高了双目目标定位性能，其结果示例如图~\ref{fig:MaskRCNN识别分割示例}所示\cite{PengQiuChenJiYuMaskRCNNDeWuTiShiBieHeDingWei2019}。
 
 \begin{figure}[h]
   \centering
@@ -180,29 +220,11 @@
     \label{fig:MaskRCNN识别分割示例}
   \end{minipage}
 \end{figure}
+\FloatBarrier
 
+2021年以来，双目视觉应用进一步向复杂工况适应、跨平台部署和多传感器融合方向发展。魏建胜等在农业车辆中验证了“目标检测+深度估计”方案的工程可行性\cite{WeiJianShengNongYeCheLiangShuangMuShiJueZhangAiWuGanZhiXiTongSheJiYuShiYan2021}；Liu Siyao等通过三目-双目融合提升了果园场景中的障碍测距精度\cite{liuObstacleAvoidanceOrchard2022}。
 
-2019年，王帅等面向泊车机器人提出双目视觉障碍检测系统，采用双目标定、立体校正和YOLO目标检测联动立体匹配区域，检测平均耗时0.463s、1.4m至2.1m范围误差控制在50mm内\cite{WangShuaiJiYuShuangMuShiJueDeBoCheJiQiRenZhangAiWuJianCeXiTong2019}，其流程如图~\ref{fig:改进立体匹配算法流程图}所示。
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.60\textwidth]{figures/chapter01/改进立体匹配算法流程图.png}
-  \caption{改进立体匹配算法流程图\cite{WangShuaiJiYuShuangMuShiJueDeBoCheJiQiRenZhangAiWuJianCeXiTong2019}}
-  \label{fig:改进立体匹配算法流程图}
-\end{figure}
-
-2020年，寇展开等将深度学习、目标跟踪和双目重建融合用于无人机障碍实时感知，提升了动态环境中的目标定位效果\cite{KouZhanJiYuShenDuXueXiDeDiKongXiaoXingWuRenJiZhangAiWuShiJueGanZhi2020}，如图~\ref{fig:寇展开无人机障碍物实时感知}所示。
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter01/寇展开实现的无人机障碍物实时感知效果.png}
-  \caption{寇展开实现的无人机障碍物实时感知效果\cite{KouZhanJiYuShenDuXueXiDeDiKongXiaoXingWuRenJiZhangAiWuShiJueGanZhi2020}}
-  \label{fig:寇展开无人机障碍物实时感知}
-\end{figure}
-
-2021年以来，国内研究进一步向复杂工况与轻量部署推进。魏建胜等在农业车辆中实现改进YOLOv3与深度估计融合，动态场景深度估计平均误差比4.66\%、平均耗时0.573s\cite{WeiJianShengNongYeCheLiangShuangMuShiJueZhangAiWuGanZhiXiTongSheJiYuShiYan2021}；Liu Siyao等在果园场景中通过三目-双目融合提高了行间导航与障碍测距精度\cite{liuObstacleAvoidanceOrchard2022}。
-
-2022年，王峥等在AGV场景中加入静动态障碍信息估计，提高了避障决策可靠性\cite{WangZhengJiYuShuangMuShiJueDeAGVZhangAiWuJianCeYuBiZhang2018a}。2023年，CAI L和ZHOU C面向强光、夜间、雨雪等条件提出改进YOLOv5+双目立体匹配的杆状障碍物检测方案，在3m至15m范围内距离误差小于7\%\cite{caiBinocularVisionBasedPoleShaped2023}，如图~\ref{fig:杆状障碍物检测方法}所示；陈成坤等在Jetson Xavier NX平台实现双目+YOLOv4实时检测定位，验证了嵌入式部署可行性\cite{ChenChengKunJiYuShuangMuShiJueDeGuoYuanZhangAiWuJianCeYuDingWei2023}，如图~\ref{fig:双目视觉障碍物检测原理图}所示。
+2023年，CAI L和ZHOU C面向强光、夜间和雨雪条件开展杆状障碍物检测研究，将改进YOLOv5与双目立体匹配相结合，在复杂光照条件下提升了细长目标的识别与测距能力，其方法如图~\ref{fig:杆状障碍物检测方法}所示\cite{caiBinocularVisionBasedPoleShaped2023}。
 
 \begin{figure}[h]
   \centering
@@ -211,24 +233,51 @@
   \label{fig:杆状障碍物检测方法}
 \end{figure}
 
+同年，陈成坤等在Jetson Xavier NX平台完成双目视觉与YOLOv4结合的实时检测定位部署，表明双目感知算法已逐步具备在嵌入式平台上落地应用的可行性，其原理如图~\ref{fig:双目视觉障碍物检测原理图}所示\cite{ChenChengKunJiYuShuangMuShiJueDeGuoYuanZhangAiWuJianCeYuDingWei2023}。
+
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.65\textwidth]{figures/chapter01/双目视觉障碍物检测原理图.png}
+  \begin{tikzpicture}[x=1cm,y=1cm,>=stealth]
+    \small
+    \tikzstyle{block}=[draw, rectangle, minimum width=2.7cm, minimum height=1.05cm, inner sep=3pt, align=center]
+
+    \node[block] (camera) at (0,0) {ZED双目相机};
+    \node[block] (ros) at (3.9,0) {ROS系统};
+    \node[block] (rgb) at (7.8,0) {左右两侧\\RGB图像};
+    \node[block] (output) at (0,-2.35) {输出};
+    \node[block] (detect) at (3.9,-2.35) {障碍物检测};
+    \node[block] (yolo) at (7.8,-2.35) {YOLOv4};
+
+    \draw[->, line width=0.8pt] (camera.east) -- (ros.west);
+    \draw[->, line width=0.8pt] (ros.east) -- (rgb.west);
+    \draw[->, line width=0.8pt] (rgb.south) -- (yolo.north);
+    \node[right] at (8.2,-1.18) {左侧图像};
+    \draw[->, line width=0.8pt] (yolo.west) -- (detect.east);
+    \draw[->, line width=0.8pt] (detect.west) -- (output.east);
+
+    \draw[->, line width=0.8pt]
+      (rgb.north) -- ++(0,0.72) -- ++(-3.9,0) -- (ros.north);
+    \node[above] at (5.85,0.72) {深度信息（距离）};
+
+    \draw[->, line width=0.8pt]
+      (ros.south) -- ++(0,-0.65) -- ++(-3.9,0) -- (output.north);
+    \node[above] at (1.95,-1.2) {障碍物信息};
+  \end{tikzpicture}
   \caption{双目视觉障碍物检测原理图\cite{ChenChengKunJiYuShuangMuShiJueDeGuoYuanZhangAiWuJianCeYuDingWei2023}}
   \label{fig:双目视觉障碍物检测原理图}
 \end{figure}
 
-2024年，陈泉淦等将YOLOv5与SGBM融合用于机耕船自动驾驶障碍感知，在精度、速度和体量之间取得了较好平衡\cite{ChenQuanGanJiYuYOLOv5DeJiGengChuanShuangMuShiJueZhangAiGanZhiYanJiu2024}，其测距流程如图~\ref{fig:YOLOv5SGBM测距流程}所示。
+2024年，陈泉淦等进一步将YOLOv5与SGBM结合应用于机耕船障碍感知，在目标识别与双目测距协同处理方面取得了较好的工程效果，其测距流程如图~\ref{fig:YOLOv5SGBM测距流程}所示\cite{ChenQuanGanJiYuYOLOv5DeJiGengChuanShuangMuShiJueZhangAiGanZhiYanJiu2024}。
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.55\textwidth]{figures/chapter01/YOLOv5+SGBM测距流程.png}
+  \includegraphics[width=0.50\textwidth]{figures/chapter01/YOLOv5+SGBM测距流程.png}
   \caption{YOLOv5+SGBM测距流程\cite{ChenQuanGanJiYuYOLOv5DeJiGengChuanShuangMuShiJueZhangAiGanZhiYanJiu2024}}
   \label{fig:YOLOv5SGBM测距流程}
 \end{figure}
 \FloatBarrier
 
-总体而言，基于双目视觉的障碍物感知研究已从“规则驱动”转向“深度学习驱动”，并进一步转向“感知精度与实时部署并重”。未来仍需重点突破三方面问题：复杂光照和动态遮挡下的鲁棒视差估计、低算力平台上的实时性与能耗控制，以及跨场景数据分布差异引起的泛化能力不足。
+综上所述，基于双目视觉的障碍物感知研究一方面受益于立体匹配算法的持续发展，另一方面不断推动双目系统在园区车辆、果园车辆、AGV、无人机和农业装备等场景中的应用落地。该方向已由以视差估计和简单测距为主的研究模式，发展为立体匹配、目标识别、空间定位与嵌入式部署协同优化的综合感知体系。未来仍需重点突破三方面问题：复杂光照和动态遮挡条件下的鲁棒视差估计、低算力平台上的实时性与能耗控制，以及跨场景数据分布差异所导致的泛化能力不足。
 
 \subsection{自主行驶及避障的国内外研究现状}
 
