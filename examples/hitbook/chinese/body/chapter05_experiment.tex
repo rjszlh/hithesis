@@ -61,22 +61,18 @@
   \end{thesistabular}
 \end{table}
 
-\subsection{端到端感知流程实时性测试}
-
-通过记录图像时间戳与最终目标距离发布时刻计算端到端延迟，统计平均延迟与帧率。
-
 \subsection{检测与测距性能分析}
 
 在实际公园环境中开展外场测试，测试场景包含具有代表性的障碍物类型，如行人、车辆、路灯杆及其他固定设施，并在不同距离条件下进行测距验证。
 
 \begin{figure}[htbp]
   \centering
-  \begin{minipage}[t]{0.48\textwidth}
+  \begin{minipage}[t]{0.49\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter05/实地测距效果图_1.jpg}
   \end{minipage}
   \hfill
-  \begin{minipage}[t]{0.48\textwidth}
+  \begin{minipage}[t]{0.49\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter05/实地测距效果图_2.jpg}
   \end{minipage}
@@ -122,21 +118,89 @@
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\textwidth]{figures/chapter04/卡尔曼融合定位结果.png}
+\includesvg[width=0.85\textwidth]{figures/chapter05/卡尔曼融合定位效果图.svg}
 \caption{卡尔曼融合定位效果图}
 \label{卡尔曼融合定位效果图}
 \end{figure}
 
-室内外定位切换效果如图\ref{室内室外切换效果图}所示。红色轨迹为GPS原始轨迹，黄色轨迹为融合结果。图\subref{室内室外切换效果图:outdoor}所示为车辆在室外运行时的定位结果，此时GPS虽存在一定波动，但融合轨迹整体保持平稳；图\subref{室内室外切换效果图:indoor}所示为车辆进入室内后的定位结果，在GPS信号丢失后，系统仍可依靠IMU和轮速计维持连续定位，轨迹依然平稳。实验过程中，融合定位结果以$120\,\mathrm{Hz}$频率持续输出，能够满足自动行驶对定位实时性的要求。
+实验过程中，融合定位结果以$120\,\mathrm{Hz}$频率持续输出，能够满足自动行驶对定位实时性的要求。由于实验场景缺乏高精度轨迹真值，进一步从轨迹几何连续性角度对融合定位结果进行分析。
 
-\begin{figure}[h]
+为评价轨迹横向抖动程度，采用滑动窗口局部直线拟合方法。在第$i$个窗口内利用PCA得到局部拟合直线$l_i:a_i x+b_i y+c_i=0$，并将轨迹点$(x_i,y_i)$到该直线的正交距离定义为局部残差：
+\begin{equation}
+\label{eq:ch5-local-residual}
+r_i=\frac{|a_i x_i+b_i y_i+c_i|}{\sqrt{a_i^2+b_i^2}}
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $r_i$ & 第$i$个轨迹点的局部残差；\\
+& $a_i,b_i,c_i$ & 第$i$个窗口内局部拟合直线的参数；\\
+& $x_i,y_i$ & 第$i$个轨迹点的坐标。\\
+\end{tabularx}\vspace{3.15bp}
+局部残差变化如图\ref{定位残差位移对比}所示，统计结果见表\ref{局部残差统计结果对比}。可以看出，GPS曲线在多个区段存在明显尖峰，在点序号约600附近出现超过0.10\,m的突增；融合结果整体保持在较低幅值范围内，仅在局部位置出现较小波动。结合表\ref{局部残差统计结果对比}可知，融合结果的残差标准差降至0.003837\,m，仅为GPS的35\%，最大残差降至0.027489\,m，说明融合定位显著抑制了轨迹横向抖动与异常波动。
+
+\begin{figure}[htbp]
 \centering
-\subfigure[室内环境\label{室内室外切换效果图:indoor}]{\includegraphics[width=0.4\textwidth]{figures/chapter04/室内环境切换结果.png}}
-% \hfill
-\subfigure[室外环境\label{室内室外切换效果图:outdoor}]{\includegraphics[width=0.4\textwidth]{figures/chapter04/室外环境切换结果.png}}
-\caption{室内室外切换效果图}
-\label{室内室外切换效果图}
+\includegraphics[width=1\textwidth]{figures/chapter05/定位残差位移.png}
+\caption{局部残差变化对比}
+\label{定位残差位移对比}
 \end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption[局部残差统计结果对比]{局部残差统计结果对比}
+  \label{局部残差统计结果对比}
+  \vspace{0.5em}\wuhao
+  \begin{thesistabular}{ccc}
+    \toprule
+    指标 & GPS(m) & 融合结果(m) \\
+    \midrule
+    均值 & 0.010786 & 0.003870 \\
+    标准差 & 0.010941 & 0.003837 \\
+    95\%分位 & 0.026327 & 0.011431 \\
+    最大值 & 0.109462 & 0.027489 \\
+    \bottomrule
+  \end{thesistabular}
+\end{table}
+
+进一步对相邻轨迹方向变化进行分析。设相邻位置点为$(x_{i-1},y_{i-1})$和$(x_i,y_i)$，则轨迹方向角可表示为：
+\begin{equation}
+\label{eq:ch5-heading-angle}
+\theta_i=\operatorname{atan2}(y_i-y_{i-1},x_i-x_{i-1})
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $\theta_i$ & 第$i$段轨迹的方向角；\\
+\end{tabularx}\vspace{3.15bp}
+为消除角度周期性带来的不连续性，将相邻方向变化量归一化为：
+\begin{equation}
+\label{eq:ch5-heading-diff}
+\Delta\theta_i=\operatorname{atan2}\bigl(\sin(\theta_i-\theta_{i-1}),\cos(\theta_i-\theta_{i-1})\bigr)
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $\Delta\theta_i$ & 相邻两段轨迹的方向变化量。\\
+\end{tabularx}\vspace{3.15bp}
+以$|\Delta\theta_i|$评价轨迹方向连续性，其结果如图\ref{相邻方向变化绝对值对比}所示，统计结果见表\ref{方向变化统计结果对比}。从图中可以看出，GPS曲线在约300--500和1080--1300点区间出现持续的大幅振荡，并伴随接近$\pm 3\,\mathrm{rad}$的尖峰；融合结果大部分时间保持在零附近，仅在个别转向位置出现较小起伏。结合表\ref{方向变化统计结果对比}可知，融合结果的方向变化标准差由0.957\,rad降至0.070\,rad，95\%分位由1.728\,rad降至0.051\,rad，说明融合定位显著减小了局部方向摆动，轨迹连续性与平滑性明显提升。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1\textwidth]{figures/chapter05/相邻方向变化绝对值对比rad.png}
+\caption{相邻方向变化量对比}
+\label{相邻方向变化绝对值对比}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption[方向变化统计结果对比]{方向变化统计结果对比}
+  \label{方向变化统计结果对比}
+  \vspace{0.5em}\wuhao
+  \begin{thesistabular}{ccc}
+    \toprule
+    指标 & GPS(rad) & 融合结果(rad) \\
+    \midrule
+    标准差 & 0.957 & 0.070 \\
+    绝对变化均值 & 0.599 & 0.016 \\
+    95\%分位 & 1.728 & 0.051 \\
+    \bottomrule
+  \end{thesistabular}
+\end{table}
 
 \subsection{动态避障能力测试}
 
@@ -179,10 +243,10 @@
   \label{避障能力测试}
 \end{figure}
 
-实验过程中记录车辆轨迹、速度变化曲线以及最小安全距离。结果表明，在设定行驶速度范围内，系统能够在行人侵入后快速完成障碍检测与路径重规划，车辆减速并平滑绕行，未发生急剧姿态波动或失稳现象。最小安全距离始终保持在预设阈值以上，说明感知与规划模块之间的数据传递及时有效。
+实验过程中记录车辆轨迹、速度变化曲线以及最小安全距离。结果表明，在设定行驶速度范围内，规划控制环节能够以$20\,\mathrm{Hz}$频率稳定运行，系统能够在行人侵入后快速完成障碍检测与路径重规划，车辆减速并平滑绕行，未发生急剧姿态波动或失稳现象。最小安全距离始终保持在预设阈值以上，说明感知与规划模块之间的数据传递及时有效。
 
 在个别极端情况下（如行人距离过近或横向移动速度较快），车辆会出现短暂减速或轻微轨迹震荡现象，其主要原因在于感知距离快速变化导致代价地图更新频率提升，从而引起局部规划频繁重计算。总体而言，系统能够稳定完成动态避障任务，验证了整车自主避障系统在实际复杂环境中的可行性与可靠性。
 
 \section{本章小结}
 
-本章对两轮平衡车的运动性能、视觉感知能力及自主行驶能力进行了综合实验验证。基本行驶测试表明，车辆启动平稳、加减速响应迅速、转向可控，能够稳定完成越障与复杂路径行驶，验证了底盘结构与平衡控制系统的可靠性。嵌入式部署实验表明，感知系统具备较好的实时性与测距稳定性，能够满足低速移动场景下的障碍物检测需求。自主行驶能力测试表明，定位模块能够在GPS波动及室内外切换场景下保持较平稳、连续的轨迹输出；在动态干扰条件下，系统能够完成目标检测、路径重规划与平滑绕行，保持安全距离，运行过程整体稳定。
+本章对两轮平衡车的运动性能、视觉感知能力及自主行驶能力进行了综合实验验证。结果表明，所设计的两轮平衡车能够稳定完成基本行驶与复杂路径运动，验证了整车结构与控制系统的可靠性；双目视觉感知系统能够实现较稳定的障碍物检测与距离估计，满足自主行驶的环境感知需求；自主行驶实验表明，系统在定位波动和动态障碍干扰条件下仍能保持较好的运行稳定性，能够完成路径调整与安全绕行，验证了整车自主行驶方案的可行性。

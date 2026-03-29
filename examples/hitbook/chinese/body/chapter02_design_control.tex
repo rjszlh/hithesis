@@ -26,6 +26,7 @@
 
 （3）自主导航系统：载人两轮平衡车的自主导航系统主要功能是通过传感器实现定位与环境感知，进而进行路径规划与避障控制，保障车辆在复杂环境中的自主导航与安全行驶。
 
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.99\textwidth]{figures/chapter02/载人两轮平衡车总体设计方案.png}
@@ -33,12 +34,34 @@
   \label{载人两轮平衡车总体设计方案}
 \end{figure}
 
-% \begin{figure}[h]
-%   \centering
-%   \includegraphics[width=0.7\textwidth]{figures/chapter02/载人两轮平衡车系统功能组成图.png}
-%   \caption{载人两轮平衡车系统功能组成图}
-%   \label{载人两轮平衡车系统功能组成图}
-% \end{figure}
+
+在明确系统功能组成的基础上，进一步给出载人两轮平衡车的总体技术指标，如表\ref{tab:总体设计主要技术指标}所示。结合公园、社区等典型应用场景，表中统一归纳了整车尺寸、结构与运动性能、感知系统性能以及自主导航实时性等关键要求，为后续机械结构设计、控制系统实现与导航算法开发提供总体依据。
+
+\begin{table}[htbp]
+  \centering
+  \caption[总体设计主要技术指标]{总体设计主要技术指标}
+  \label{tab:总体设计主要技术指标}
+  \vspace{0.5em}\wuhao
+  \begin{thesistabular}{ccc}
+    \toprule
+    指标类别 & 指标项目 & 技术要求 \\
+    \midrule
+    \multirow{3}{*}{尺寸} & 总长 & 不超过$900\,\mathrm{mm}$ \\
+     & 总宽 & 不超过$750\,\mathrm{mm}$ \\
+     & 整车质量 & 约$70\,\mathrm{kg}$ \\
+    \multirow{5}{*}{整车与控制} & 额定载荷 & 不低于$75\,\mathrm{kg}$ \\
+     & 最高速度 & $15\,\mathrm{km/h}$ \\
+     & 最大加速度 & $2\,\mathrm{m/s^2}$ \\
+     & 最大爬坡角 & $15^\circ$ \\
+     & 姿态感知频率 & 不低于$200\,\mathrm{Hz}$ \\
+    \multirow{3}{*}{环境感知} & 感知刷新频率 & 在$640\times480$分辨率下不低于$25\,\mathrm{Hz}$ \\
+     & 障碍物测距范围 & 2$\sim$8m \\
+     & 平均相对误差 & 控制在5\%以内 \\
+    \multirow{2}{*}{自主导航} & 融合定位更新率 & 不低于$100\,\mathrm{Hz}$ \\
+     & 规划控制频率 & 不低于$20\,\mathrm{Hz}$ \\
+    \bottomrule
+  \end{thesistabular}
+\end{table}
 
 \section{两轮平衡车机械结构设计}
 
@@ -46,27 +69,7 @@
 
 \subsection{机械结构设计方案}
 
-载人两轮平衡车的设计指标如表\ref{两轮平衡车设计指标}所示。因使用场景在公园、社区等生活场所，外形尺寸参照《GB/T 12996-2023 电动轮椅车》确定为不超过总长不超过900mm且总宽不超过750mm；参考国家国民体质监测中心发布的《第五次国民体质监测公报》中成年人的体重确定额定载荷为75kg。
-
-\begin{table}[htbp]
-  \centering
-  \caption[两轮平衡车设计指标]{两轮平衡车设计指标}
-  \label{两轮平衡车设计指标}
-  \vspace{0.5em}\wuhao
-  \begin{thesistabular}{ccc}
-    \toprule
-    指标分类 & 指标项目 & 具体要求 \\
-    \midrule
-    \multirow{3}{*}{尺寸} & 总长 & ≤900mm \\
-     & 总宽 & ≤750mm \\
-     & 整车质量 & 70kg \\
-    \multirow{4}{*}{运动性能} & 额定载荷 & 75kg \\
-     & 最大运动速度 & 15km/h \\
-     & 最大加速度 & 2m/s2 \\
-     & 爬坡性能 & $15^\circ$ \\
-    \bottomrule
-  \end{thesistabular}
-\end{table}
+机械结构设计所依据的尺寸与运动性能指标已在表\ref{tab:总体设计主要技术指标}中统一给出。结合公园、社区等生活场景的通行条件，整车外形尺寸参照《GB/T 12996-2023 电动轮椅车》进行约束，总长控制在$900\,\mathrm{mm}$以内、总宽控制在$750\,\mathrm{mm}$以内，以兼顾狭窄道路通行能力与乘坐空间需求；同时参考国家国民体质监测中心发布的《第五次国民体质监测公报》中成年人体重数据，将额定载荷确定为不低于$75\,\mathrm{kg}$，以满足载人应用需求。上述指标共同构成了机械结构方案设计、驱动系统选型与强度校核的基础。
 
 本课题设计的载人两轮平衡车需兼顾安全性与舒适性。传统两轮平衡车通常基于倒立摆原理实现平衡控制，但该结构本质上属于不稳定系统，易在速度变化或外部扰动时产生倾斜与位移。以Segway为代表的传统平衡车利用这一特性，通过人体倾斜改变重心以控制运动。而本课题中的平衡车面向乘坐式应用，用户通过控制器发送运动指令进行操控，不再依赖身体姿态调节，这对车辆的稳定性和响应性提出更高要求。为了提升系统在复杂工况下的稳定性与乘坐舒适性，本设计在传统倒立摆控制基础上引入控制力矩陀螺，通过提供快速、精确的姿态调节力矩，有效应对由加减速或外部扰动引起的倾斜问题，从而增强整体的动态平衡性能。因此，本课题采用倒立摆控制与控制力矩陀螺联合控制方案，以实现更高水平的稳定性与操控性。
 
@@ -84,7 +87,7 @@
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.7\textwidth]{figures/chapter02/两轮平衡车车体框架设计示意图.png}
+  \includegraphics[width=0.68\textwidth]{figures/chapter02/两轮平衡车车体框架设计示意图.png}
   \caption{两轮平衡车车体框架设计示意图}
   \label{两轮平衡车车体框架设计示意图}
 \end{figure}
@@ -95,7 +98,7 @@
 
 连接架分别安装于左右侧板上，作为安装其他辅助零部件的基座。两连接架上固定有扶手支架与座椅支架，确保乘坐结构的稳固与承重能力。此外，在每个连接架的前后端下均安装有集成推杆电机的辅助支撑轮组件，用于在车辆启动、停止或维修过程中提供临时支撑，提升整车的操作便利性与使用安全性。
 
-在设计乘坐空间时，参考《GB/T 10000-2023中国成年人人体尺寸》和《GB/T 3326—2016椅、凳类主要尺寸》，确定座椅有效宽度为520 mm、坐深430 mm、坐高400 mm，踏板长度不少于250 mm，以满足乘坐舒适性的基本要求。
+在设计乘坐空间时，参考《GB/T 10000-2023中国成年人人体尺寸》和《GB/T 3326—2016椅、凳类主要尺寸》，确定座椅有效宽度为$520\,\mathrm{mm}$、坐深$430\,\mathrm{mm}$、坐高$400\,\mathrm{mm}$，踏板长度不少于$250\,\mathrm{mm}$，以满足乘坐舒适性的基本要求。
 
 车体框架采用铝合金6061材料，车体框架设计使用的是三维设计软件Solidworks，这款软件具备直观的3D开发环境,可以对复杂的产品进行高效的建模,也支持将建好的移动机器人模型导入到Ansys中，方便后续对结构进行物理仿真。
 
@@ -105,9 +108,7 @@
 
 （1）控制力矩陀螺原理及布置结构
 
-控制力矩陀螺是一种通过改变飞轮方向以产生控制力矩的装置，广泛应用于航天器姿态控制和高动态平衡系统中。控制力矩陀螺的结构主要包括高速旋转的飞轮、陀螺壳体以及外部安装框架。如图\ref{陀螺力矩方向示意图}所示飞轮绕自身主轴（图中 $y$ 轴）以角速度 $\omega_y$ 高速旋转，形成稳定的角动量矢量。当通过控制电机驱动其绕垂直于飞轮轴线的 $z$ 轴以角速度 $\omega_z$ 进动时，根据角动量守恒定律，系统将产生垂直于两轴的进动力矩 $\tau$，其方向沿 $x$ 轴指向。
-
-控制力矩陀螺产生的进动力矩来源于角动量的变化率。设飞轮角动量L为：
+控制力矩陀螺是一种通过改变飞轮方向以产生控制力矩的装置，广泛应用于航天器姿态控制和高动态平衡系统中。控制力矩陀螺的结构主要包括高速旋转的飞轮、陀螺壳体以及外部安装框架。如图\ref{陀螺力矩方向示意图}所示飞轮绕自身主轴（图中 $y$ 轴）以角速度 $\omega_y$ 高速旋转，形成稳定的角动量矢量。当通过控制电机驱动其绕垂直于飞轮轴线的 $z$ 轴以角速度 $\omega_z$ 进动时，根据角动量守恒定律，系统将产生垂直于两轴的进动力矩 $\tau$，其方向沿 $x$ 轴指向。控制力矩陀螺产生的进动力矩来源于角动量的变化率。设飞轮角动量L为：
 \begin{equation}
 L = I_y \omega_y \mathbf{e}_y
 \end{equation}
@@ -129,23 +130,6 @@ L = I_y \omega_y \mathbf{e}_y
 \end{tabularx}\vspace{3.15bp}
 
 然而单个CMG在产生进动力矩的同时，也会由于结构偏置产生附加力矩分量，影响整体系统的稳定性。如图\ref{双CMG结构示意图}所示在存在倾角 $\theta$ 的情况下，CMG所产生的进动力矩 $\tau$ 可分解为沿 $x$ 轴方向的分力矩 $\tau \cos\theta$，从而引入非期望的扭矩分布。为此采用对称双CMG布置结构是一种有效的抑制手段。两组CMG沿相同轴线对称放置，飞轮自转方向相反，进动方向也相反，最后产生的合力矩的方向沿绝对坐标系 $X$，两个陀螺在绝对坐标 $Y$ 轴方向产生的分力矩相互抵消。采用双陀螺布置的控制力矩陀螺装置产生的控制力矩为：
-\begin{figure}[h]
-  \centering
-  \begin{minipage}[t]{0.40\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/chapter02/陀螺力矩方向示意图.png}
-    \caption{陀螺力矩方向示意图}
-    \label{陀螺力矩方向示意图}
-  \end{minipage}
-  \centering
-  \begin{minipage}[t]{0.50\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{figures/chapter02/双CMG结构示意图.png}
-    \caption{双CMG结构示意图}
-    \label{双CMG结构示意图}
-  \end{minipage}
-\end{figure}
-
 \begin{equation}
 \tau = 2 I_y \omega_y \omega_z \mathbf{e}_x \cos\theta
 \label{eq:ch2-cmg-double}
@@ -153,6 +137,23 @@ L = I_y \omega_y \mathbf{e}_y
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $\theta$ & 飞轮转动角（$^\circ$）。\\
 \end{tabularx}\vspace{3.15bp}
+
+\begin{figure}[h]
+  \centering
+  \begin{minipage}[t]{0.44\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/陀螺力矩方向示意图.png}
+    \caption{陀螺力矩方向示意图}
+    \label{陀螺力矩方向示意图}
+  \end{minipage}
+  \centering
+  \begin{minipage}[t]{0.55\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter02/双CMG结构示意图.png}
+    \caption{双CMG结构示意图}
+    \label{双CMG结构示意图}
+  \end{minipage}
+\end{figure}
 
 采用双陀螺布置结构显著降低系统由飞轮自转引入的耦合扰动，提升控制稳定性与响应灵敏度，所以稳定模块的控制力矩陀螺采用双陀螺布置结构。根据式~\eqref{eq:ch2-cmg-double}，控制力矩陀螺产生的控制力矩与转子的转动惯量、自转角速度和进动角速度成正比。由于飞轮自转速度较高不易调整，一般由高速电机保持自转速度恒定，通过调节进动角速度来控制所需的平衡力矩。
 
@@ -162,7 +163,7 @@ L = I_y \omega_y \mathbf{e}_y
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.55\textwidth]{figures/chapter02/稳定模块结构.png}
+  \includegraphics[width=0.58\textwidth]{figures/chapter02/稳定模块结构.png}
   \caption{稳定模块结构}
   \label{稳定模块结构}
 \end{figure}
@@ -183,7 +184,7 @@ T_G = m_c g h_c \sin\beta + m_p g h_p \sin\beta
 & $h_c$ & 平衡车重心高度（m）；\\
 & $m_p$ & 人体质量（kg）；\\
 & $h_p$ & 人体乘坐时重心高度（m）；\\
-& $g$ & 重力加速度（m/s$^2$）；\\
+& $g$ & 重力加速度（$\mathrm{m/s^2}$）；\\
 & $\beta$ & 平衡车前后方向倾斜角度（$^\circ$）。\\
 \end{tabularx}\vspace{3.15bp}
 
@@ -238,7 +239,7 @@ T = \frac{J_z \omega_z}{t_{\alpha}}
 
 驱动模块包括电机和车轮构成两轮差速驱动结构。首先通过整体尺寸及行驶需求估算并选择车轮大小；然后各工况下电机所需的扭矩、转速以及功率，并以此对电机进行选型，完成驱动模块的设计。
 
-为提升车辆在园区砖缝、人行道起伏、减速带等半结构化环境下的通过性，参考《GB/T18029.10-2008轮椅第10部分：越障能力的测定》中关于可越过150 mm宽沟槽与80 mm高障碍物的推荐值，设定最小离地间隙不小于80 mm。该间隙由轮胎半径与底盘结构设计共同决定。为满足通过性与平衡稳定性要求，结合车身整体尺寸以及结构，选用直径26寸（660mm）的轮胎。
+为提升车辆在园区砖缝、人行道起伏、减速带等半结构化环境下的通过性，参考《GB/T18029.10-2008轮椅第10部分：越障能力的测定》中关于可越过$150\,\mathrm{mm}$宽沟槽与$80\,\mathrm{mm}$高障碍物的推荐值，设定最小离地间隙不小于$80\,\mathrm{mm}$。该间隙由轮胎半径与底盘结构设计共同决定。为满足通过性与平衡稳定性要求，结合车身整体尺寸以及结构，选用直径26寸（$660\,\mathrm{mm}$）的轮胎。
 
 根据结构方案设计所述，本课题设计的两轮平衡车采用倒立摆与控制力矩陀螺联合控制的平衡方案。倒立摆需要通过电机驱动车轮实现，实现轮式倒立摆常用的电机有轮边电机或轮毂电机。轮边电机具有成本低、维护方便、簧下质量小等优势，而轮毂电机则凭借更高的响应速度以及更紧凑的结构设计且不占用车内空间，选用轮毂电机能够更好地满足结构设计需求。
 
@@ -321,7 +322,7 @@ F_a = \frac{1}{2}\rho C_d A V_{\max}^2
 F_{ac} = m a
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $a$ & 加速度（m/s$^2$）。\\
+式中& $a$ & 加速度（$\mathrm{m/s^2}$）。\\
 \end{tabularx}\vspace{3.15bp}
 
 最大加速度$a=2\,\mathrm{m/s^2}$，计算得加速阻力$F_{ac}=290\,\mathrm{N}$。由式~\eqref{eq:ch2-f2}计算得最大加速度的阻力$F_2=319.12\,\mathrm{N}$。
@@ -388,7 +389,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 稳定模块的陀螺框架主要承受陀螺装置产生的控制扭矩以及其重量。陀螺框架、回形架和车体框架均采用6061铝合金，其密度为2.70g/cm³，泊松比0.33，杨氏模量为68.9GPa。
 
-设进动角速度为 $\omega_z = 4.17\,\mathrm{rad/s}$（$40\,\mathrm{r/min}$），由式~\eqref{eq:ch2-cmg-double}计算得控制扭矩$353.71\,\mathrm{N\cdot m}$，陀螺装置及进动电机的总重量$234.459\,\mathrm{N}$。在陀螺框架两侧的上下连接轴安装位置施加扭矩及重力载荷，并添加标准地球重力。在空心轴孔处设置了圆柱形约束，限制其径向和切向位移；在丝杠孔处则施加了轴向位移约束。仿真分析结果如图\ref{陀螺框架等效应力图}和图\ref{陀螺框架总变形图}所示，最大等效应力出现在丝杠孔附近，为23.142MPa，远小于材料的屈服强度276MPa。最大变形发生在上端连接轴安装位置的边缘，仅为0.10mm，变形量极小，对整体结构性能影响可忽略不计。
+设进动角速度为 $\omega_z = 4.17\,\mathrm{rad/s}$（$40\,\mathrm{r/min}$），由式~\eqref{eq:ch2-cmg-double}计算得控制扭矩$353.71\,\mathrm{N\cdot m}$，陀螺装置及进动电机的总重量$234.459\,\mathrm{N}$。在陀螺框架两侧的上下连接轴安装位置施加扭矩及重力载荷，并添加标准地球重力。在空心轴孔处设置了圆柱形约束，限制其径向和切向位移；在丝杠孔处则施加了轴向位移约束。仿真分析结果如图\ref{陀螺框架等效应力图}和图\ref{陀螺框架总变形图}所示，最大等效应力出现在丝杠孔附近，为23.142MPa，远小于材料的屈服强度276MPa。最大变形发生在上端连接轴安装位置的边缘，仅为$0.10\,\mathrm{mm}$，变形量极小，对整体结构性能影响可忽略不计。
 
 \begin{figure}[h]
   \centering
@@ -409,7 +410,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 （2）稳定模块的回形架
 
-稳定模块的回形架主要承受控制力矩陀螺产生的控制扭矩以及陀螺装置和陀螺框架的重力。在模块安装支架空心轴支撑处施加CMG装置的重力载荷329.84N，并施加CMG装置产生的最大扭矩349.91Nm，结果如图\ref{模块安装支架等效应力图}和图\ref{模块安装支架总变形图}所示，最大等效应力仅为3.8654MPa，远小于材料屈服强度276MPa。最大变形仅为0.029mm，变形量极小，对整体结构性能影响可忽略不计。
+稳定模块的回形架主要承受控制力矩陀螺产生的控制扭矩以及陀螺装置和陀螺框架的重力。在模块安装支架空心轴支撑处施加CMG装置的重力载荷329.84N，并施加CMG装置产生的最大扭矩349.91Nm，结果如图\ref{模块安装支架等效应力图}和图\ref{模块安装支架总变形图}所示，最大等效应力仅为3.8654MPa，远小于材料屈服强度276MPa。最大变形仅为$0.029\,\mathrm{mm}$，变形量极小，对整体结构性能影响可忽略不计。
 
 \begin{figure}[h]
   \centering
@@ -430,7 +431,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 （3）车体框架
 
-对平衡车车体框架的主要结构进行装配有限元仿真。在连接架上施加981N（100kg）的载荷，在前、后侧板上施加稳定模块最大扭矩349.91Nm和稳定模块总重377.35N（38.46kg）的载荷且设置标准地球重力，并在车轮架的轮毂电机安装孔处设定固定支撑。由图\ref{车体框架等效应力图}和图\ref{车体框架总变形图}可以看出最大等效应力位于车轮架的转角处，数值为7.23MPa，远小于材料屈服强度276MPa；最大变形位于前后侧板顶端仅为0.063mm，对整体结构影响可忽略不计。
+对平衡车车体框架的主要结构进行装配有限元仿真。在连接架上施加981N（$100\,\mathrm{kg}$）的载荷，在前、后侧板上施加稳定模块最大扭矩349.91Nm和稳定模块总重377.35N（$38.46\,\mathrm{kg}$）的载荷且设置标准地球重力，并在车轮架的轮毂电机安装孔处设定固定支撑。由图\ref{车体框架等效应力图}和图\ref{车体框架总变形图}可以看出最大等效应力位于车轮架的转角处，数值为7.23MPa，远小于材料屈服强度276MPa；最大变形位于前后侧板顶端，仅为$0.063\,\mathrm{mm}$，对整体结构影响可忽略不计。
 
 \begin{figure}[h]
   \centering
@@ -455,7 +456,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.90\textwidth]{figures/chapter02/两轮平衡车三维模型.png}
+  \includegraphics[width=1\textwidth]{figures/chapter02/两轮平衡车三维模型.png}
   \caption{载人两轮平衡车三维模型}
   \label{载人两轮平衡车三维模型}
 \end{figure}
@@ -478,7 +479,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.65\textwidth]{figures/chapter02/控制系统方案.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/控制系统方案.png}
   \caption{控制系统方案}
   \label{控制系统方案}
 \end{figure}
@@ -493,7 +494,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.80\textwidth]{figures/chapter02/控制系统信号电路连接.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/控制系统信号电路连接.png}
   \caption{控制系统信号电路连接}
   \label{控制系统信号电路连接}
 \end{figure}
@@ -502,7 +503,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 \begin{figure}[h]
   \centering
-  \includesvg[width=0.65\textwidth]{figures/chapter02/控制系统供电电路连接}
+  \includesvg[width=0.75\textwidth]{figures/chapter02/控制系统供电电路连接}
   \caption{控制系统供电电路连接}
   \label{控制系统供电电路连接}
 \end{figure}
@@ -511,7 +512,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 在控制系统主控芯片的选型中，重点从接口资源和控制能力两方面进行考量。接口方面，系统需通过网口采用UDP协议与上位机通信；同时需多个串口与手柄接收机、姿态传感器等模块通信，以及CAN接口以连接多个电机驱动器；此外，还需PWM通道控制丝杠电机，以及若干GPIO用于读取光电开关等传感器信号。控制方面，系统需要较强的实时处理能力和稳定的数据处理性能，以满足姿态计算和运动控制等任务。综合上述需求，最终选用挑选科鑫STM32F407ZGT6工控板作为控制器。该芯片集成网口、UART、双路CAN、丰富的PWM和GPIO资源，并搭载168MHz的Cortex-M4内核，配备1MB Flash和192KB SRAM，能够满足系统在通信、控制与实时性方面的各项要求。
 
-姿态传感器需满足车辆对高频率、高精度姿态感知的需求。在本系统中，选用惯性测量单元（IMU）作为姿态传感器。IMU由三轴加速度计、三轴陀螺仪和三轴磁力计组成，通过对线加速度、角速度以及磁场等原始数据的采集，结合内置融合算法，实时计算出车辆的姿态角和角速度信息。综合考虑精度、响应速度、算法性能及系统兼容性，选用Wheeltec-H30惯性导航模块，其具备200Hz输出频率、$0.1^\circ$角度分辨率，内置融合算法，可稳定输出姿态角与角速度，满足动态工况下的测量要求。
+姿态传感器需满足车辆对高频率、高精度姿态感知的需求。在本系统中，选用惯性测量单元（IMU）作为姿态传感器。IMU由三轴加速度计、三轴陀螺仪和三轴磁力计组成，通过对线加速度、角速度以及磁场等原始数据的采集，结合内置融合算法，实时计算出车辆的姿态角和角速度信息。综合考虑精度、响应速度、算法性能及系统兼容性，选用Wheeltec-H30惯性导航模块，其具备$200\,\mathrm{Hz}$输出频率、$0.1^\circ$角度分辨率，内置融合算法，可稳定输出姿态角与角速度，满足动态工况下的测量要求。
 
 \begin{figure}[h]
   \centering
@@ -547,7 +548,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.90\textwidth]{figures/chapter02/控制系统实物连接图.png}
+  \includegraphics[width=1\textwidth]{figures/chapter02/控制系统实物连接图.png}
   \caption{控制系统连接实物图}
   \label{控制系统连接实物图}
 \end{figure}
@@ -586,7 +587,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{figures/chapter02/控制系统软件架构.png}
+  \includegraphics[width=1\textwidth]{figures/chapter02/控制系统软件架构.png}
   \caption{控制系统软件架构}
   \label{控制系统软件架构}
 \end{figure}
@@ -617,7 +618,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.65\textwidth]{figures/chapter02/设备通信流程图.png}
+  \includegraphics[width=0.7\textwidth]{figures/chapter02/设备通信流程图.png}
   \caption{控制系统设备通信流程图}
   \label{控制系统设备通信流程图}
 \end{figure}
@@ -665,7 +666,7 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.75\textwidth]{figures/chapter02/设备数据处理流程图.png}
+  \includegraphics[width=0.8\textwidth]{figures/chapter02/设备数据处理流程图.png}
   \caption{控制系统设备数据处理流程}
   \label{控制系统设备数据处理流程}
 \end{figure}
@@ -678,7 +679,7 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.55\textwidth]{figures/chapter02/运动控制流程图.png}
+  \includegraphics[width=0.6\textwidth]{figures/chapter02/运动控制流程图.png}
   \caption{控制系统运动控制流程图}
   \label{控制系统运动控制流程图}
 \end{figure}
@@ -687,7 +688,7 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.99\textwidth]{figures/chapter02/数据传输流程图.png}
+  \includegraphics[width=1\textwidth]{figures/chapter02/数据传输流程图.png}
   \caption{控制系统数据传输流程示意图}
   \label{控制系统数据传输流程示意图}
 \end{figure}
