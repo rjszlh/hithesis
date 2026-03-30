@@ -20,7 +20,7 @@
 
 \subsection{自主导航系统的硬件选型}
 
-为满足系统对高精度、高更新率定位的需求，选用北天 BT-982K3 双天线 RTK GNSS 模块。该模块支持 GPS、北斗等多星系统，具备20Hz实时RTK定位能力。在合理布设双天线的条件下，可实现优于2\,cm的平面定位精度和$0.1^\circ/1\,\mathrm{m}$的航向精度。
+为满足系统对高精度、高更新率定位的需求，选用北天 BT-982K3 双天线 RTK GNSS 模块。该模块支持 GPS、北斗等多星系统，在合理布设双天线的条件下，可实现优于2\,cm的平面定位精度和$0.1^\circ/1\,\mathrm{m}$的航向精度。
 
 为实现近距离障碍物检测，系统配置电应普 DYP-A21 型超声波雷达。该雷达测距范围为3cm--500cm。在量程设定为200cm的条件下，模块响应时间小于200ms，能够满足低速移动场景中的动态障碍物感知需求。结合一拖四转接模组，本系统部署4个超声波传感器，形成前后左右覆盖的近场检测布局，有效提升环境安全性与避障可靠性。
 
@@ -28,26 +28,27 @@
 
 为满足系统在视觉感知、深度估计与路径规划等任务中的高并发计算需求，主控平台选用 NVIDIA Jetson Orin Nano Super。该模块内置基于Ampere架构的 GPU，具1024个CUDA核心与32个张量核心，AI算力可达67 TOPS，适用于多路神经网络的实时推理处理。同时，配备六核 Cortex-A78AE CPU 与 8GB LPDDR5 高带宽内存（102 GB/s），支持高帧率图像与多传感器数据的同步处理。此外，其丰富的接口（包括 MIPI CSI、USB 3.2、PCIe Gen3 x4 等）便于与相机、定位与控制模块集成。
 
+\begin{figure}[h]
+\centering
+\includesvg[width=0.95\textwidth]{figures/chapter04/自主导航系统电源模块}
+\caption{自主导航系统电源模块}
+\label{自主导航系统电源模块}
+\end{figure}
+
 \subsection{硬件线路连接}
 
 分析自主导航系统硬件供电需求可知，主控电脑需要19V DC电源供电，而传感器及信号转换元件等需要5V DC电源供电，电路连接如图\ref{自主导航系统电源模块}所示。
 
-\begin{figure}[h]
-\centering
-\includesvg{figures/chapter04/自主导航系统电源模块}
-\caption{自主导航系统电源模块}
-\label{自主导航系统电源模块}
-\end{figure}
 以24V直流电池电源为基础，通过24V-220V逆变器将24V直流电转换为220V交流电后，分别采用19V和12V电源适配器为主控电脑及外部设备提供所需电压。其中，19V电源适配器为主控电脑供电，12V电源适配器则为USB拓展坞供能。USB拓展坞进一步将12V电压转换为5V，并通过各类接口为USB-485转换器、IMU、超声波雷达转接模组、双目相机、GPS及便携无线路由网卡等多种外部设备提供稳定的电源与数据连接。
 
-自主导航系统的信号连接如图\ref{自主导航系统信号电路连接}所示。主控电脑作为核心处理单元，通过多个USB接口与双目相机、IMU、GPS等传感与通信设备进行数据交互。其中，双目相机直接连接主控电脑以保证带宽和实时性，其他设备则通过USB拓展坞接入，以提升接口扩展能力。此外，主控电脑通过USB-485转换器将USB信号转换为RS-485信号，进而连接超声波雷达转接模块，实现对多路超声波雷达（UART接口）的统一管理与数据采集。同时，主控电脑通过以太网口与控制系统STM32F407微控制器通信，完成自主导航系统与控制系统之间的信息交互。上述信号连接设计有效整合了各类传感器与执行单元，保障了数据传输的实时性与稳定性。自主导航系统硬件平台实物如图\ref{自主导航系统硬件平台实物图}所示。
-
 \begin{figure}[h]
 \centering
-\includesvg{figures/chapter04/自主导航系统信号连接}
+\includesvg[width=0.90\textwidth]{figures/chapter04/自主导航系统信号连接}
 \caption{自主导航系统信号电路连接}
 \label{自主导航系统信号电路连接}
 \end{figure}
+
+自主导航系统的信号连接如图\ref{自主导航系统信号电路连接}所示。主控电脑作为核心处理单元，通过多个USB接口与双目相机、IMU、GPS等传感与通信设备进行数据交互;双目相机直接连接主控电脑以保证带宽和实时性，其他设备则通过USB拓展坞接入，以提升接口扩展能力;主控电脑通过USB-485转换器将USB信号转换为RS-485信号，进而连接超声波雷达转接模块，实现对多路超声波雷达（UART接口）的统一管理与数据采集;主控电脑通过以太网口与控制系统STM32F407微控制器通信，完成自主导航系统与控制系统之间的信息交互。上述信号连接设计有效整合了各类传感器与执行单元，保障了数据传输的实时性与稳定性。自主导航系统硬件平台实物如图\ref{自主导航系统硬件平台实物图}所示。
 
 \begin{figure}[h]
 \centering
@@ -55,6 +56,7 @@
 \caption{自主导航系统硬件平台实物图}
 \label{自主导航系统硬件平台实物图}
 \end{figure}
+\FloatBarrier
 
 \section{两轮平衡车自主导航系统的软件开发}
 
@@ -62,12 +64,12 @@
 
 \begin{figure}[h]
 \centering
-\includesvg[width=0.95\textwidth]{figures/chapter04/自主导航系统软件结构}
+\includesvg[width=1\textwidth]{figures/chapter04/自主导航系统软件结构}
 \caption{自主导航系统软件结构}
 \label{自主导航系统软件结构}
 \end{figure}
 
-各模块功能如下。主控模块作为系统中枢，负责整合各类信息，执行路径规划、任务管理与控制指令下发，并包含导航子模块与日志子模块，分别用于路径决策与运行数据记录。地图模块提供静态环境空间信息，包括基础地图与代价图，为路径规划提供空间依据。定位模块融合轮速计、IMU与GPS等多源信息，实现车体全局位姿的持续估计，兼顾局部短时精度与长期漂移补偿。感知模块结合双目相机和超声波传感器获取环境信息。通讯模块完成与下位机的信息交互，上行包括轮速计数据、控制状态等反馈，下行为运动指令的周期性下发。交互模块面向人机交互需求，既包括开发调试阶段使用的可视化工具（如RViz），也包括面向用户的小程序界面，用于设定目标和查看状态。
+各模块功能如下。主控模块作为系统中枢，负责整合各类信息，执行路径规划、任务管理与控制指令下发，并包含导航子模块与日志子模块，分别用于路径决策与运行数据记录。地图模块提供静态环境空间信息，包括基础地图与代价图，为路径规划提供空间依据。定位模块融合轮速计、IMU与GPS等多源信息，实现车体全局位姿的持续估计，兼顾局部短时精度与长期漂移补偿。感知模块结合双目相机和超声波传感器获取环境信息。通讯模块完成与下位机的信息交互，上行包括轮速计数据、控制状态等反馈，下行为运动指令的周期性下发。交互模块面向人机交互需求，既包括开发调试阶段使用的可视化工具（如RViz），也包括面向用户的交互终端，用于设定目标和查看状态。
 
 本系统采用机器人操作系统（Robot Operating System, ROS）作为系统软件架构的基础。ROS是一种开源的机器人软件开发平台，具有模块化、分布式、消息传递机制等特点，能够有效地支持机器人系统的快速开发与集成。ROS通过节点（Node）、主题（Topic）、服务（Service）等通信机制，便于各功能模块的解耦与协作，提高了系统的可扩展性与维护性。
 
@@ -75,13 +77,11 @@
 
 通讯模块方面，系统通过UDP协议与下位机进行数据交互。上位机（ROS主控端）将速度、角速度等运动指令实时发送至下位机，以驱动控制系统；下位机将控制状态、传感器数据等反馈信息返回上位机，实现闭环控制与状态监测。UDP协议传输效率高、实时性好，能够满足车辆控制系统对时延的要求。
 
-交互模块如图\ref{交互界面}所示。系统选用RViz作为主要可视化开发与测试工具。RViz是ROS中的三维可视化平台，既可实现外部信息的图形化显示，也可用于发布控制信息，从而实现对机器人的监测与控制。通过RViz可直观展示车辆在地图中的位置、运动轨迹及传感器数据，便于开发人员调试与功能验证。此外，为实现与用户端（如手机小程序）的实时交互，系统采用MQTT协议进行加密通信。上位机可通过MQTT协议将车辆当前位置等状态信息实时发送至小程序端，用户亦可通过小程序下发目的地指令，系统接收后自动执行目标导航。该设计有效提升了系统的人机交互能力与操作便利性。
+交互模块如图\ref{交互界面}所示。系统选用RViz作为主要可视化开发与测试工具。RViz是ROS中的三维可视化平台，既可实现外部信息的图形化显示，也可用于发布控制信息，从而实现对机器人的监测与控制。通过RViz可直观展示车辆在地图中的位置、运动轨迹及传感器数据，便于开发人员调试与功能验证。此外，为实现与用户端的实时交互，系统采用MQTT协议进行加密通信。上位机可通过MQTT协议将车辆当前位置等状态信息实时发送至用户端，用户亦可通过终端下发目的地指令，系统接收后自动执行目标导航。该设计有效提升了系统的人机交互能力与操作便利性。
 
 \begin{figure}[h]
 \centering
-\subfigure[RViz界面]{\includegraphics[width=0.62\textwidth]{figures/chapter04/RViz界面.png}}
-\hfill
-\subfigure[小程序界面]{\includegraphics[width=0.20\textwidth]{figures/chapter04/小程序界面.jpeg}}
+\includegraphics[width=1\textwidth]{figures/chapter04/RViz界面.png}
 \caption{交互界面}
 \label{交互界面}
 \end{figure}
@@ -102,7 +102,7 @@
 
 \begin{figure}[h]
 \centering
-\includesvg[width=0.85\textwidth]{figures/chapter04/定位模块流程图}
+\includesvg[width=1\textwidth]{figures/chapter04/定位模块流程图}
 \caption{定位模块流程图}
 \label{定位模块流程图}
 \end{figure}
@@ -277,7 +277,7 @@ Navigation框架的核心组成包括地图服务器（map\_server）、定位�
 
 \begin{figure}[h]
 \centering
-\includesvg[width=0.8\textwidth]{figures/chapter04/导航模块功能结构}
+\includesvg[width=1\textwidth]{figures/chapter04/导航模块功能结构}
 \caption{导航模块功能结构图}
 \label{导航模块功能结构图}
 \end{figure}
@@ -292,7 +292,7 @@ Navigation框架的核心组成包括地图服务器（map\_server）、定位�
 
 \begin{figure}[h]
 \centering
-\includesvg[width=0.8\textwidth]{figures/chapter04/导航任务流程图}
+\includesvg[width=1\textwidth]{figures/chapter04/导航任务流程图}
 \caption{导航任务流程图}
 \label{导航任务流程图}
 \end{figure}
@@ -386,13 +386,12 @@ include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 
 在结果生成阶段，立体匹配分支输出视差图与深度信息，目标检测分支输出障碍物类别及边界框结果。随后，系统结合检测结果与深度信息生成带位置信息的障碍物列表；与此同时，深度图还可转换为稠密环境点云，用于描述当前帧的空间占据关系。最终，感知模块向导航模块输出障碍物列表与环境点云两类信息，分别用于局部代价地图更新与路径规划约束。
 
-\begin{figure}[!htbp]
+\begin{figure}[h]
 \centering
 \includesvg[width=0.7\textwidth]{figures/chapter04/双目相机数据处理流程图}
 \caption{双目相机数据处理流程图}
 \label{双目相机数据处理流程图}
 \end{figure}
-\FloatBarrier
 
 （1）障碍物列表在代价地图上的映射
 
@@ -426,7 +425,7 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.80\textwidth]{figures/chapter04/障碍物列表代价地图映射.png}
+\includegraphics[width=1\textwidth]{figures/chapter04/障碍物列表代价地图映射.png}
 \caption{障碍物列表在代价地图上的映射}
 \label{障碍物列表在代价地图上的映射}
 \end{figure}
@@ -442,7 +441,7 @@ C(x,y) = A \cdot \exp\left( - \frac{(x - x_{0})^{2} + (y - y_{0})^{2}}{2\sigma^{
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.80\textwidth]{figures/chapter04/点云代价地图映射.png}
+\includegraphics[width=1\textwidth]{figures/chapter04/点云代价地图映射.png}
 \caption{环境点云在代价地图上的映射}
 \label{环境点云在代价地图上的映射}
 \end{figure}

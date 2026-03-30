@@ -9,87 +9,71 @@
 
 \subsection{双目测距原理及相机标定}
 
-在相机参数固定的条件下，视差与深度呈反比关系。理想双目成像模型如图\ref{理想双目模型}所示，在该模型下可建立像素坐标与三维空间坐标之间的几何映射关系。
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.50\textwidth]{figures/chapter03/理想双目模型.png}
-  \caption{理想双目模型}
-  \label{理想双目模型}
-\end{figure}
-
-双目视觉测距基于针孔成像几何模型。为便于分析，假设左右相机光轴平行、成像平面共面，双目基线沿水平方向布置，且图像已完成极线校正。在该理想条件下，空间点$P$在左右相机像平面上的像素坐标分别记为$P_l(x_l,y_l)$和$P_r(x_r,y_r)$，对应点满足$y_l=y_r$，视差仅沿水平方向产生。根据相似三角形关系，可得到空间点深度与视差之间的关系，如式~\eqref{eq:ch3-geometry}所示：
+在理想平行双目成像模型下，视差与深度呈反比关系，其几何关系如图\ref{理想双目模型}所示。设左右相机光轴平行、成像平面共面，双目基线沿水平方向布置，且图像已完成极线校正。记空间点$P$在左右像平面上的像素坐标分别为$p_l=[x_l,y_l]^T$和$p_r=[x_r,y_r]^T$，则对应点满足$y_l=y_r$，其水平视差为$d=x_l-x_r$。根据相似三角形关系，空间点深度$Z$与视差$d$之间满足式~\eqref{eq:ch3-geometry}：
 \begin{equation}\label{eq:ch3-geometry}
 Z=\frac{fB}{d}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $P$ & 空间点在相机坐标系下的三维点；\\
-& $P_l(x_l,y_l),\,P_r(x_r,y_r)$ & 空间点在左右相机像平面上的像素坐标；\\
-& $Z$ & 空间点到相机的深度值；\\
+式中& $Z$ & 空间点到相机的深度值；\\
 & $d$ & 左右图像对应点的水平视差；\\
 & $f$ & 相机有效焦距；\\
 & $B$ & 双目基线长度；\\
 \end{tabularx}\vspace{3.15bp}
 
-实际双目系统中普遍存在镜头畸变与安装误差，若不进行标定将导致测距结果偏离理想几何模型。为此，本文采用张正友标定方法，利用MATLAB的Stereo Camera Calibrator采集多组棋盘格图像进行双目标定。标定后可获得左右相机的内参矩阵$\mathbf{K}_l,\mathbf{K}_r$、畸变参数$\mathbf{D}_l,\mathbf{D}_r$以及双目系统的相对位姿$\mathbf{R},\mathbf{t}$，标定结果如图\ref{双目相机标定结果}所示。
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.65\textwidth]{figures/chapter03/理想双目模型.png}
+  \caption{理想双目模型}
+  \label{理想双目模型}
+\end{figure}
+
+实际双目系统受镜头畸变与安装误差影响，因此在利用式~\eqref{eq:ch3-geometry}进行测距前，需先完成双目标定、去畸变与立体校正。本文采用张正友标定方法，利用MATLAB的Stereo Camera Calibrator采集多组棋盘格图像进行双目标定，标定过程界面如图\ref{双目标定过程界面}所示。标定后可获得左右相机的内参矩阵$K_l,K_r$、畸变参数$D_l,D_r$以及双目系统的相对位姿$R,t$。
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.48\textwidth]{figures/chapter03/双目相机标定结果A.png}
   \hfill
   \includegraphics[width=0.48\textwidth]{figures/chapter03/双目相机标定结果B.png}
-  \caption{双目相机标定结果}
-  \label{双目相机标定结果}
+  \caption{双目标定过程界面}
+  \label{双目标定过程界面}
 \end{figure}
 
-相机内参矩阵，其形式如式~\eqref{eq:ch3-intrinsic}所示，其用于建立相机坐标系与像素坐标系之间的映射关系，并为图像去畸变和立体校正提供投影参数。
-\begin{equation}\label{eq:ch3-intrinsic}
-\mathbf{K}=
-\begin{bmatrix}
-f_x & 0 & c_x \\
-0 & f_y & c_y \\
-0 & 0 & 1
-\end{bmatrix}
-\end{equation}
-\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $\mathbf{K}$ & 相机内参矩阵；\\
-& $f_x,f_y$ & 分别为$x$、$y$方向的等效焦距；\\
-& $c_x,c_y$ & 主点坐标。\\
-\end{tabularx}\vspace{3.15bp}
-
-内参矩阵用于建立相机坐标系与像素坐标系之间的映射关系，并为图像去畸变和立体校正提供投影参数，其在校正过程中的作用可表示为式~\eqref{eq:ch3-rectify}：
-\begin{equation}\label{eq:ch3-rectify}
-\tilde{\mathbf{p}}' \sim \mathbf{H}\tilde{\mathbf{p}},\quad \mathbf{H}=\mathbf{K}'\mathbf{R}_{\mathrm{rect}}\mathbf{K}^{-1}
-\end{equation}
-\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $\tilde{\mathbf{p}}$ & 原始图像中的像素齐次坐标；\\
-& $\tilde{\mathbf{p}}'$ & 校正后的像素齐次坐标；\\
-& $\mathbf{H}$ & 图像校正单应矩阵；\\
-& $\mathbf{K}'$ & 校正后相机内参矩阵；\\
-& $\mathbf{R}_{\mathrm{rect}}$ & 立体校正旋转矩阵。\\
-\end{tabularx}\vspace{3.15bp}
-
-其中，$\mathbf{K}$和$\mathbf{K}'$分别参与原始图像与校正图像的投影变换，$\mathbf{R}_{\mathrm{rect}}$由双目标定得到的相对位姿计算获得。在此基础上，首先根据内参矩阵和畸变参数对原始图像进行去畸变处理，以消除镜头畸变对成像位置的影响。设畸变像素点为$\tilde{\mathbf{p}}_d$，无畸变像素点为$\tilde{\mathbf{p}}_u$，则去畸变过程可表示为式~\eqref{eq:ch3-undistort}：
+首先，对原始图像进行去畸变。设畸变像素点与去畸变像素点的齐次坐标分别为$\tilde{p}_d$和$\tilde{p}_u$，则去畸变过程可表示为式~\eqref{eq:ch3-undistort}：
 \begin{equation}\label{eq:ch3-undistort}
-\tilde{\mathbf{p}}_u=\mathcal{D}^{-1}(\tilde{\mathbf{p}}_d)
+\tilde{p}_u=\mathcal{D}^{-1}(\tilde{p}_d)
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $\tilde{\mathbf{p}}_d,\tilde{\mathbf{p}}_u$ & 去畸变前后的像素齐次坐标；\\
-& $\mathcal{D}^{-1}(\cdot)$ & 由标定获得的畸变参数确定的去畸变映射。\\
+式中& $\mathcal{D}^{-1}(\cdot)$ & 由标定获得的畸变参数确定的去畸变映射。\\
 \end{tabularx}\vspace{3.15bp}
 
-随后，根据双目系统的相对位姿对左右图像进行立体校正，使两相机成像平面尽可能共面，并使对应点落在同一水平极线上。对应点仍满足极几何约束，如式~\eqref{eq:ch3-epipolar}所示：
-\begin{equation}\label{eq:ch3-epipolar}
-\tilde{\mathbf{p}}_r^{\mathrm{T}}\mathbf{F}\tilde{\mathbf{p}}_l=0
+在此基础上，根据双目标定得到的相对旋转矩阵$R$与平移向量$t$进行立体校正。取双目基线方向为校正坐标系的$x$轴，并以左相机光轴单位向量$z=[0,0,1]^T$为辅助方向，则校正坐标基可表示为式~\eqref{eq:ch3-stereo-rectify-basis}：
+\begin{equation}\label{eq:ch3-stereo-rectify-basis}
+r_1=\frac{t}{\|t\|},\quad
+r_2=\frac{z\times r_1}{\|z\times r_1\|},\quad
+r_3=r_1\times r_2
+\end{equation}
+进而，左右相机的立体校正旋转矩阵可表示为式~\eqref{eq:ch3-stereo-rectify-lr}：
+\begin{equation}\label{eq:ch3-stereo-rectify-lr}
+R_{rect,l}=
+\begin{bmatrix}
+r_1^T\\
+r_2^T\\
+r_3^T
+\end{bmatrix},\quad
+R_{rect,r}=R_{rect,l}R
+\end{equation}
+对去畸变后的图像，校正映射可表示为式~\eqref{eq:ch3-rectify}：
+\begin{equation}\label{eq:ch3-rectify}
+\tilde{p}' \sim H\tilde{p}_u,\quad H=K'R_{rect}K^{-1}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $\mathbf{F}$ & 基础矩阵；\\
-& $\tilde{\mathbf{p}}_l,\tilde{\mathbf{p}}_r$ & 左右图像中对应点的齐次像素坐标。\\
+式中& $\tilde{p}'$ & 校正后的像素齐次坐标；\\
+& $H$ & 图像校正单应矩阵；\\
+& $K'$ & 校正后的相机内参矩阵；\\
+& $R_{rect}$ & 立体校正旋转矩阵。\\
 \end{tabularx}\vspace{3.15bp}
 
-经过去畸变与立体校正后，左右图像中同一空间点的投影将尽可能落在同一水平扫描线上，即满足$y_l' \approx y_r'$。由此可将对应点匹配由二维搜索简化为沿水平方向的一维搜索，从而提高视差估计的稳定性。
-
-基于标定结果，对左右图像进行去畸变与立体校正处理后，其极线能够较好地对齐至水平方向，校正效果如图\ref{图像校正处理结果}所示。校正后的图像可稳定用于视差估计与深度计算，为后续障碍物检测与测距算法提供可靠的几何基础。
+对左右相机分别代入相应的内参与立体校正旋转矩阵，即可完成对去畸变图像的重映射，使双目图像统一到同一校正坐标系中。校正后，同一空间点在左右图像中的投影满足$y_l' \approx y_r'$，从而可将对应点匹配由二维搜索简化为沿水平方向的一维搜索，进而提高视差估计的稳定性。校正效果如图\ref{图像校正处理结果}所示，校正后的图像可稳定用于视差估计与深度计算，为后续障碍物检测与测距算法提供可靠的几何基础。
 
 \begin{figure}[!htbp]
   \centering
@@ -106,7 +90,7 @@ f_x & 0 & c_x \\
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=1\textwidth]{figures/chapter03/HAGVNet结构图.png}
+  \includesvg[width=1\textwidth]{figures/chapter03/HAGVNet结构图}
   \caption{HAGVNet结构图}
   \label{HAGVNet结构图}
 \end{figure}
@@ -115,7 +99,7 @@ f_x & 0 & c_x \\
 
 与直接在单尺度上构建代价体的方法不同，本文在代价建模阶段显式引入粗尺度几何先验，对细尺度代价体进行调制。传统轻量化立体匹配模型通常仅依赖单尺度特征构建相关性代价体，缺乏来自粗尺度几何结构的约束，在弱纹理、重复纹理及遮挡区域易导致代价分布不稳定。为提升细尺度匹配的稳定性与几何一致性，本文提出分层注意力引导的代价体构建方法（Hierarchical Attention-Guided Cost Volume, HAGV）。该方法首先在粗尺度上获取稳定的几何先验，并将其作为一种弱几何约束前置到代价体构建阶段，用于调制细尺度代价建模过程。由此，使细尺度代价体在生成阶段即具备一定的几何一致性，而非仅依赖后续聚合阶段进行补偿，从而为后续代价聚合与视差回归提供更稳定、物理约束更强的输入。
 
-在该流程中，模型首先由骨干网络提取左右图像的多尺度特征，并分别利用原图$1/8$分辨率与$1/4$分辨率特征构建粗尺度代价体与细尺度代价体。粗尺度代价体经轻量聚合与视差回归后得到粗尺度视差先验$d_{\text{coarse}}$。随后，将$d_{\text{coarse}}$上采样至细尺度，并据此生成平滑的高斯注意力先验。高斯注意力形式见式~\eqref{eq:ch3-attention}：
+在该流程中，模型由骨干网络提取左右图像的多尺度特征，并分别利用原图$1/8$分辨率与$1/4$分辨率特征构建粗尺度代价体与细尺度代价体。粗尺度代价体经轻量聚合与视差回归后得到粗尺度视差先验$d_{\text{coarse}}$，随后将$d_{\text{coarse}}$上采样至细尺度，并据此生成平滑的高斯注意力先验。高斯注意力形式见式~\eqref{eq:ch3-attention}：
 \begin{equation}\label{eq:ch3-attention}
 A=\exp\left(-\frac{(d_{\text{coarse}}-\mu)^2}{2\sigma^2}\right)
 \end{equation}
@@ -146,7 +130,7 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=1\textwidth]{figures/chapter03/不同代价卷积块对比.png}
+  \includesvg[width=0.95\textwidth]{figures/chapter03/不同代价卷积块对比}
   \caption{不同代价卷积块对比}
   \label{不同代价卷积块对比}
 \end{figure}
@@ -220,7 +204,7 @@ C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
 
 \begin{figure}[h]
   \centering
-  \includegraphics{figures/chapter03/代价聚合结构图.png}
+  \includesvg[width=1\textwidth]{figures/chapter03/代价聚合结构图}
   \caption{代价聚合结构图}
   \label{代价聚合结构图}
 \end{figure}
@@ -350,14 +334,14 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.99\textwidth]{figures/chapter03/SceneFlow性能与FLOPs对比.png}
+  \includegraphics[width=0.95\textwidth]{figures/chapter03/SceneFlow性能与FLOPs对比.png}
   \caption{SceneFlow数据集上的性能与FLOPs对比}
   \label{SceneFlow数据集上的性能与FLOPs对比}
 \end{figure}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.99\textwidth]{figures/chapter03/KITTI2015性能与FLOPs对比.png}
+  \includegraphics[width=0.95\textwidth]{figures/chapter03/KITTI2015性能与FLOPs对比.png}
   \caption{KITTI 2015数据集上的性能与FLOPs对比}
   \label{KITTI2015数据集上的性能与FLOPs对比}
 \end{figure}
@@ -425,9 +409,9 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 综合来看，HAGVNet在保持极低计算复杂度与参数规模的前提下，仍能在多个公开数据集上取得稳定且具有竞争力的匹配精度，体现出良好的精度–复杂度折中性能，具备在算力受限嵌入式平台上部署的工程可行性。
 
-\section{基于深度学习的目标识别技术研究}
+\section{基于深度学习的目标检测技术研究}
 
-目标识别是环境感知中的重要任务，能够实时检测公园场景中常见的行人、动物、长椅等障碍物进而结合双目视觉测距做出决策保证安全。目标识别除了要求很高的准确度之外,还要保证有足够快的响应速度以保证控制的实时性，对于在嵌入式系统的部署,更需要保证较小的模型尺寸。
+目标检测是环境感知中的重要任务，能够实时检测公园场景中常见的行人、动物、长椅等障碍物进而结合双目视觉测距做出决策保证安全。目标检测除了要求很高的准确度之外,还要保证有足够快的响应速度以保证控制的实时性，对于在嵌入式系统的部署,更需要保证较小的模型尺寸。
 
 \subsection{YOLO目标检测}
 
@@ -437,7 +421,7 @@ YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测�
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.95\textwidth]{figures/chapter03/YOLO11在COCO上的性能对比.png}
+  \includegraphics[width=1\textwidth]{figures/chapter03/YOLO11在COCO上的性能对比.png}
   \caption{YOLO11与其他主流网络在COCO数据集的性能对比\cite{jocherUltralyticsYOLO112024}}
   \label{YOLO11与其他主流网络在COCO数据集的性能对比}
 \end{figure}
@@ -450,7 +434,7 @@ YOLO11n的整体结构如图\ref{YOLO11n整体结构}所示，主要包括以下
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/YOLO11n整体结构.png}
+  \includegraphics[width=1\textwidth]{figures/chapter03/YOLO11n整体结构.png}
   \caption{YOLO11n整体结构\cite{jocherUltralyticsYOLO112024}}
   \label{YOLO11n整体结构}
 \end{figure}
@@ -491,42 +475,32 @@ mAP=\frac{1}{N}\sum_{c=1}^{N} AP_c
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter03/目标检测与测距流程.png}
+  \includesvg[width=0.88\textwidth]{figures/chapter03/目标检测与测距流程}
   \caption{目标检测及测距流程}
   \label{目标检测及测距流程}
 \end{figure}
 
 （1）立体匹配与视差估计
 
-对经过校正后的左右图像与，采用前文提出的HAGVNet立体匹配模型进行视差估计，获得稠密视差图，如式~\eqref{eq:ch3-disparity}所示：
+对经过校正后的左右图像，采用前文提出的HAGVNet立体匹配模型进行视差估计，获得稠密视差图，如式~\eqref{eq:ch3-disparity}所示：
 \begin{equation}\label{eq:ch3-disparity}
 D=F(I_l,I_r)
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $D$ & 稠密视差图；\\
-& $F(\cdot)$ & 立体匹配网络的前向映射函数；\\
-& $I_l,\,I_r$ & 校正后的左右输入图像。\\
+式中& $D$ & 视差图；\\
+& $F(\cdot)$ & 立体匹配网络；\\
+& $I_l,\,I_r$ & 校正后的左右图像。\\
 \end{tabularx}\vspace{3.15bp}
 
 根据双目成像原理，视差大小与目标距离呈反比关系，即视差值越大表示目标距离相机越近，视差值越小则对应较远的空间位置。
 
 （2）深度恢复
 
-根据双目成像几何模型，在相机完成标定且已知基线长度与焦距（以像素为单位）的条件下，像素视差与空间点深度之间满足如式~\eqref{eq:ch3-depth}所示关系：
+根据双目成像几何模型，在相机完成标定且已知基线长度与焦距的条件下，可由视差图直接恢复稠密深度图，其关系如式~\eqref{eq:ch3-depth}所示：
 \begin{equation}\label{eq:ch3-depth}
-Z_{u,v}=\frac{fB}{d_{u,v}}
-\end{equation}
-
-由式~\eqref{eq:ch3-depth}可将视差图映射为对应的稠密深度图，如式~\eqref{eq:ch3-depth-map}所示：
-\begin{equation}\label{eq:ch3-depth-map}
-Z=G(D)
+Z=\frac{fB}{D}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $Z_{u,v}$ & 像素位置$(u,v)$处的深度值；\\
-& $d_{u,v}$ & 像素位置$(u,v)$处的视差值；\\
-& $f$ & 相机焦距（像素单位）；\\
-& $B$ & 双目基线长度；\\
-& $Z=G(D)$ & 由视差图映射得到的稠密深度图。\\
 \end{tabularx}\vspace{3.15bp}
 
 （3）深度获取
@@ -537,27 +511,22 @@ b_i'=\alpha b_i,\quad 0<\alpha<1
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $b_i$ & 第$i$个目标的原始二维边界框；\\
-& $b_i'$ & 缩放后的有效ROI边界框；\\
-& $\alpha$ & ROI缩放系数，且$0<\alpha<1$。\\
+& $b_i'$ & 缩放后的有效ROI；\\
+& $\alpha$ & ROI缩放系数。\\
 \end{tabularx}\vspace{3.15bp}
 
-在深度图中提取与对应的深度集合，如式~\eqref{eq:ch3-depth-set}所示：
-\begin{equation}\label{eq:ch3-depth-set}
-Z_i=\{Z(u,v)\mid (u,v)\in b_i'\}
-\end{equation}
-
-为降低异常深度值对测距结果的影响，本文采用区域内深度中位数作为目标的距离估计值，如式~\eqref{eq:ch3-depth-median}所示：
+为降低异常深度值对测距结果的影响，本文在目标ROI内提取深度值，并采用其中位数作为目标的距离估计值，如式~\eqref{eq:ch3-depth-median}所示：
 \begin{equation}\label{eq:ch3-depth-median}
-\hat{Z}_i=\mathrm{median}(Z_i)
+\hat{Z}_i=\mathrm{median}\{Z(u,v)\mid (u,v)\in b_i'\}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $Z_i$ & 第$i$个目标ROI内的深度值集合；\\
-& $\hat{Z}_i$ & 第$i$个障碍物相对于相机的估计深度（中位数）。\\
+式中& $\hat{Z}_i$ & 第$i$个目标的深度估计值；\\
+& $b_i'$ & 第$i$个目标的有效ROI。\\
 \end{tabularx}\vspace{3.15bp}
 
 （4）目标三维坐标计算
 
-在获得目标深度估计值后，可进一步恢复目标在相机坐标系下的三维空间位置。设目标中心在图像坐标系下的像素坐标为，结合像素坐标到相机坐标系的转换模型，其三维坐标如式~\eqref{eq:ch3-xyz}所示：
+在获得目标深度估计值后，可进一步恢复目标在相机坐标系下的三维空间位置。设目标中心在图像坐标系下的像素坐标为$(u_i,v_i)$，结合像素坐标到相机坐标系的转换模型，其三维坐标如式~\eqref{eq:ch3-xyz}所示：
 \begin{equation}\label{eq:ch3-xyz}
 X_i=\frac{(u_i-c_x)\hat{Z}_i}{f},\quad
 Y_i=\frac{(v_i-c_y)\hat{Z}_i}{f},\quad
@@ -565,17 +534,15 @@ Z_i=\hat{Z}_i
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $(c_x,c_y)$ & 相机主点坐标；\\
-& $f$ & 相机焦距；\\
 & $(u_i,v_i)$ & 第$i$个目标中心像素坐标；\\
 \end{tabularx}\vspace{3.15bp}
 
-综合目标检测与深度估计结果，系统最终输出的障碍物信息如式~\eqref{eq:ch3-output}所示：
+综合目标检测与深度估计结果，最终输出的障碍物信息如式~\eqref{eq:ch3-output}所示：
 \begin{equation}\label{eq:ch3-output}
 O_i=(c_i,s_i,X_i,Y_i,Z_i)
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $O_i$ & 第$i$个障碍物的输出信息向量；\\
-& $c_i$ & 目标类别；\\
+式中& $c_i$ & 目标类别；\\
 & $s_i$ & 检测置信度；\\
 \end{tabularx}\vspace{3.15bp}
 
