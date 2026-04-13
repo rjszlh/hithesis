@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150.0mm" height="93.750mm" viewBox="0 0 800 500">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-size:14.82pt;fill:#111;}.cn{font-family:SimSun, "宋体", serif;}.latin,.num{font-family:"Times New Roman", Times, serif;}.axis{stroke:#222;stroke-width:1.2;}.grid{stroke:#d0d0d0;stroke-width:0.8;stroke-dasharray:4 4;}</style>
+<line class="grid" x1="90" y1="415.0" x2="765" y2="415.0"/>
+<line class="axis" x1="85" y1="415.0" x2="90" y2="415.0"/>
+<text class="num" x="78" y="420.0" text-anchor="end">0</text>
+<line class="grid" x1="90" y1="339.0" x2="765" y2="339.0"/>
+<line class="axis" x1="85" y1="339.0" x2="90" y2="339.0"/>
+<text class="num" x="78" y="344.0" text-anchor="end">2</text>
+<line class="grid" x1="90" y1="263.0" x2="765" y2="263.0"/>
+<line class="axis" x1="85" y1="263.0" x2="90" y2="263.0"/>
+<text class="num" x="78" y="268.0" text-anchor="end">4</text>
+<line class="grid" x1="90" y1="187.0" x2="765" y2="187.0"/>
+<line class="axis" x1="85" y1="187.0" x2="90" y2="187.0"/>
+<text class="num" x="78" y="192.0" text-anchor="end">6</text>
+<line class="grid" x1="90" y1="111.0" x2="765" y2="111.0"/>
+<line class="axis" x1="85" y1="111.0" x2="90" y2="111.0"/>
+<text class="num" x="78" y="116.0" text-anchor="end">8</text>
+<line class="grid" x1="90" y1="35.0" x2="765" y2="35.0"/>
+<line class="axis" x1="85" y1="35.0" x2="90" y2="35.0"/>
+<text class="num" x="78" y="40.0" text-anchor="end">10</text>
+<line class="grid" x1="90.0" y1="35" x2="90.0" y2="415"/>
+<line class="axis" x1="90.0" y1="415" x2="90.0" y2="420"/>
+<text class="num" x="90.0" y="443" text-anchor="middle">2</text>
+<line class="grid" x1="258.8" y1="35" x2="258.8" y2="415"/>
+<line class="axis" x1="258.8" y1="415" x2="258.8" y2="420"/>
+<text class="num" x="258.8" y="443" text-anchor="middle">4</text>
+<line class="grid" x1="427.5" y1="35" x2="427.5" y2="415"/>
+<line class="axis" x1="427.5" y1="415" x2="427.5" y2="420"/>
+<text class="num" x="427.5" y="443" text-anchor="middle">6</text>
+<line class="grid" x1="596.2" y1="35" x2="596.2" y2="415"/>
+<line class="axis" x1="596.2" y1="415" x2="596.2" y2="420"/>
+<text class="num" x="596.2" y="443" text-anchor="middle">8</text>
+<line class="grid" x1="765.0" y1="35" x2="765.0" y2="415"/>
+<line class="axis" x1="765.0" y1="415" x2="765.0" y2="420"/>
+<text class="num" x="765.0" y="443" text-anchor="middle">10</text>
+<line class="axis" x1="90" y1="35" x2="90" y2="415"/>
+<line class="axis" x1="90" y1="415" x2="765" y2="415"/>
+<text text-anchor="middle" x="427.5" y="470.0"><tspan class="cn">真实距离</tspan><tspan class="latin"> / m</tspan></text>
+<text transform="translate(31 225.0) rotate(-90)" text-anchor="middle"><tspan class="cn">相对误差</tspan><tspan class="latin"> / %</tspan></text>
+<polyline points="90.0,377.0 258.8,346.6 427.5,358.0 596.2,194.6 765.0,133.8" fill="none" stroke="#1f77b4" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="90.0" cy="377.0" r="5" fill="white" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="258.8" cy="346.6" r="5" fill="white" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="427.5" cy="358.0" r="5" fill="white" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="596.2" cy="194.6" r="5" fill="white" stroke="#1f77b4" stroke-width="2"/>
+<circle cx="765.0" cy="133.8" r="5" fill="white" stroke="#1f77b4" stroke-width="2"/>
+<polyline points="90.0,396.0 258.8,384.6 427.5,369.4 596.2,361.8 765.0,217.4" fill="none" stroke="#d62728" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="85.0" y="391.0" width="10" height="10" fill="white" stroke="#d62728" stroke-width="2"/>
+<rect x="253.8" y="379.6" width="10" height="10" fill="white" stroke="#d62728" stroke-width="2"/>
+<rect x="422.5" y="364.4" width="10" height="10" fill="white" stroke="#d62728" stroke-width="2"/>
+<rect x="591.2" y="356.8" width="10" height="10" fill="white" stroke="#d62728" stroke-width="2"/>
+<rect x="760.0" y="212.4" width="10" height="10" fill="white" stroke="#d62728" stroke-width="2"/>
+<polyline points="90.0,282.0 258.8,232.6 427.5,232.6 596.2,225.0 765.0,107.2" fill="none" stroke="#2ca02c" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="90.0,276.0 84.2,287.0 95.8,287.0" fill="white" stroke="#2ca02c" stroke-width="2"/>
+<polygon points="258.8,226.6 252.9,237.6 264.6,237.6" fill="white" stroke="#2ca02c" stroke-width="2"/>
+<polygon points="427.5,226.6 421.7,237.6 433.3,237.6" fill="white" stroke="#2ca02c" stroke-width="2"/>
+<polygon points="596.2,219.0 590.5,230.0 602.0,230.0" fill="white" stroke="#2ca02c" stroke-width="2"/>
+<polygon points="765.0,101.2 759.2,112.2 770.8,112.2" fill="white" stroke="#2ca02c" stroke-width="2"/>
+<polyline points="90.0,339.0 258.8,301.0 427.5,320.0 596.2,209.8 765.0,88.2" fill="none" stroke="#9467bd" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="90.0,333.0 84.0,339.0 90.0,345.0 96.0,339.0" fill="white" stroke="#9467bd" stroke-width="2"/>
+<polygon points="258.8,295.0 252.8,301.0 258.8,307.0 264.8,301.0" fill="white" stroke="#9467bd" stroke-width="2"/>
+<polygon points="427.5,314.0 421.5,320.0 427.5,326.0 433.5,320.0" fill="white" stroke="#9467bd" stroke-width="2"/>
+<polygon points="596.2,203.8 590.2,209.8 596.2,215.8 602.2,209.8" fill="white" stroke="#9467bd" stroke-width="2"/>
+<polygon points="765.0,82.2 759.0,88.2 765.0,94.2 771.0,88.2" fill="white" stroke="#9467bd" stroke-width="2"/>
+<polyline points="90.0,377.0 258.8,289.6 427.5,206.0 596.2,206.0 765.0,236.4" fill="none" stroke="#ff7f0e" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="90.0,383.0 84.2,372.0 95.8,372.0" fill="white" stroke="#ff7f0e" stroke-width="2"/>
+<polygon points="258.8,295.6 252.9,284.6 264.6,284.6" fill="white" stroke="#ff7f0e" stroke-width="2"/>
+<polygon points="427.5,212.0 421.7,201.0 433.3,201.0" fill="white" stroke="#ff7f0e" stroke-width="2"/>
+<polygon points="596.2,212.0 590.5,201.0 602.0,201.0" fill="white" stroke="#ff7f0e" stroke-width="2"/>
+<polygon points="765.0,242.4 759.2,231.4 770.8,231.4" fill="white" stroke="#ff7f0e" stroke-width="2"/>
+<polyline points="90.0,396.0 258.8,358.0 427.5,384.6 596.2,251.6 765.0,251.6" fill="none" stroke="#17becf" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 84.0 396.0 L 96.0 396.0 M 90.0 390.0 L 90.0 402.0" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<path d="M 252.8 358.0 L 264.8 358.0 M 258.8 352.0 L 258.8 364.0" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<path d="M 421.5 384.6 L 433.5 384.6 M 427.5 378.6 L 427.5 390.6" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<path d="M 590.2 251.6 L 602.2 251.6 M 596.2 245.6 L 596.2 257.6" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<path d="M 759.0 251.6 L 771.0 251.6 M 765.0 245.6 L 765.0 257.6" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<polyline points="90.0,361.0 258.8,318.9 427.5,311.6 596.2,241.3 765.0,172.6" fill="none" stroke="#000000" stroke-width="3.8" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="90.0" cy="361.0" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
+<circle cx="258.8" cy="318.9" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
+<circle cx="427.5" cy="311.6" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
+<circle cx="596.2" cy="241.3" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
+<circle cx="765.0" cy="172.6" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
+<rect x="102" y="47" width="430" height="78" rx="4" fill="white" stroke="#999" stroke-width="0.8" opacity="0.94"/>
+<line x1="120" y1="73" x2="146" y2="73" stroke="#1f77b4" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="133.0" cy="73.0" r="5" fill="white" stroke="#1f77b4" stroke-width="2"/>
+<text class="cn" x="155" y="78">行人</text>
+<line x1="220" y1="73" x2="246" y2="73" stroke="#d62728" stroke-width="2.2" stroke-linecap="round"/>
+<rect x="228.0" y="68.0" width="10" height="10" fill="white" stroke="#d62728" stroke-width="2"/>
+<text class="cn" x="255" y="78">汽车</text>
+<line x1="320" y1="73" x2="346" y2="73" stroke="#2ca02c" stroke-width="2.2" stroke-linecap="round"/>
+<polygon points="333.0,67.0 327.2,78.0 338.8,78.0" fill="white" stroke="#2ca02c" stroke-width="2"/>
+<text class="cn" x="355" y="78">摩托车</text>
+<line x1="420" y1="73" x2="446" y2="73" stroke="#9467bd" stroke-width="2.2" stroke-linecap="round"/>
+<polygon points="433.0,67.0 427.0,73.0 433.0,79.0 439.0,73.0" fill="white" stroke="#9467bd" stroke-width="2"/>
+<text class="cn" x="455" y="78">路障</text>
+<line x1="120" y1="103" x2="146" y2="103" stroke="#ff7f0e" stroke-width="2.2" stroke-linecap="round"/>
+<polygon points="133.0,109.0 127.2,98.0 138.8,98.0" fill="white" stroke="#ff7f0e" stroke-width="2"/>
+<text class="cn" x="155" y="108">杆体</text>
+<line x1="220" y1="103" x2="246" y2="103" stroke="#17becf" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M 227.0 103.0 L 239.0 103.0 M 233.0 97.0 L 233.0 109.0" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+<text class="cn" x="255" y="108">树木</text>
+<line x1="320" y1="103" x2="346" y2="103" stroke="#000000" stroke-width="3.8" stroke-linecap="round"/>
+<circle cx="333.0" cy="103.0" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
+<text class="cn" x="355" y="108">平均值</text>
+</svg>
