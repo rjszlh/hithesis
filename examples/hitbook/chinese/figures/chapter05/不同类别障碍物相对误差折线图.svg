@@ -62,24 +62,24 @@
 <polygon points="427.5,314.0 421.5,320.0 427.5,326.0 433.5,320.0" fill="white" stroke="#9467bd" stroke-width="2"/>
 <polygon points="596.2,203.8 590.2,209.8 596.2,215.8 602.2,209.8" fill="white" stroke="#9467bd" stroke-width="2"/>
 <polygon points="765.0,82.2 759.0,88.2 765.0,94.2 771.0,88.2" fill="white" stroke="#9467bd" stroke-width="2"/>
-<polyline points="90.0,377.0 258.8,289.6 427.5,206.0 596.2,206.0 765.0,236.4" fill="none" stroke="#ff7f0e" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="90.0,377.0 258.8,289.6 427.5,206.0 596.2,206.0 765.0,198.4" fill="none" stroke="#ff7f0e" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
 <polygon points="90.0,383.0 84.2,372.0 95.8,372.0" fill="white" stroke="#ff7f0e" stroke-width="2"/>
 <polygon points="258.8,295.6 252.9,284.6 264.6,284.6" fill="white" stroke="#ff7f0e" stroke-width="2"/>
 <polygon points="427.5,212.0 421.7,201.0 433.3,201.0" fill="white" stroke="#ff7f0e" stroke-width="2"/>
 <polygon points="596.2,212.0 590.5,201.0 602.0,201.0" fill="white" stroke="#ff7f0e" stroke-width="2"/>
-<polygon points="765.0,242.4 759.2,231.4 770.8,231.4" fill="white" stroke="#ff7f0e" stroke-width="2"/>
+<polygon points="765.0,204.4 759.2,193.4 770.8,193.4" fill="white" stroke="#ff7f0e" stroke-width="2"/>
 <polyline points="90.0,396.0 258.8,358.0 427.5,384.6 596.2,251.6 765.0,251.6" fill="none" stroke="#17becf" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
 <path d="M 84.0 396.0 L 96.0 396.0 M 90.0 390.0 L 90.0 402.0" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
 <path d="M 252.8 358.0 L 264.8 358.0 M 258.8 352.0 L 258.8 364.0" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
 <path d="M 421.5 384.6 L 433.5 384.6 M 427.5 378.6 L 427.5 390.6" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
 <path d="M 590.2 251.6 L 602.2 251.6 M 596.2 245.6 L 596.2 257.6" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
 <path d="M 759.0 251.6 L 771.0 251.6 M 765.0 245.6 L 765.0 257.6" stroke="#17becf" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-<polyline points="90.0,361.0 258.8,318.9 427.5,311.6 596.2,241.3 765.0,172.6" fill="none" stroke="#000000" stroke-width="3.8" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="90.0,361.0 258.8,318.9 427.5,311.6 596.2,241.3 765.0,166.1" fill="none" stroke="#000000" stroke-width="3.8" stroke-linejoin="round" stroke-linecap="round"/>
 <circle cx="90.0" cy="361.0" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
 <circle cx="258.8" cy="318.9" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
 <circle cx="427.5" cy="311.6" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
 <circle cx="596.2" cy="241.3" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
-<circle cx="765.0" cy="172.6" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
+<circle cx="765.0" cy="166.1" r="5" fill="#000000" stroke="#000000" stroke-width="2"/>
 <rect x="102" y="47" width="430" height="78" rx="4" fill="white" stroke="#999" stroke-width="0.8" opacity="0.94"/>
 <line x1="120" y1="73" x2="146" y2="73" stroke="#1f77b4" stroke-width="2.2" stroke-linecap="round"/>
 <circle cx="133.0" cy="73.0" r="5" fill="white" stroke="#1f77b4" stroke-width="2"/>
