@@ -129,25 +129,22 @@ L = I_y \omega_y \mathbf{e}_y
 & $\mathbf{e}_x$ & $X$轴方向的单位向量。\\
 \end{tabularx}\vspace{3.15bp}
 
-然而单个CMG在产生进动力矩的同时，也会由于结构偏置产生附加力矩分量，影响整体系统的稳定性。如图\ref{双CMG结构示意图}所示在存在倾角 $\theta$ 的情况下，CMG所产生的进动力矩 $\tau$ 可分解为沿 $x$ 轴方向的分力矩 $\tau \cos\theta$，从而引入非期望的扭矩分布。为此采用对称双CMG布置结构是一种有效的抑制手段。两组CMG沿相同轴线对称放置，飞轮自转方向相反，进动方向也相反，最后产生的合力矩的方向沿绝对坐标系 $X$，两个陀螺在绝对坐标 $Y$ 轴方向产生的分力矩相互抵消。采用双陀螺布置的控制力矩陀螺装置产生的控制力矩为：
+然而单个CMG在产生进动力矩的同时，也会由于结构偏置产生附加力矩分量，影响整体系统的稳定性。如图\ref{双CMG结构示意图}所示在存在飞轮转动角 $\theta$ 的情况下，CMG所产生的进动力矩 $\tau$ 可分解为沿 $x$ 轴方向的分力矩 $\tau \cos\theta$，从而引入非期望的扭矩分布。为此采用对称双CMG布置结构是一种有效的抑制手段。两组CMG沿相同轴线对称放置，飞轮自转方向相反，进动方向也相反，最后产生的合力矩的方向沿绝对坐标系 $X$，两个陀螺在绝对坐标 $Y$ 轴方向产生的分力矩相互抵消。采用双陀螺布置的控制力矩陀螺装置产生的控制力矩为：
 \begin{equation}
 \tau = 2 I_y \omega_y \omega_z \mathbf{e}_x \cos\theta
 \label{eq:ch2-cmg-double}
 \end{equation}
-\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $\theta$ & 飞轮转动角（$^\circ$）。\\
-\end{tabularx}\vspace{3.15bp}
 
 \begin{figure}[h]
   \centering
-  \begin{minipage}[t]{0.40\textwidth}
+  \begin{minipage}[t]{0.35\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter02/陀螺力矩方向示意图.png}
     \caption{陀螺力矩方向示意图}
     \label{陀螺力矩方向示意图}
   \end{minipage}
   \centering
-  \begin{minipage}[t]{0.55\textwidth}
+  \begin{minipage}[t]{0.47\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter02/双CMG结构示意图.png}
     \caption{双CMG结构示意图}
@@ -174,9 +171,14 @@ L = I_y \omega_y \mathbf{e}_y
 
 （3）进动电机的选型
 
-稳定模块产生的控制力矩必须大于两轮平衡车倾斜时的重力矩。当平衡车载人状态下前后方向倾斜的角度为$\beta$时，产生的重力矩$T_G$为：
+进动电机选型主要依据控制力矩需求、目标进动速度以及启动响应能力进行。为使计算过程清晰，本文先由整车倾斜时的重力矩确定稳定模块所需输出力矩，再根据双CMG力矩关系确定目标进动角速度，最后对进动电机的功率和转矩进行校核。
+
+1）控制力矩需求
+
+稳定模块产生的控制力矩应不小于两轮平衡车载人状态下倾斜时的重力矩。当平衡车沿前后方向倾斜角度为$\beta$时，重力矩$T_G$可表示为：
 \begin{equation}
 T_G = m_c g h_c \sin\beta + m_p g h_p \sin\beta
+\label{eq:ch2-gravity-torque}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $T_G$ & 重力矩（N$\cdot$m）；\\
@@ -185,41 +187,37 @@ T_G = m_c g h_c \sin\beta + m_p g h_p \sin\beta
 & $m_p$ & 人体质量（kg）；\\
 & $h_p$ & 人体乘坐时重心高度（m）；\\
 & $g$ & 重力加速度（$\mathrm{m/s^2}$）；\\
-& $\beta$ & 平衡车前后方向倾斜角度（$^\circ$）。\\
 \end{tabularx}\vspace{3.15bp}
 
-根据总体结构设计，估算$m_c=70\,\mathrm{kg}$，$h_c=0.42\,\mathrm{m}$，取$m_p=75\,\mathrm{kg}$，$h_p=0.85\,\mathrm{m}$，当$\beta=20^\circ$时代入计算得$T_G=312.64\,\mathrm{N\cdot m}$。所以稳定模块产生的控制力矩应不小于$312.64\,\mathrm{N\cdot m}$。
+根据总体结构设计，估算$m_c=70\,\mathrm{kg}$，$h_c=0.42\,\mathrm{m}$，取$m_p=75\,\mathrm{kg}$，$h_p=0.85\,\mathrm{m}$，设计校核倾角取$\beta=20^\circ$。代入式~\eqref{eq:ch2-gravity-torque}可得$T_G=312.64\,\mathrm{N\cdot m}$，因此稳定模块输出控制力矩应不小于$312.64\,\mathrm{N\cdot m}$。
 
-陀螺装置为根据车内空间设计的定制产品，其飞轮绕自转轴的转动惯量为$I_y=0.09\,\mathrm{kg\cdot m^2}$，内部高速电机额定转速$\omega_y=471.24\,\mathrm{rad/s}$（$4500\,\mathrm{r/min}$），CMG倾角$\theta=10^\circ$。由式~\eqref{eq:ch2-cmg-double}计算得进动角速度应不小于$3.75\,\mathrm{rad/s}$（$35.81\,\mathrm{r/min}$）。
+2）目标进动角速度
 
-设进动角速度为$\omega_z=3.77\,\mathrm{rad/s}$（$36\,\mathrm{r/min}$），为达到$100\,\mathrm{Hz}$的控制周期，故需要在$0.01\,\mathrm{s}$的时间内加速到目标转速，其加速功率计算公式：
+陀螺装置为根据车内空间设计的定制产品，其飞轮绕自转轴的转动惯量为$I_y=0.09\,\mathrm{kg\cdot m^2}$，绕进动轴的转动惯量为$J_z=0.0490\,\mathrm{kg\cdot m^2}$，内部高速电机额定转速$\omega_y=471.24\,\mathrm{rad/s}$（$4500\,\mathrm{r/min}$），CMG倾角$\theta=10^\circ$。由式~\eqref{eq:ch2-cmg-double}可知，双CMG输出力矩与进动角速度成正比。将上述力矩需求和陀螺参数代入式~\eqref{eq:ch2-cmg-double}，可得进动角速度应不小于$3.75\,\mathrm{rad/s}$（$35.81\,\mathrm{r/min}$）。为便于电机控制并留有少量余量，取目标进动角速度$\omega_z=3.77\,\mathrm{rad/s}$（$36\,\mathrm{r/min}$）。
+
+3）功率与转矩校核
+
+控制系统目标控制周期为$100\,\mathrm{Hz}$，按一个控制周期内从静止加速至目标进动角速度估算，加速时间取$t_{\alpha}=0.01\,\mathrm{s}$。进动加速功率$P_{\alpha}$为：
 \begin{equation}
 P_{\alpha} = \frac{\omega_z^2 J_z}{2 t_{\alpha}}
 \label{eq:ch2-power-acc}
 \end{equation}
-\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $P_{\alpha}$ & 加速功率（W）；\\
-& $\omega_z$ & 进动角速度（rad/s）；\\
-& $J_z$ & 陀螺绕进动轴的转动惯量（kg$\cdot$m$^2$）；\\
-& $t_{\alpha}$ & 加速时间（s）。\\
-\end{tabularx}\vspace{3.15bp}
 
-\noindent 考虑安全系数S=0.3，实际选择电机功率的额定功率应不小于P：
+考虑安全系数$S=0.3$，实际选择电机时额定功率$P$应满足：
 \begin{equation}
 P = P_{\alpha}(1 + S)
 \label{eq:ch2-power-rated}
 \end{equation}
 
-由式~\eqref{eq:ch2-power-acc}和式~\eqref{eq:ch2-power-rated}计算得进动电机的额定功率应大于$34.82\,\mathrm{W}$。
-
-电机所需的转矩$T$为：
+进动电机所需输出转矩$T$为：
 \begin{equation}
 T = \frac{J_z \omega_z}{t_{\alpha}}
+\label{eq:ch2-precession-torque}
 \end{equation}
 
-计算得进动电机所需的转矩为$18.47\,\mathrm{N\cdot m}$。
+由式~\eqref{eq:ch2-power-acc}、式~\eqref{eq:ch2-power-rated}和式~\eqref{eq:ch2-precession-torque}计算得，进动电机额定功率应大于$34.82\,\mathrm{W}$，输出转矩应不小于$18.47\,\mathrm{N\cdot m}$。综上，进动电机需满足目标转速不低于$36\,\mathrm{r/min}$、输出转矩不小于$18.47\,\mathrm{N\cdot m}$、额定功率不小于$34.82\,\mathrm{W}$。
 
-最终选择了RobStride03一体化关节电机，该电机集成了电机本体、减速器和驱动器，结构紧凑，适合车内安装。其详细参数如表\ref{进动电机技术参数}所示。
+最终选择RobStride03一体化关节电机。该电机集成电机本体、减速器和驱动器，结构紧凑，适合车内安装，其额定转速、额定扭矩和额定功率均满足上述计算要求。其详细参数如表\ref{进动电机技术参数}所示。
 
 \begin{table}[htbp]
   \centering
@@ -243,27 +241,20 @@ T = \frac{J_z \omega_z}{t_{\alpha}}
 
 根据结构方案设计所述，本课题设计的两轮平衡车采用倒立摆与控制力矩陀螺联合控制的平衡方案。倒立摆需要通过电机驱动车轮实现，实现轮式倒立摆常用的电机有轮边电机或轮毂电机。轮边电机具有成本低、维护方便、簧下质量小等优势，而轮毂电机则凭借更高的响应速度以及更紧凑的结构设计且不占用车内空间，选用轮毂电机能够更好地满足结构设计需求。
 
-为保证车辆在各工况下具备良好的驱动能力，需要根据设计指标计算符合各种工况下电机所需的扭矩、转速以及功率。平衡车在行驶中受到的阻力主要有滚动摩擦阻力$F_r$、空气阻力$F_a$、坡道阻力$F_c$以及加速阻力$F_{ac}$，根据工况进行计算。
+为保证车辆在各工况下具备良好的驱动能力，需要将整车行驶阻力换算为单侧轮毂电机所需的扭矩、功率和转速。为避免各工况计算相互交叉，本文先统一给出计算参数与基础阻力，再根据爬坡、加速和最高车速三种典型工况求取总阻力，最后进行电机参数校核。计算中取整车自重$70\,\mathrm{kg}$、最大载荷$75\,\mathrm{kg}$，因此最大总质量$m=145\,\mathrm{kg}$；轮胎直径为$660\,\mathrm{mm}$，对应车轮半径$r=0.33\,\mathrm{m}$；最高速度$V_{\max}=15\,\mathrm{km/h}\approx4.17\,\mathrm{m/s}$，最大加速度$a=2\,\mathrm{m/s^2}$，最大爬坡角$\theta=15^\circ$。
 
-1）最大爬坡角度时的阻力
+（1）基础阻力计算
 
-在爬坡时，平衡车需要克服滚动摩擦阻力和坡道阻力，因速度较低忽略空气阻力。最大爬坡角度时的阻力$F_1$的计算公式为：
-\begin{equation}
-F_1 = F_r + F_c
-\label{eq:ch2-f1}
-\end{equation}
-
-滚动摩擦阻力的计算公式为为：
+平衡车在行驶中受到的阻力主要包括滚动阻力$F_r$、空气阻力$F_a$、坡道阻力$F_c$以及加速阻力$F_{ac}$。其中，滚动阻力作为各工况下均需考虑的基础阻力，按下式估算：
 \begin{equation}
 F_r = c_r m g
 \label{eq:ch2-fr}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $c_r$ & 滚动摩擦系数；\\
-& $g$ & 重力加速度（N/kg）。\\
+式中& $c_r$ & 滚动摩擦系数。\\
 \end{tabularx}\vspace{3.15bp}
 
-在不同路面上滚动摩擦系数不同，各种路面的摩擦系数如表\ref{各种路面滚动摩擦系数}所示
+不同路面上滚动摩擦系数不同，各种路面的摩擦系数如表\ref{各种路面滚动摩擦系数}所示。
 
 \begin{table}[htbp]
   \centering
@@ -283,89 +274,76 @@ F_r = c_r m g
   \end{thesistabular}
 \end{table}
 
-平衡车的质量为$70\,\mathrm{kg}$，最大载荷为$75\,\mathrm{kg}$，可得最大总载荷$m=145\,\mathrm{kg}$，重力加速度$g=9.81\,\mathrm{N/kg}$，公园或社区的路面为良好的沥青或混凝土路面，由表\ref{各种路面滚动摩擦系数}取阻力系数$c_r=0.015$。由式~\eqref{eq:ch2-fr}计算得平衡车行驶时的滚动摩擦阻力$F_r=21.34\,\mathrm{N}$。
+公园或社区路面通常为较平整的沥青或混凝土路面，由表\ref{各种路面滚动摩擦系数}取滚动摩擦系数$c_r=0.015$，重力加速度取$g=9.81\,\mathrm{N/kg}$。代入式~\eqref{eq:ch2-fr}可得滚动阻力$F_r=21.34\,\mathrm{N}$。
 
-坡道阻力的计算公式为：
+坡道阻力$F_c$为：
 \begin{equation}
 F_c = m g \sin\theta
+\label{eq:ch2-fc}
 \end{equation}
-\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $\theta$ & 最大爬坡角（$^\circ$）。\\
-\end{tabularx}\vspace{3.15bp}
 
-平衡车最大总载荷$m=145\,\mathrm{kg}$，重力加速度$g=9.81\,\mathrm{N/kg}$，最大爬坡角$\theta=15^\circ$，计算得坡道阻力$F_s\approx365.16\,\mathrm{N}$。由式~\eqref{eq:ch2-f1}计算得最大爬坡角度时的最大爬坡角度时的阻力$F_1=386.50\,\mathrm{N}$。
-
-2）最大加速度时的阻力
-
-在最大加速度工况下，从静止开始加速，需考虑滚动阻力、空气阻力和加速阻力。最大加速度的阻力$F_2$的计算公式为
-\begin{equation}
-F_2 = F_r + F_a + F_{ac}
-\label{eq:ch2-f2}
-\end{equation}
+代入$m=145\,\mathrm{kg}$、$g=9.81\,\mathrm{N/kg}$、$\theta=15^\circ$，可得坡道阻力$F_c\approx365.16\,\mathrm{N}$。
 
 空气阻力$F_a$的计算公式为：
 \begin{equation}
 F_a = \frac{1}{2}\rho C_d A V_{\max}^2
 \label{eq:ch2-fa}
 \end{equation}
-\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $\rho$ & 空气密度（kg/m$^3$）；\\
-& $C_d$ & 空气阻力系数；\\
-& $A$ & 迎风面积（m$^2$）；\\
-& $V_{\max}$ & 最大速度（m/s）。\\
-\end{tabularx}\vspace{3.15bp}
 
 空气密度取常温常压下值$\rho=1.225\,\mathrm{kg/m^3}$，空气阻力系数取$C_d=1.0$，迎风面积由设计估算约为$A=0.73\,\mathrm{m^2}$，最大速度$V_{\max}\approx4.17\,\mathrm{m/s}$，由式~\eqref{eq:ch2-fa}计算得空气阻力$F_a=7.78\,\mathrm{N}$。
 
 加速阻力$F_{ac}$的计算公式为：
 \begin{equation}
 F_{ac} = m a
+\label{eq:ch2-fac}
+\end{equation}
+
+代入最大加速度$a=2\,\mathrm{m/s^2}$，可得加速阻力$F_{ac}=290\,\mathrm{N}$。
+
+（2）典型工况总阻力
+
+在最大爬坡工况下，车辆速度较低，空气阻力相对较小，可忽略不计，总阻力$F_1$主要由滚动阻力和坡道阻力组成；在最大加速度工况下，车辆从静止开始加速，需考虑滚动阻力、空气阻力和加速阻力，总阻力记为$F_2$；在最高车速匀速行驶工况下，加速阻力为零，总阻力$F_3$主要由滚动阻力和空气阻力组成。三种工况下的总阻力可统一写为：
+\begin{align}
+F_1 &= F_r + F_c
+\label{eq:ch2-f1}\\
+F_2 &= F_r + F_a + F_{ac}
+\label{eq:ch2-f2}\\
+F_3 &= F_r + F_a
+\label{eq:ch2-f3}
+\end{align}
+
+代入前述基础阻力计算结果，可得最大爬坡工况总阻力$F_1=386.50\,\mathrm{N}$，最大加速度工况总阻力$F_2=319.12\,\mathrm{N}$，最高车速工况总阻力$F_3=29.12\,\mathrm{N}$。
+
+（3）轮毂电机参数校核
+
+两轮差速驱动结构中，左右两个轮毂电机对称布置，单侧电机提供总牵引力的一半。考虑安全系数和传动效率后，单侧电机扭矩需求$\tau_n$为：
+\begin{equation}
+\tau_n \geq \frac{S F r}{2 \eta}
+\label{eq:ch2-hub-torque}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $a$ & 加速度（$\mathrm{m/s^2}$）。\\
+式中& $F$ & 对应工况下的整车总阻力（N）。\\
 \end{tabularx}\vspace{3.15bp}
 
-最大加速度$a=2\,\mathrm{m/s^2}$，计算得加速阻力$F_{ac}=290\,\mathrm{N}$。由式~\eqref{eq:ch2-f2}计算得最大加速度的阻力$F_2=319.12\,\mathrm{N}$。
+取安全系数$S=1.2$、传动效率$\eta=0.9$，代入$r=0.33\,\mathrm{m}$。由最大爬坡工况阻力$F_1$计算得$\tau_n\geq85.03\,\mathrm{N\cdot m}$；由最大加速度工况阻力$F_2$计算得$\tau_n\geq70.21\,\mathrm{N\cdot m}$。因此轮毂电机单侧输出扭矩应不小于$85.03\,\mathrm{N\cdot m}$。
 
-3）最大速度时的阻力
-
-最大速度情况下仅考虑摩擦滚动阻力和空气阻力，最大速度时的阻力$F_3$计算公式为：
+单侧轮毂电机功率需求$P_n$按下式估算：
 \begin{equation}
-F_3 = F_r + F_a
+P_n \geq \frac{S F V_{\max}}{2 \eta}
+\label{eq:ch2-hub-power}
 \end{equation}
 
-计算得最大速度时的阻力$F_3=29.12\,\mathrm{N}$。
+代入最大加速度工况阻力$F_2$可得$P_n\geq887.15\,\mathrm{W}$；代入最高车速工况阻力$F_3$可得$P_n\geq80.95\,\mathrm{W}$。因此轮毂电机单侧功率需求按较大值取$887.15\,\mathrm{W}$。
 
-4）轮毂电机所需参数计算
-
-由于两轮驱动，每个电机提供的牵引力为总力的一半，且考虑安全系数和传动效率，每个电机的扭矩需求 $\tau_n$ 的计算公式为：
-\begin{equation}
-\tau_n \ge \frac{S F r}{2 \eta}
-\end{equation}
-\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $r$ & 车轮半径（m）。\\
-\end{tabularx}\vspace{3.15bp}
-
-取安全系数$S=1.2$，传动效率$\eta=0.9$，带入$r=0.33\,\mathrm{m}$，由最大爬坡角度时的阻力$F_1$计算得$\tau_n\ge85.03\,\mathrm{N\cdot m}$，由最大加速度的阻力$F_2$计算得扭矩$\tau_n\ge70.21\,\mathrm{N\cdot m}$。
-
-轮毂电机所需的功率的计算公式为：
-\begin{equation}
-P_n \ge \frac{S F V_{\max}}{2 \eta}
-\end{equation}
-
-由最大加速度的阻力$F_2$计算得$P_n\ge887.15\,\mathrm{W}$，由最大速度时的阻力$F_3=29.12\,\mathrm{N}$代入计算得$P_n\ge80.95\,\mathrm{W}$。
-
-电机转速要求：
+最后，根据最高车速计算轮毂电机的转速要求：
 \begin{equation}
 \omega = \frac{60 V_{\max}}{2 \pi r}
+\label{eq:ch2-hub-speed}
 \end{equation}
-\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $\omega$ & 电机最大转速（RPM）。\\
-\end{tabularx}\vspace{3.15bp}
 
-计算得 $\omega \approx 120.67\,\mathrm{rpm}$。
+代入$V_{\max}=4.17\,\mathrm{m/s}$和$r=0.33\,\mathrm{m}$，可得$\omega\approx120.67\,\mathrm{rpm}$。
 
-根据上述分析，轮毂电机的峰值扭矩应大于85.03Nm，额定功率大于887.15W且最高转速高于120.67rpm，最终选取WYQ-17，其参数如表\ref{轮毂电机WYQ-17技术参数}所示。
+根据上述分析，轮毂电机的峰值扭矩应大于$85.03\,\mathrm{N\cdot m}$，额定功率应大于$887.15\,\mathrm{W}$，最高转速应高于$120.67\,\mathrm{r/min}$。最终选取WYQ-17轮毂电机，其参数如表\ref{轮毂电机WYQ-17技术参数}所示。
 
 \begin{table}[htbp]
   \centering
@@ -376,7 +354,7 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
     \toprule
     型号 & 额定电压 & 额定转速 & 额定扭矩 & 峰值扭矩 & 额定功率 & 峰值功率 \\
     \midrule
-    WYQ-17 & 48V & 150RPM & 70Nm & 120Nm & 1000w & 1600W \\
+    WYQ-17 & $48\,\mathrm{V}$ & $150\,\mathrm{r/min}$ & $70\,\mathrm{N\cdot m}$ & $120\,\mathrm{N\cdot m}$ & $1000\,\mathrm{W}$ & $1600\,\mathrm{W}$ \\
     \bottomrule
   \end{thesistabular}
 \end{table}
@@ -454,18 +432,17 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 载人两轮平衡车的机械结构如图\ref{载人两轮平衡车三维模型}所示，连接了车体框架、稳定模块和驱动模块，具体包括了平衡车的轮毂电机、轮组、辅助轮、座椅、踏板及各种传感器。最终设计、装配好的两轮平衡车机械结构实物图如图\ref{平衡车机械结构装配实物图}所示。
 
-\begin{figure}[h]
+\begin{figure}[!h]
   \centering
   \includesvg[width=0.8\textwidth]{figures/chapter02/两轮平衡车三维模型}
   \caption{载人两轮平衡车三维模型}
   \label{载人两轮平衡车三维模型}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!h]
   \centering
-  \includegraphics[width=0.40\textwidth]{figures/chapter02/机械装配实物图A.png}
-%   \hfill
-  \includegraphics[width=0.40\textwidth]{figures/chapter02/机械装配实物图B.png}
+  \includegraphics[width=0.4\textwidth]{figures/chapter02/机械装配实物图A.png}
+  \includegraphics[width=0.4\textwidth]{figures/chapter02/机械装配实物图B.png}
   \caption{平衡车机械结构装配实物图}
   \label{平衡车机械结构装配实物图}
 \end{figure}
@@ -486,26 +463,17 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 \subsection{控制系统硬件设计}
 
-控制系统的信号转换及电路连接如图\ref{控制系统信号电路连接}所示。基于控制任务的实时性与多通道控制需求，本设计选用STM32系列单片机作为控制器，通过网口、UART串口、CAN通讯、PWM输出以及GPIO等多种接口于其他元器件建立连接。
+控制系统的信号转换及电路连接如图\ref{控制系统信号电路连接}所示。基于控制任务的实时性与多通道控制需求，本设计选用STM32系列单片机作为控制器，通过网口、UART串口、CAN通讯、PWM输出以及GPIO等多种接口与其他元器件建立连接。
 
-单片机通过以UDP协议为基础的网口通信方式与上位机建立高速连接，实现实时数据交换，在提升传输速率的同时，有效降低通信延迟，满足实时控制策略下对数据更新频率的严格要求。通过UART串口与控制器及姿态传感器进行通信，采集人工输入的控制指令及姿态信息。
+单片机通过以UDP协议为基础的网口通信方式与上位机建立高速连接，实现实时数据交换，在提升传输速率的同时，有效降低通信延迟，满足实时控制策略下对数据更新频率的严格要求。通过UART串口与控制器及姿态传感器进行通信，其中UART1用于接收控制器指令，UART2用于采集姿态传感器数据，从而分别获得人工输入的控制指令及车辆姿态信息。
 
-为提升系统控制的总线统一性和抗干扰能力，除丝杠电机采用PWM方式进行控制外，其余电机驱动器均优先采用基于CAN总线的通信方式，以提高系统集成度并简化主控的通信负担。同时，通过GPIO接口接收丝杠电机光电开关的位置信号，实现对关键位置状态的快速响应与监测。
+为提升系统控制的总线统一性和抗干扰能力，除丝杠电机采用PWM方式进行控制外，其余电机驱动器均优先采用基于CAN总线的通信方式，以提高系统集成度并简化主控的通信负担，并通过GPIO接口接收光电开关的位置信号，实现对关键位置状态的快速响应与监测。
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/chapter02/控制系统信号电路连接.png}
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/控制系统信号电路连接.png}
   \caption{控制系统信号电路连接}
   \label{控制系统信号电路连接}
-\end{figure}
-
-控制系统的供电电路设计如图\ref{控制系统供电电路连接}所示。整车供电系统采用统一的48V直流电池电源作为主供电源，以简化能源分配结构并降低能量转换损耗。电源输出首先连接至一组继电保护模块，其中串联连接遥控继电器与手动电动开关，分别用于实现远程通断控制与现场物理切断，增强系统在调试、运行及紧急状态下的安全可控性。在主供电路径中，48V直流电压一方面直接分配至各电机驱动器为其提供高压高功率的驱动能源。另一方面经由降压转换模块变换后，输出24V直流电压供给单片机使用。单片机在正常运行时，通过其集成的稳压模块进一步输出5V直流电压，为系统中的姿态传感器、光电传感器和控制器提供稳定的低压电源。该分级供电设计有效隔离高低压系统，提升了电气系统的可靠性与抗干扰能力，亦为系统的维护与扩展提供了良好的电源接口基础。
-
-\begin{figure}[h]
-  \centering
-  \includesvg[width=0.75\textwidth]{figures/chapter02/控制系统供电电路连接}
-  \caption{控制系统供电电路连接}
-  \label{控制系统供电电路连接}
 \end{figure}
 
 \subsection{控制系统硬件环境搭建}
@@ -533,16 +501,16 @@ P_n \ge \frac{S F V_{\max}}{2 \eta}
 
 为满足开发阶段对整车控制与单电机调试的需求，系统需选用一款支持多通道输出、抗干扰强、通信稳定的控制手柄。综合性能与使用便利性，最终选用富斯FS-i6遥控器及其FS-iA10B接收模块，支持6通道以上模拟信号输出，具备拨码开关与自定义通道设置，可实现速度、角速度调节及电机独立控制，提升调试效率与系统灵活性。
 
+为满足不同电机的驱动需求，系统依据性能参数选配匹配驱动器。轮毂电机采用中菱ZLAC8030L伺服驱动器，支持闭环控制和CAN通信，响应快速且抗干扰能力强；高速电机选用美固思MSSD-40LMA伺服驱动器，适配高速永磁同步电机，支持高频速度调节，也通过CAN总线通信；丝杠电机采用安川CA-4060M驱动器，采用PWM控制，支持多种模式及安全保护；进动电机为RobStride03一体式关节电机，内置驱动器，通过CAN总线直接与主控通信，简化布线并提升模块化。
+
+控制系统的供电电路设计如图\ref{控制系统供电电路连接}所示。整车供电系统采用统一的48V直流电池电源作为主供电源，以简化能源分配结构并降低能量转换损耗。电源输出首先连接至一组继电保护模块，其中串联连接遥控继电器与手动电动开关，分别用于实现远程通断控制与现场物理切断，增强系统在调试、运行及紧急状态下的安全可控性。在主供电路径中，48V直流电压一方面直接分配至各电机驱动器为其提供高压高功率的驱动能源。另一方面经由降压转换模块变换后，输出24V直流电压供给单片机使用。单片机在正常运行时，通过其集成的稳压模块进一步输出5V直流电压，为系统中的姿态传感器、光电传感器和控制器提供稳定的低压电源。该分级供电设计有效隔离高低压系统，提升了电气系统的可靠性与抗干扰能力，亦为系统的维护与扩展提供了良好的电源接口基础。
+
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.30\textwidth]{figures/chapter02/FS-i6遥控器.png}
-  \hspace{3.15bp}
-  \includegraphics[width=0.20\textwidth]{figures/chapter02/FS-IA10B接收机模块.png}
-  \caption{富斯FS-i6遥控器和FS-iA10B接收模块}
-  \label{富斯FS-i6遥控器和FS-iA10B接收模块}
+  \includesvg[width=0.75\textwidth]{figures/chapter02/控制系统供电电路连接}
+  \caption{控制系统供电电路连接}
+  \label{控制系统供电电路连接}
 \end{figure}
-
-为满足不同电机的驱动需求，系统依据性能参数选配匹配驱动器。轮毂电机采用中菱ZLAC8030L伺服驱动器，支持闭环控制和CAN通信，响应快速且抗干扰能力强；高速电机选用美固思MSSD-40LMA伺服驱动器，适配高速永磁同步电机，支持高频速度调节，也通过CAN总线通信；丝杠电机采用安川CA-4060M驱动器，采用PWM控制，支持多种模式及安全保护；进动电机为RobStride03一体式关节电机，内置驱动器，通过CAN总线直接与主控通信，简化布线并提升模块化。
 
 搭建完成的控制系统主要部分电路如图\ref{控制系统连接实物图}所示，由于安装需要，惯性测量单元（IMU）和FS-iA10B接收模块在车体内部。
 
@@ -664,14 +632,15 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
 
 控制系统的设备数据处理流程如图\ref{控制系统设备数据处理流程}所示，主要功能是对各类外设传入的数据进行解析与管理。系统依次处理来自IMU、轮毂电机、高速电机、进动电机、控制器以及上位机的数据，按设定顺序从各数据队列获取数据并按照各设备的通信协议进行解析校验。
 
+其中，IMU、轮毂电机、高速电机及进动电机的数据与车辆姿态平衡密切相关，对运行安全性影响较大。为保障系统的实时性与可靠性，若在解析过程中检测到上述关键设备的数据队列中无新数据，则系统将触发蜂鸣器报警，并记录对应的异常信息以供后续诊断。
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.9\textwidth]{figures/chapter02/设备数据处理流程图.png}
   \caption{控制系统设备数据处理流程}
   \label{控制系统设备数据处理流程}
 \end{figure}
-
-其中，IMU、轮毂电机、高速电机及进动电机的数据与车辆姿态平衡密切相关，对运行安全性影响较大。为保障系统的实时性与可靠性，若在解析过程中检测到上述关键设备的数据队列中无新数据，则系统将触发蜂鸣器报警，并记录对应的异常信息以供后续诊断。
+\FloatBarrier
 
 （4）运动控制
 
@@ -698,4 +667,4 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
 
 \section{本章小节}
 
-本章围绕两轮平衡车的结构与控制系统开展设计与研究，完成了总体方案与具体实现分析。在总体设计方面，结合载重、速度与稳定性要求，确定整车结构形式与功能划分，明确驱动系统、稳定模块与控制系统的协同关系。在机械结构方面，完成车体框架、驱动模块及稳定模块设计与布局优化，并通过有限元分析对关键部件进行强度与刚度校核，验证结构可靠性，形成模块化整车总成方案。在控制系统方面，完成硬件选型与接口设计，搭建控制平台；设计分层控制架构并完成底层控制框架开发，为姿态与运动控制实现提供基础。本章为后续感知集成与自主导航功能实现奠定了硬件与控制基础。
+本章围绕两轮平衡车的结构与控制系统开展设计与研究，完成了总体方案与具体实现分析。在总体设计方面，结合载重、速度与稳定性要求，确定整车结构形式与功能划分，明确驱动系统、稳定模块与控制系统的协同关系。在机械结构方面，完成车体框架、驱动模块及稳定模块设计与布局优化，并通过有限元分析对关键部件进行强度与刚度校核，验证结构可靠性，形成模块化整车总成方案。在控制系统方面，完成硬件选型与接口设计，搭建控制平台；设计分层控制架构并完成底层控制框架开发，为姿态与运动控制实现提供基础。
