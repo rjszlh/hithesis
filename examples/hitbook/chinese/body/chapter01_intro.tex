@@ -23,20 +23,16 @@
 
 较早实现工程化并产生广泛影响的两轮平衡车代表是Segway。其概念可追溯至1985年日本电通大学的相关构想，但受限于当时的硬件条件与控制理论，早期研发效果有限。进入21世纪后，Segway在国外逐步实现商业化，并在实际应用中取得较大成功\cite{ZhengJiaQiuJuYouKongZhiLiJuTuoLuoDeLiangLunCheJiQiRenYunDongGuiJiKongZhiFenXiYanJiu2022}。
 
-1996年，Naoji Shiroma等人设计了一款两轮车，如图~\ref{fig:NaojiShiroma两轮车}所示。该研究建立了系统模型，并通过求解稳定性特征方程的特征根分析系统稳定性，完成了两轮车机器人提升重物实验\cite{shiromaCooperativeBehaviorWheeled1996}。
+1996年，Naoji Shiroma等人针对物体协作搬运任务设计了一种轮式倒立摆移动机器人，如图~\ref{fig:NaojiShiroma轮式倒立摆机器人}所示。该研究建立了系统模型，并基于稳定性特征方程的特征根分析系统稳定性，完成了人机协作物体搬运实验\cite{shiromaCooperativeBehaviorWheeled1996}。
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/chapter01/NaojiShiroma等人设计的两轮车.png}
-  \caption{两轮车机器人\cite{shiromaCooperativeBehaviorWheeled1996}}
-  \label{fig:NaojiShiroma两轮车}
+  \caption{轮式倒立摆移动机器人\cite{shiromaCooperativeBehaviorWheeled1996}}
+  \label{fig:NaojiShiroma轮式倒立摆机器人}
 \end{figure}
 
 2005年，哈尔滨工业大学王晓宇等人研制了两轮直立自平衡机器人，如图~\ref{fig:王晓宇HitBot两轮机器人}所示。该研究利用拉格朗日方法建立动力学模型，并设计自适应控制器实现动态平衡；同时采用Levenberg-Marquardt最小二乘迭代法建立传感器误差模型，并结合两级分散式异构卡尔曼滤波算法实现组合导航。此外，研究还比较了摩擦补偿、能量回收和行驶策略优化等降耗方法\cite{WangXiaoYuLiangLunZiPingHengJiQiRenDeYanJiu2008}。
-
-2009年，北京工业大学阮晓钢、赵建伟研究了直立式自平衡两轮机器人，并在控制系统中引入PWM（Pulse-width Modulation）直流伺服方案。该研究基于Matlab设计LQR（Linear Quadratic Regulator）平衡控制器，并开展数值仿真与实物实验，结果表明该机器人能够实现直立平衡行走\cite{RuanXiaoGangJiYuPWMSiFuKongZhiJiLQRDeLiangLunZiPingHengYiDongJiQiRen2009}。
-
-2005年，日本千叶大学Minh-Quan DAO和Kang-Zhi LIU等在独轮车基础上增设了一对上下分布的控制力矩陀螺。两个陀螺以相反角速度高速旋转，通过反向进动产生陀螺力矩以维持侧向平衡，并通过车轮驱动力矩实现俯仰平衡。该研究采用拉格朗日方法建模，并使用LQR、$H_\infty$及常数限$H_\infty$等控制方法，实验实现了姿态控制和纵向轨迹控制\cite{daoGainScheduledStabilizationControl2005}，其模型如图~\ref{fig:控制力矩陀螺独轮车}所示。
 
 \begin{figure}[h]
   \centering
@@ -55,25 +51,33 @@
   \end{minipage}
 \end{figure}
 
+2009年，北京工业大学阮晓钢、赵建伟研究了直立式自平衡两轮机器人，并在控制系统中引入PWM（Pulse-width Modulation）直流伺服方案。该研究基于Matlab设计LQR（Linear Quadratic Regulator）平衡控制器，并开展数值仿真与实物实验，结果表明该机器人能够实现直立平衡行走\cite{RuanXiaoGangJiYuPWMSiFuKongZhiJiLQRDeLiangLunZiPingHengYiDongJiQiRen2009}。
+
+2005年，日本千叶大学Minh-Quan DAO和Kang-Zhi LIU等在独轮车基础上增设了一对上下分布的控制力矩陀螺。两个陀螺以相反角速度高速旋转，通过反向进动产生陀螺力矩以维持侧向平衡，并通过车轮驱动力矩实现俯仰平衡。该研究采用拉格朗日方法建模，并使用LQR、$H_\infty$及常数限$H_\infty$等控制方法，实验实现了姿态控制和纵向轨迹控制\cite{daoGainScheduledStabilizationControl2005}，其模型如图~\ref{fig:控制力矩陀螺独轮车}所示。
+
 2009年，北京邮电大学刘大亮、孙汉旭和贾庆轩共同研发了一种具备动态平衡和载人行走能力的两轮机器人\cite{LiuDaLiangYiZhongKeZaiRenXingZouDeShuangLunJiQiRen2009}。该机器人由两个独立驱动的同轴车轮、可转动的厢体以及固定在厢体上的操纵杆组成。通过操纵杆倾斜，机器人能够实现前进、后退和转向等动作，同时保持动态平衡。该设计较为注重安全性，在出现异常时允许操作者安全跳离车体，避免被操作机构绊倒。
 
-2011年，北京邮电大学孟祥珺等设计了变结构两轮车机器人样机，如图~\ref{fig:变结构两轮车样机}所示。该机器人通过调节车轮角度切换运行模式，车轮并列时形成Segway模式，车轮前后成一字排布时形成自行车模式\cite{MengXiangJunYiZhongBianJieGouZiPingHengLiangLunCheJiQiRenYanJiu2013}。
+2011年，北京邮电大学孟祥珺等设计了变结构两轮车机器人，如图~\ref{fig:变结构两轮车样机}所示。该机器人通过调节车轮角度切换运行模式，车轮并列时形成Segway模式，车轮前后成一字排布时形成自行车模式\cite{MengXiangJunYiZhongBianJieGouZiPingHengLiangLunCheJiQiRenYanJiu2013}。
+
+2012年，美国加州Lit Motor公司推出了两轮电动摩托车概念产品C-1，如图~\ref{fig:LitMotor结构}所示\cite{C1SelfbalancingElectric}。该车采用全封闭外观，并在底盘增设一对高速旋转的控制力矩陀螺，使其在停止、行驶和转弯过程中保持车身稳定。
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.45\textwidth]{figures/chapter01/变结构两轮车机器人样机.png}
-  \caption{变结构两轮车机器人样机\cite{MengXiangJunYiZhongBianJieGouZiPingHengLiangLunCheJiQiRenYanJiu2013}}
-  \label{fig:变结构两轮车样机}
+  \begin{minipage}[t]{0.40\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter01/变结构两轮车机器人样机.png}
+    \caption{变结构两轮车机器人\cite{MengXiangJunYiZhongBianJieGouZiPingHengLiangLunCheJiQiRenYanJiu2013}}
+    \label{fig:变结构两轮车样机}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.50\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/chapter01/LitMotorC1.png}
+    \caption{Lit Motor结构图\cite{C1SelfbalancingElectric}}
+    \label{fig:LitMotor结构}
+  \end{minipage}
 \end{figure}
-
-2012年，美国加州Lit Motor公司推出了两轮电动摩托车概念产品C-1，如图~\ref{fig:LitMotor内部结构}所示\cite{C1SelfbalancingElectric}。该车采用全封闭外观，并在底盘增设一对高速旋转的控制力矩陀螺，使其在停止、行驶和转弯过程中保持车身稳定。
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.65\textwidth]{figures/chapter01/美国加州的LitMotor公司推出的LitMotor内部结构图.png}
-  \caption{Lit Motor内部结构图\cite{C1SelfbalancingElectric}}
-  \label{fig:LitMotor内部结构}
-\end{figure}
+\FloatBarrier
 
 2015年，戴福全在北京理工大学设计并研制了具有多自由度和可变重心的两轮机器人，如图~\ref{fig:可变重心两轮机器人}所示\cite{DaiFuQuanDuoZiYouDuLiangLunZiPingHengJiQiRenJiShuYanJiu2015}。该机器人采用卡尔曼滤波与摩擦补偿等方法实现滑模控制，进一步提升了系统控制性能。
 
@@ -133,7 +137,7 @@
 
 \begin{figure}[h]
   \centering
-  \begin{minipage}[t]{0.35\textwidth}
+  \begin{minipage}[t]{0.3\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter01/Ascento轮腿机器人.png}
     \caption{Ascento轮腿机器人\cite{AscentoTwoWheeledJumping}}
@@ -141,7 +145,7 @@
   \end{minipage}
   \centering
   \hspace{0.10\textwidth}
-  \begin{minipage}[t]{0.30\textwidth}
+  \begin{minipage}[t]{0.26\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter01/GokhanCetin设计的力矩控制陀螺两轮机器人.png}
     \caption{带有武器系统的CMG两轮机器人\cite{cetinGyroscopicPrecessionControl2024}}
@@ -162,12 +166,15 @@
 
 \begin{figure}[h]
   \centering
-  \includesvg[width=0.90\textwidth]{figures/chapter01/传统立体匹配方法流程示意}
+  \includesvg[width=0.89\textwidth]{figures/chapter01/传统立体匹配方法流程示意}
   \caption{传统立体匹配方法流程示意}
   \label{fig:传统立体匹配方法流程示意}
 \end{figure}
 
 2015年，Zbontar和LeCun提出利用卷积神经网络学习匹配代价的方法，推动立体匹配由人工设计代价函数向数据驱动特征表征转变\cite{zbontarComputingStereoMatching2015}。2017年，GC-Net将代价体构建、3D卷积正则化和视差回归统一到端到端框架中，显著提升了视差估计精度\cite{kendallEndtoendLearningGeometry2017a}。
+
+2018年，PSMNet通过空间金字塔池化增强全局上下文建模能力，进一步确立了“特征提取+代价体构建+上下文聚合”的主流范式；同年的StereoNet则面向实时应用提出分层细化策略，反映出该领域开始同时关注精度与速度之间的平衡\cite{changPyramidStereoMatching2018,khamisStereonetGuidedHierarchical2018a}。
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=1\textwidth]{figures/chapter01/GCNet.png}
@@ -175,7 +182,6 @@
   \label{fig:GCNet网络结构示意}
 \end{figure}
 
-2018年，PSMNet通过空间金字塔池化增强全局上下文建模能力，进一步确立了“特征提取+代价体构建+上下文聚合”的主流范式；同年的StereoNet则面向实时应用提出分层细化策略，反映出该领域开始同时关注精度与速度之间的平衡\cite{changPyramidStereoMatching2018,khamisStereonetGuidedHierarchical2018a}。
 \begin{figure}[h]
   \centering
   \includegraphics[width=1\textwidth]{figures/chapter01/StereoNet.png}
@@ -204,8 +210,6 @@
 
 2018年至2020年，相关研究由路面障碍分割逐步拓展至实例分割约束匹配。胡颖等结合孪生CNN、道路线提取与光栅扫描方法，提高了路面障碍分割效果\cite{HuYingJuanJiShenJingWangLuoShuangMuShiJueLuMianZhangAiWuJianCe2018}，如图~\ref{fig:光栅扫描分割障碍物与道路}所示；彭秋辰、宋亦旭利用Mask R-CNN约束匹配区域，提高了双目目标定位性能，其结果示例如图~\ref{fig:MaskRCNN识别分割示例}所示\cite{PengQiuChenJiYuMaskRCNNDeWuTiShiBieHeDingWei2019}。
 
-2021年以来，双目视觉应用进一步向复杂工况适应、跨平台部署和多传感器融合方向发展。魏建胜等在农业车辆中验证了“目标检测+深度估计”方案的工程可行性\cite{WeiJianShengNongYeCheLiangShuangMuShiJueZhangAiWuGanZhiXiTongSheJiYuShiYan2021}；Liu Siyao等通过三目-双目融合提升了果园场景中的障碍测距精度\cite{liuObstacleAvoidanceOrchard2022}。
-
 \begin{figure}[h]
   \centering
   \begin{minipage}[t]{0.45\textwidth}
@@ -215,25 +219,24 @@
     \label{fig:光栅扫描分割障碍物与道路}
   \end{minipage}
   \hfill
-  \begin{minipage}[t]{0.40\textwidth}
+  \begin{minipage}[t]{0.50\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter01/MaskR-CNN物体识别分割结果示例.png}
-    \caption{Mask R-CNN物体识别分割结果示例\cite{PengQiuChenJiYuMaskRCNNDeWuTiShiBieHeDingWei2019}}
+    \caption{Mask R-CNN物体识别分割\cite{PengQiuChenJiYuMaskRCNNDeWuTiShiBieHeDingWei2019}}
     \label{fig:MaskRCNN识别分割示例}
   \end{minipage}
 \end{figure}
-\FloatBarrier
 
-2023年，CAI L和ZHOU C面向强光、夜间和雨雪条件开展杆状障碍物检测研究，将改进YOLOv5与双目立体匹配相结合，在复杂光照条件下提升了细长目标的识别与测距能力，其方法如图~\ref{fig:杆状障碍物检测方法}所示\cite{caiBinocularVisionBasedPoleShaped2023}。
+2021年以来，双目视觉应用进一步向复杂工况适应、跨平台部署和多传感器融合方向发展。魏建胜等在农业车辆中验证了“目标检测+深度估计”方案的工程可行性\cite{WeiJianShengNongYeCheLiangShuangMuShiJueZhangAiWuGanZhiXiTongSheJiYuShiYan2021}；Liu Siyao等通过三目-双目融合提升了果园场景中的障碍测距精度\cite{liuObstacleAvoidanceOrchard2022}。
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.75\textwidth]{figures/chapter01/杆状障碍物检测方法.jpeg}
+  \includegraphics[width=0.9\textwidth]{figures/chapter01/杆状障碍物检测方法.png}
   \caption{杆状障碍物检测方法\cite{caiBinocularVisionBasedPoleShaped2023}}
   \label{fig:杆状障碍物检测方法}
 \end{figure}
 
-同年，陈成坤等在Jetson Xavier NX平台完成双目视觉与YOLOv4结合的实时检测定位部署，表明双目感知算法已逐步具备在嵌入式平台上落地应用的可行性，其原理如图~\ref{fig:双目视觉障碍物检测原理图}所示\cite{ChenChengKunJiYuShuangMuShiJueDeGuoYuanZhangAiWuJianCeYuDingWei2023}。
+2023年，CAI L和ZHOU C面向强光、夜间和雨雪条件开展杆状障碍物检测研究，将改进YOLOv5与双目立体匹配相结合，在复杂光照条件下提升了细长目标的识别与测距能力，其方法如图~\ref{fig:杆状障碍物检测方法}所示\cite{caiBinocularVisionBasedPoleShaped2023}。同年，陈成坤等在Jetson Xavier NX平台完成双目视觉与YOLOv4结合的实时检测定位部署，表明双目感知算法已逐步具备在嵌入式平台上落地应用的可行性，其原理如图~\ref{fig:双目视觉障碍物检测原理图}所示\cite{ChenChengKunJiYuShuangMuShiJueDeGuoYuanZhangAiWuJianCeYuDingWei2023}。
 
 \begin{figure}[h]
   \centering
@@ -287,7 +290,7 @@
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.80\textwidth]{figures/chapter01/Voxblox增量ESDF与轨迹规划示意.jpg}
+  \includegraphics[width=0.73\textwidth]{figures/chapter01/Voxblox增量ESDF与轨迹规划示意.jpg}
   \caption{Voxblox增量ESDF与轨迹规划示意\cite{oleynikovaVoxbloxIncremental3D2017}}
   \label{fig:VoxbloxESDF规划示意}
 \end{figure}
@@ -320,7 +323,7 @@
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.7\textwidth]{figures/chapter01/ViPlanner语义地图与代价建图示例.jpg}
+  \includegraphics[width=0.6\textwidth]{figures/chapter01/ViPlanner语义地图与代价建图示例.jpg}
   \caption{ViPlanner语义地图与代价建图示例\cite{rothViPlannerVisualSemantic2024}}
   \label{fig:ViPlanner语义代价建图示例}
 \end{figure}
