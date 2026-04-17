@@ -47,12 +47,6 @@ SERIES = [
     ("杆体", [1.0, 3.3, 5.5, 5.5, 5.7], "#ff7f0e", "down", 2.2),
     ("树木", [0.5, 1.5, 0.8, 4.3, 4.3], "#17becf", "plus", 2.2),
 ]
-AVERAGE = [
-    round(sum(values[i] for _, values, _, _, _ in SERIES) / len(SERIES), 2)
-    for i in range(len(DISTANCES))
-]
-
-
 def sx(distance: float) -> float:
     return LEFT + (distance - min(DISTANCES)) / (max(DISTANCES) - min(DISTANCES)) * PLOT_WIDTH
 
@@ -145,22 +139,19 @@ def build_svg() -> str:
         for distance, error in zip(DISTANCES, values):
             parts.append(marker(kind, sx(distance), sy(error), color))
 
-    parts.append(polyline(AVERAGE, "#000000", 3.8))
-    for distance, error in zip(DISTANCES, AVERAGE):
-        parts.append(marker("circle", sx(distance), sy(error), "#000000", filled=True))
-
     parts.extend(build_legend())
     parts.append("</svg>")
     return "\n".join(parts)
 
 
 def build_legend() -> list[str]:
-    items = SERIES + [("平均值", AVERAGE, "#000000", "circle", 3.8)]
+    items = SERIES
     legend_x = LEFT + 12
     legend_y = TOP + 12
-    col_width = 100
+    legend_cols = 3
+    col_width = 122
     row_height = 30
-    legend_width = 430
+    legend_width = 395
     legend_height = 78
     parts = [
         f'<rect x="{legend_x}" y="{legend_y}" width="{legend_width}" height="{legend_height}" '
@@ -168,16 +159,15 @@ def build_legend() -> list[str]:
     ]
 
     for index, (name, _values, color, kind, width) in enumerate(items):
-        col = index % 4
-        row = index // 4
+        col = index % legend_cols
+        row = index // legend_cols
         x0 = legend_x + 18 + col * col_width
         y0 = legend_y + 26 + row * row_height
-        filled = name == "平均值"
         parts.append(
             f'<line x1="{x0}" y1="{y0}" x2="{x0 + 26}" y2="{y0}" stroke="{color}" '
             f'stroke-width="{width}" stroke-linecap="round"/>'
         )
-        parts.append(marker(kind, x0 + 13, y0, color, filled=filled))
+        parts.append(marker(kind, x0 + 13, y0, color))
         parts.append(f'<text class="cn" x="{x0 + 35}" y="{y0 + 5}">{name}</text>')
     return parts
 
