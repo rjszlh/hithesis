@@ -110,9 +110,9 @@
 
 2018年，桂林电子科技大学黄用华设计了变结构两轮车机器人，如图~\ref{fig:黄用华两轮车机器人}所示\cite{HuangYongHuaLiangLunZiXingCheJiQiRenSuoBaPingHengDingWeiKongZhiFangZhen2018}。该研究采用Chaplygin方法建立动力学模型，使用部分反馈线性化控制器，并开展了不同车把固定角度以及行进过程中车轮角度切换等实验。
 
-2019年，Kunitoshi Tanaka和Sumito Nagasawa提出了一种利用CMG获得恢复力的倒立摆机器人，如图~\ref{fig:KunitoshiTanakaCMG倒立摆机器人}所示\cite{tanakaPostureStabilityControl2020}。研究表明，CMG能够降低机器人倾倒速度，使其在不移动条件下维持平衡，并可将姿态稳定控制与轨迹跟踪控制进行解耦。
+2019年，Kunitoshi Tanaka和Sumito Nagasawa提出了一种利用CMG获得恢复力的倒立摆机器人，如图~\ref{fig:KunitoshiTanakaCMG倒立摆机器人}所示\cite{tanakaPostureStabilityControl2020}。研究表明，CMG能够降低机器人倾倒速度，并可将姿态稳定控制与轨迹跟踪控制进行解耦。
 
-2020年，苏黎世联邦理工学院设计并开发了轮腿机器人Ascento\cite{AscentoTwoWheeledJumping}，如图~\ref{fig:Ascento轮腿机器人}所示。该机器人具备行走、奔跑、跳跃等机动能力，采用多驱动腿部结构与高效电驱系统，在复杂地形下表现出较好的敏捷性和稳定性。
+2019年，苏黎世联邦理工学院设计并开发了轮腿机器人Ascento\cite{AscentoTwoWheeledJumping}，如图~\ref{fig:Ascento轮腿机器人}所示。该样机质量约10.4~kg，最大线速度为8.0~km/h，最大跳跃高度为0.4~m，具备高速轮式行驶、跳跃越障和跌倒恢复等机动能力，在复杂地形下表现出较好的敏捷性和稳定性。
 
 \begin{figure}[h]
   \centering
@@ -171,9 +171,9 @@
   \label{fig:传统立体匹配方法流程示意}
 \end{figure}
 
-2015年，Zbontar和LeCun提出利用卷积神经网络学习匹配代价的方法，推动立体匹配由人工设计代价函数向数据驱动特征表征转变\cite{zbontarComputingStereoMatching2015}。2017年，GC-Net将代价体构建、3D卷积正则化和视差回归统一到端到端框架中，显著提升了视差估计精度\cite{kendallEndtoendLearningGeometry2017a}。
+2015年，Zbontar和LeCun提出利用卷积神经网络学习匹配代价的方法，推动立体匹配由人工设计代价函数向数据驱动特征表征转变，在KITTI数据集上D1-all误差达到2.61\%\cite{zbontarComputingStereoMatching2015}。2017年，GC-Net将代价体构建、3D卷积正则化和视差回归统一到端到端框架中，在KITTI 2015测试集上的D1-all误差达到2.87\%\cite{kendallEndtoendLearningGeometry2017a}。
 
-2018年，PSMNet通过空间金字塔池化增强全局上下文建模能力，进一步确立了“特征提取+代价体构建+上下文聚合”的主流范式；同年的StereoNet则面向实时应用提出分层细化策略，反映出该领域开始同时关注精度与速度之间的平衡\cite{changPyramidStereoMatching2018,khamisStereonetGuidedHierarchical2018a}。
+2018年，PSMNet通过空间金字塔池化增强全局上下文建模能力，在KITTI 2015测试集上的D1-all误差为2.32\%，进一步推动了代价体聚合范式的发展\cite{changPyramidStereoMatching2018}。同年的StereoNet面向实时应用提出分层细化策略，可在NVIDIA Titan X上达到约60~fps，体现了精度与速度平衡的研究趋势\cite{khamisStereonetGuidedHierarchical2018a}。
 
 \begin{figure}[h]
   \centering
@@ -189,7 +189,7 @@
   \label{fig:StereoNet网络结构示意}
 \end{figure}
 
-2021年前后，立体匹配研究进一步向全局建模与迭代优化发展。Li等从序列到序列视角引入Transformer思想，增强了长程依赖建模能力；RAFT-Stereo借鉴光流迭代更新机制，在多层相关体上反复优化视差场，在精度与效率之间取得了较好平衡\cite{liRevisitingStereoDepth2021,lipsonRAFTStereoMultilevelRecurrent2021}。2022年，CREStereo通过级联循环网络和自适应相关机制改善了大视差与复杂纹理场景下的匹配效果\cite{liPracticalStereoMatching2022}。
+2021年前后，立体匹配研究进一步向全局建模与迭代优化发展。Li等引入Transformer思想增强长程依赖建模；RAFT-Stereo借鉴光流迭代更新机制，在KITTI 2015测试集上的D1-all误差为1.96\%\cite{liRevisitingStereoDepth2021,lipsonRAFTStereoMultilevelRecurrent2021}。2022年，CREStereo通过级联循环网络与自适应相关机制改善复杂场景匹配效果，在ETH3D测试集中Bad 1.0指标较已发表最优方法降低59.84\%\cite{liPracticalStereoMatching2022}。
 \begin{figure}[h]
   \centering
   \includegraphics[width=1\textwidth]{figures/chapter01/RAFTStereo.png}
@@ -198,7 +198,7 @@
 \end{figure}
 
 
-2023年，IGEV-Stereo利用迭代几何编码体强化几何先验表达，进一步提升了复杂场景中的稳定性\cite{xuIterativeGeometryEncoding2023}。这一阶段的研究表明，立体匹配方法已由单纯追求估计精度，逐步转向对几何建模能力、计算效率与复杂场景鲁棒性的综合优化。
+2023年，IGEV-Stereo利用迭代几何编码体强化几何先验表达，在KITTI 2015测试集上D1-all误差为1.59\%\cite{xuIterativeGeometryEncoding2023}。这一阶段的研究逐步转向精度、效率与鲁棒性的综合优化。
 
 综上所述，立体匹配研究已经形成了由传统几何约束方法、深度代价体学习方法到迭代优化方法的清晰演进脉络。当前研究重点已不再局限于提升视差估计精度，而是更加重视复杂环境下精度、速度、鲁棒性与泛化能力之间的综合平衡。
 
@@ -236,7 +236,7 @@
   \label{fig:杆状障碍物检测方法}
 \end{figure}
 
-2023年，CAI L和ZHOU C面向强光、夜间和雨雪条件开展杆状障碍物检测研究，将改进YOLOv5与双目立体匹配相结合，在复杂光照条件下提升了细长目标的识别与测距能力，其方法如图~\ref{fig:杆状障碍物检测方法}所示\cite{caiBinocularVisionBasedPoleShaped2023}。同年，陈成坤等在Jetson Xavier NX平台完成双目视觉与YOLOv4结合的实时检测定位部署，表明双目感知算法已逐步具备在嵌入式平台上落地应用的可行性，其原理如图~\ref{fig:双目视觉障碍物检测原理图}所示\cite{ChenChengKunJiYuShuangMuShiJueDeGuoYuanZhangAiWuJianCeYuDingWei2023}。
+2023年，CAI L和ZHOU C面向强光、夜间和雨雪条件开展杆状障碍物检测研究，将改进YOLOv5与双目立体匹配相结合，在复杂光照条件下提升了细长目标的识别与测距能力。其实验结果显示，该方法的$mAP_{0.5}$达到97.4\%，其方法如图~\ref{fig:杆状障碍物检测方法}所示\cite{caiBinocularVisionBasedPoleShaped2023}。同年，陈成坤等在Jetson Xavier NX平台完成双目视觉与YOLOv4结合的实时检测定位部署，检测帧率最高达到6.4~fps，表明双目感知算法已逐步具备在嵌入式平台上落地应用的可行性，其原理如图~\ref{fig:双目视觉障碍物检测原理图}所示\cite{ChenChengKunJiYuShuangMuShiJueDeGuoYuanZhangAiWuJianCeYuDingWei2023}。
 
 \begin{figure}[h]
   \centering
@@ -286,18 +286,18 @@
 
 在完成障碍物检测与距离估计之后，如何将感知结果转化为安全、平稳且可实时执行的运动决策，是自主行驶研究的关键问题。围绕这一目标，国内外研究通常从环境建模、路径规划和运动控制等方面展开：一方面通过占据地图、语义地图或BEV表示提升环境表达能力，另一方面将动态障碍预测与风险约束引入规划与控制过程，以提高系统在复杂场景中的避障可靠性和运行稳定性。基于此，以下从代表性工作出发，对自主行驶及避障方向的研究进展进行梳理。
 
-2017年，Oleynikova等提出Voxblox方法，利用TSDF增量更新并在线构建ESDF，为无人机局部轨迹优化提供可实时查询的距离场信息，在单机载计算平台上验证了可用性\cite{oleynikovaVoxbloxIncremental3D2017}，其ESDF增量建图与轨迹规划示意如图~\ref{fig:VoxbloxESDF规划示意}所示。
+2017年，Oleynikova等提出Voxblox方法，利用TSDF增量更新并在线构建ESDF，为无人机局部轨迹优化提供可实时查询的距离场信息。该系统构建TSDF的速度快于Octomap，并可在单CPU核心上实时运行，在机载计算平台上验证了可用性\cite{oleynikovaVoxbloxIncremental3D2017}，其ESDF增量建图与轨迹规划示意如图~\ref{fig:VoxbloxESDF规划示意}所示。
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.73\textwidth]{figures/chapter01/Voxblox增量ESDF与轨迹规划示意.jpg}
+  \includegraphics[width=0.6\textwidth]{figures/chapter01/Voxblox增量ESDF与轨迹规划示意.jpg}
   \caption{Voxblox增量ESDF与轨迹规划示意\cite{oleynikovaVoxbloxIncremental3D2017}}
   \label{fig:VoxbloxESDF规划示意}
 \end{figure}
 
 2019年，胡美玉等将深度卷积神经网络语义分割与SLAM建图结合，构建三维语义地图，提升了机器人在复杂环境中的环境理解能力，为后续导航与避障提供了更丰富的地图先验\cite{hu2019semantic}。
 
-2020年，Rosinol等提出Kimera开源框架，实现实时度量-语义定位与建图，将视觉前端、语义信息与地图表示统一到同一系统中，提升了感知结果在建图与规划中的工程可复用性\cite{rosinolKimeraOpenSourceLibrary2020}，其度量语义建图结果如图~\ref{fig:Kimera度量语义建图结果}所示。同年，Bartolomei等提出感知约束路径规划方法，在规划中显式引入语义分割信息，使轨迹在保证避障的同时兼顾视觉可观测性，提升了定位与导航稳定性\cite{bartolomeiPerceptionawarePathPlanning2020}。
+2020年，Rosinol等提出Kimera开源框架，实现实时度量-语义定位与建图，将视觉前端、语义信息与地图表示统一到同一系统中。该框架可在CPU上实时运行，并根据带语义标签的图像生成三维度量-语义网格，提升了感知结果在建图与规划中的工程可复用性\cite{rosinolKimeraOpenSourceLibrary2020}，其度量语义建图结果如图~\ref{fig:Kimera度量语义建图结果}所示。同年，Bartolomei等提出感知约束路径规划方法，在规划中显式引入语义分割信息，使轨迹在保证避障的同时兼顾视觉可观测性，提升了定位与导航稳定性\cite{bartolomeiPerceptionawarePathPlanning2020}。
 
 \begin{figure}[h]
   \centering
@@ -318,6 +318,7 @@
   \caption{Triest风险感知代价地图学习框架\cite{triestLearningRiskAwareCostmaps2023}}
   \label{fig:Triest风险感知代价地图学习框架}
 \end{figure}
+\FloatBarrier
 
 2024年，Roth等提出ViPlanner，将视觉语义信息与可微代价地图结合，实现学习驱动的局部规划，在复杂户外场景中获得了更好的路径可行性与鲁棒性\cite{rothViPlannerVisualSemantic2024}，其视觉语义地图与代价建图示例如图~\ref{fig:ViPlanner语义代价建图示例}所示。Chen等提出基于粒子的连续动态占据映射方法，增强了动态环境下障碍物时空表示的一致性\cite{chenContinuousOccupancyMapping2024}。Lang等提出BEV-TP框架，将视觉感知与轨迹预测统一在BEV空间，提高了动态交通场景下预测与规划协同能力\cite{langBEVTPEndtoEndVisual2024}。
 
@@ -346,7 +347,7 @@
 
 在环境感知方面，基于双目视觉的障碍物感知已由传统几何方法发展到深度学习主导的方法体系，并进一步向实时化、轻量化和跨场景泛化方向演进。国内外研究均表明，“立体匹配与目标识别融合”是提升感知性能的有效路径，但在复杂光照、弱纹理、动态遮挡等条件下，仍存在误检漏检与测距波动问题。对于嵌入式平台而言，感知算法的精度、速度和资源开销仍需统筹优化。
 
-在自主行驶与避障方面，国内外研究普遍围绕感知、建图、规划与控制的协同展开，研究重点正从静态障碍规避扩展到动态障碍预测、语义地图融合和风险约束规划。国外在统一基准与开源生态方面优势明显，国内在场景适配和工程落地方面进展较快，但在跨平台复现和长时动态环境验证方面仍有提升空间。因此，针对公园场景的两轮平衡车研究，应重点提升双目感知的部署能力、局部规划的实时性以及避障决策的可靠性，以实现安全性、实时性和实用性的统一。
+在自主行驶与避障方面，国内外研究普遍围绕感知、建图、规划与控制的协同展开，研究重点正从静态障碍规避扩展到动态障碍预测、语义地图融合和风险约束规划。国外在统一基准与开源生态方面优势明显，国内在场景适配和工程落地方面进展较快，但在跨平台复现和长时动态环境验证方面仍有提升空间。因此，针对公园场景的两轮平衡车研究，应重点提升双目感知的部署能力、局部规划的实时性以及避障决策的可靠性。
 
 \section{本文主要研究内容及技术路线}
 
