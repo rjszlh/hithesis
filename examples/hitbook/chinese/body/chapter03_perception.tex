@@ -254,7 +254,7 @@ L_{\text{total}}=L(d,d^*)+\lambda L(d_{\text{coarse}},d^*)
 
 模型首先在 SceneFlow 数据集\cite{mayerLargeDatasetTrain2016}上进行预训练。SceneFlow 是面向视差、光流与场景流估计的大规模合成双目数据集，具有稠密、精确的像素级视差真值，可为模型提供充分的几何监督，因此常用于立体匹配网络的初始参数学习。预训练阶段采用端点误差（End-Point Error, EPE）作为主要评价指标，其定义如式~\eqref{eq:ch3-epe}所示：
 \begin{equation}\label{eq:ch3-epe}
-EPE=\frac{1}{N}\sum_{i=1}^{N}\left|d_i^{pred}-d_i^{gt}\right|
+\mathrm{EPE}=\frac{1}{N}\sum_{i=1}^{N}\left|d_i^{pred}-d_i^{gt}\right|
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $N$ & 有效像素总数；\\
@@ -266,9 +266,9 @@ EPE实质为像素级视差绝对误差的平均值，能够直接反映整体�
 
 （2）微调与测试阶段
 
-完成预训练后，模型在 KITTI 2012\cite{geigerAreWeReady2012a} 与 KITTI 2015\cite{menzeObjectSceneFlow2015a} 混合数据集上进行微调与测试。KITTI 数据集来源于车载平台采集的真实道路场景，包含实际光照、遮挡、反射以及动态交通目标等因素，更贴近自动驾驶与移动机器人应用需求，因此适合检验模型从合成数据迁移到真实环境后的泛化能力。在 KITTI 2012 中，仍采用$EPE$作为评价指标，在 KITTI 2015 中，采用$D1$-all指标，其定义如式~\eqref{eq:ch3-d1all}所示：
+完成预训练后，模型在 KITTI 2012\cite{geigerAreWeReady2012a} 与 KITTI 2015\cite{menzeObjectSceneFlow2015a} 混合数据集上进行微调与测试。KITTI 数据集来源于车载平台采集的真实道路场景，包含实际光照、遮挡、反射以及动态交通目标等因素，更贴近自动驾驶与移动机器人应用需求，因此适合检验模型从合成数据迁移到真实环境后的泛化能力。在 KITTI 2012 中，仍采用EPE作为评价指标，在 KITTI 2015 中，采用D1-all指标，其定义如式~\eqref{eq:ch3-d1all}所示：
 \begin{equation}\label{eq:ch3-d1all}
-D1\text{-all}=\frac{\left|\left\{i:\left|d_i^{pred}-d_i^{gt}\right|>3\ \text{or}\ \frac{\left|d_i^{pred}-d_i^{gt}\right|}{d_i^{gt}}>0.05\right\}\right|}{N}\times 100\%
+\mathrm{D1}\text{-all}=\frac{\left|\left\{i:\left|d_i^{pred}-d_i^{gt}\right|>3\ \text{or}\ \frac{\left|d_i^{pred}-d_i^{gt}\right|}{d_i^{gt}}>0.05\right\}\right|}{N}\times 100\%
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $\left|\left\{\cdot\right\}\right|$ & 满足误差条件的像素集合元素个数；\\
@@ -277,7 +277,7 @@ D1\text{-all}=\frac{\left|\left\{i:\left|d_i^{pred}-d_i^{gt}\right|>3\ \text{or}
 & $0.05$ & 相对误差阈值（5\%）。\\
 \end{tabularx}\vspace{3.15bp}
 
-$D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱纹理及动态场景下的鲁棒性。
+D1-all反映大误差像素比例，能够更有效评估模型在遮挡、弱纹理及动态场景下的鲁棒性。
 
 微调阶段训练500个轮次，批量大小设为2，继续采用OneCycleLR调度策略。同时引入颜色抖动、随机擦除、随机缩放与随机裁剪等数据增强方法，以提升模型对复杂真实环境的适应能力。
 
@@ -347,7 +347,7 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 \end{figure}
 \FloatBarrier
 
-在SceneFlow数据集上，HAGVNet在仅$20.08\,\mathrm{GFLOPs}$的条件下取得$0.73\,\mathrm{px}$的$EPE$，在计算量显著低于多数方法的情况下保持了具有竞争力的精度表现，其精度与复杂度关系如图\ref{SceneFlow数据集上的性能与FLOPs对比}所示；在KITTI 2012与KITTI 2015数据集上，HAGVNet的整体性能优于StereoNet\cite{khamisStereonetGuidedHierarchical2018a}、DeepPrunerFast\cite{duggalDeepprunerLearningEfficient2019a}、MobileStereoNet-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}与AANet\cite{xuAANetAdaptiveAggregation2020}等方法。与HITNet\cite{tankovichHitnetHierarchicalIterative2021a}及Fast-ACVNet系列\cite{xuAccurateEfficientStereo2023}相比，HAGVNet在$D1$-all指标上仅高出约0.2\%--0.3\%，但其计算复杂度仅为$20.08\,\mathrm{GFLOPs}$，分别约为HITNet（$50.23\,\mathrm{GFLOPs}$）的40\%和Fast-ACVNet（$79.34\,\mathrm{GFLOPs}$）的25\%，在保持接近精度的同时显著降低了计算开销，其在KITTI 2015数据集上的性能与FLOPs关系如图\ref{KITTI2015数据集上的性能与FLOPs对比}所示。图\ref{HAGVNet与多种主流方法在KITTI数据集上的部分表现}给出了部分定性结果对比，可见在弱纹理区域与大面积平坦区域，HAGVNet能较好保持结构连续性并抑制局部匹配噪声。
+在SceneFlow数据集上，HAGVNet在仅$20.08\,\mathrm{GFLOPs}$的条件下取得$0.73\,\mathrm{px}$的EPE，在计算量显著低于多数方法的情况下保持了具有竞争力的精度表现，其精度与复杂度关系如图\ref{SceneFlow数据集上的性能与FLOPs对比}所示；在KITTI 2012与KITTI 2015数据集上，HAGVNet的整体性能优于StereoNet\cite{khamisStereonetGuidedHierarchical2018a}、DeepPrunerFast\cite{duggalDeepprunerLearningEfficient2019a}、MobileStereoNet-2D\cite{shamsafarMobilestereonetLightweightDeep2022a}与AANet\cite{xuAANetAdaptiveAggregation2020}等方法。与HITNet\cite{tankovichHitnetHierarchicalIterative2021a}及Fast-ACVNet系列\cite{xuAccurateEfficientStereo2023}相比，HAGVNet在D1-all指标上仅高出约0.2\%--0.3\%，但其计算复杂度仅为$20.08\,\mathrm{GFLOPs}$，分别约为HITNet（$50.23\,\mathrm{GFLOPs}$）的40\%和Fast-ACVNet（$79.34\,\mathrm{GFLOPs}$）的25\%，在保持接近精度的同时显著降低了计算开销，其在KITTI 2015数据集上的性能与FLOPs关系如图\ref{KITTI2015数据集上的性能与FLOPs对比}所示。图\ref{HAGVNet与多种主流方法在KITTI数据集上的部分表现}给出了部分定性结果对比，可见在弱纹理区域与大面积平坦区域，HAGVNet能较好保持结构连续性并抑制局部匹配噪声。
 
 \begin{figure}[h]
   \centering
@@ -417,7 +417,7 @@ $D1$-all反映大误差像素比例，能够更有效评估模型在遮挡、弱
 
 YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测算法，其核心思想是将目标定位与类别分类统一为一次前向传播完成，从而显著降低推理延迟。相较于两阶段检测器（如基于候选区域的结构），YOLO系列在保持较高检测精度的同时具备更优的实时性与工程部署能力，尤其适用于算力受限的嵌入式平台和移动载具场景。
 
-近年来，YOLO系列不断迭代更新，在特征提取结构、特征融合方式以及检测头设计等方面持续优化。YOLOv11作为该系列的较新版本，在继承轻量化与高效性的基础上，进一步改进了主干网络与多尺度特征融合结构，使得模型在推理延迟、参数规模与检测精度之间取得更优平衡。在NVIDIA T4 TensorRT10平台下的性能对比结果表明，YOLOv11系列在不同延迟水平下均实现了更高的COCO $mAP@0.5:0.95$指标，相比YOLOv10及以往版本具有整体性能优势，体现出更优的精度–速度权衡能力。
+近年来，YOLO系列不断迭代更新，在特征提取结构、特征融合方式以及检测头设计等方面持续优化。YOLOv11作为该系列的较新版本，在继承轻量化与高效性的基础上，进一步改进了主干网络与多尺度特征融合结构，使得模型在推理延迟、参数规模与检测精度之间取得更优平衡。在NVIDIA T4 TensorRT10平台下的性能对比结果表明，YOLOv11系列在不同延迟水平下均实现了更高的COCO mAP@0.5:0.95指标，相比YOLOv10及以往版本具有整体性能优势，体现出更优的精度–速度权衡能力。
 
 结合本课题“嵌入式双目视觉障碍物检测与测距”的应用需求，模型选型需重点考虑以下因素：1推理实时性：需满足车辆低速行驶过程中的实时检测需求；2模型体积与参数量：适配Jetson等嵌入式平台有限的显存与计算资源；3检测精度稳定性：保证对行人、车辆、路障、树木等典型障碍物的可靠识别。
 
@@ -428,7 +428,7 @@ YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测�
   \label{YOLO11与其他主流网络在COCO数据集的性能对比}
 \end{figure}
 
-在YOLOv11系列的不同规模模型中，YOLO11n（nano版本）在精度与推理时间之间取得了较优折中。根据Ultralytics官方在COCO数据集上的检测模型指标\cite{jocherUltralyticsYOLO112024}，在输入尺寸为$640\times640$时，YOLO11n的$mAP@0.5:0.95$为$39.5\%$，参数量为$2.6\,\mathrm{M}$，计算量为$6.5\,\mathrm{B}$ FLOPs；其在CPU ONNX平台上的推理延迟为$56.1\pm0.8\,\mathrm{ms}$，在NVIDIA T4 TensorRT10平台上的推理延迟为$1.5\pm0.0\,\mathrm{ms}$。因此，YOLO11n能够在保持较低模型规模和毫秒级GPU推理延迟的同时提供可接受的检测精度，适合嵌入式视觉系统中作为实时目标检测前端。综合工程可部署性与系统整体算力预算，最终选定YOLO11n作为本系统的目标检测模型。
+在YOLOv11系列的不同规模模型中，YOLO11n（nano版本）在精度与推理时间之间取得了较优折中。根据Ultralytics官方在COCO数据集上的检测模型指标\cite{jocherUltralyticsYOLO112024}，在输入尺寸为$640\times640$时，YOLO11n的mAP@0.5:0.95为$39.5\%$，参数量为$2.6\,\mathrm{M}$，计算量为$6.5\,\mathrm{B}$ FLOPs；其在CPU ONNX平台上的推理延迟为$56.1\pm0.8\,\mathrm{ms}$，在NVIDIA T4 TensorRT10平台上的推理延迟为$1.5\pm0.0\,\mathrm{ms}$。因此，YOLO11n能够在保持较低模型规模和毫秒级GPU推理延迟的同时提供可接受的检测精度，适合嵌入式视觉系统中作为实时目标检测前端。综合工程可部署性与系统整体算力预算，最终选定YOLO11n作为本系统的目标检测模型。
 
 YOLO11n的整体结构如图\ref{YOLO11n整体结构}所示，主要包括以下三个部分：1、Backbone（主干网络）用于提取输入图像的多尺度特征表示。通过轻量化卷积模块与跨层连接结构，提高特征表达能力的同时控制参数规模和计算复杂度；2、Neck（特征融合网络）采用改进的特征金字塔结构（FPN/PAN类结构），实现不同尺度特征之间的自顶向下与自底向上融合，增强对小目标与远距离目标的检测能力；3、Head（检测头）负责输出边界框回归参数、目标置信度及类别概率。检测头通常采用解耦设计，将分类分支与回归分支分离，以提高收敛稳定性与定位精度。
 
@@ -447,24 +447,24 @@ YOLO11n的整体结构如图\ref{YOLO11n整体结构}所示，主要包括以下
 
 在目标检测任务中，常用评价指标包括精确率（Precision）、召回率（Recall）和平均精度均值（mAP）。其中，精确率表示预测为正样本的目标中真正为正样本的比例，如式~\eqref{eq:ch3-precision}所示：
 \begin{equation}\label{eq:ch3-precision}
-Precision=\frac{TP}{TP+FP}
+\mathrm{Precision}=\frac{TP}{TP+FP}
 \end{equation}
 
 召回率表示正样本中被分类正确的比例，如式~\eqref{eq:ch3-recall}所示。
 \begin{equation}\label{eq:ch3-recall}
-Recall=\frac{TP}{TP+FN}
+\mathrm{Recall}=\frac{TP}{TP+FN}
 \end{equation}
 
-在式~\eqref{eq:ch3-precision}和式~\eqref{eq:ch3-recall}中使用的符号说明如下。$mAP$表示各类别平均精度（Average Precision, AP）的均值，用于综合评价模型在多类别检测任务中的整体性能，如式~\eqref{eq:ch3-map}所示。
+在式~\eqref{eq:ch3-precision}和式~\eqref{eq:ch3-recall}中使用的符号说明如下。mAP表示各类别平均精度（Average Precision, AP）的均值，用于综合评价模型在多类别检测任务中的整体性能，如式~\eqref{eq:ch3-map}所示。
 \begin{equation}\label{eq:ch3-map}
-mAP=\frac{1}{N}\sum_{c=1}^{N} AP_c
+\mathrm{mAP}=\frac{1}{N}\sum_{c=1}^{N} \mathrm{AP}_c
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $TP$ & 将正样本预测为正样本的数量；\\
 & $FP$ & 将负样本预测为正样本的数量；\\
 & $FN$ & 将正样本预测为负样本的数量；\\
 & $N$ & 类别总数；\\
-& $AP_c$ & 第$c$类在Precision-Recall曲线下的面积。\\
+& $\mathrm{AP}_c$ & 第$c$类在Precision-Recall曲线下的面积。\\
 \end{tabularx}\vspace{3.15bp}
 
 上述评价指标可从检测准确性、召回能力及整体识别性能三个方面对YOLO11n进行量化分析，并为后续目标空间定位提供前端感知质量依据。
