@@ -40,12 +40,12 @@ FONT_SIZE = f"{SVG_FONT_PT:.2f}pt"
 
 DISTANCES = [2, 4, 6, 8, 10]
 SERIES = [
-    ("行人", [1.0, 1.8, 1.5, 5.8, 7.4], "#1f77b4", "circle", 2.2),
+    ("行人", [1.0, 1.8, 2.2, 5.8, 7.4], "#1f77b4", "circle", 2.2),
     ("汽车", [0.5, 0.8, 1.2, 1.4, 5.2], "#d62728", "square", 2.2),
     ("摩托车", [3.5, 4.8, 4.8, 5.0, 8.1], "#2ca02c", "triangle", 2.2),
-    ("路障", [2.0, 3.0, 2.5, 5.4, 8.6], "#9467bd", "diamond", 2.2),
+    ("路障", [2.0, 3.0, 3.0, 5.4, 8.6], "#9467bd", "diamond", 2.2),
     ("杆体", [1.0, 3.3, 5.5, 5.5, 5.7], "#ff7f0e", "down", 2.2),
-    ("树木", [0.5, 1.5, 0.8, 4.3, 4.3], "#17becf", "plus", 2.2),
+    ("树木", [0.5, 1.5, 2.1, 4.3, 4.3], "#17becf", "plus", 2.2),
 ]
 def sx(distance: float) -> float:
     return LEFT + (distance - min(DISTANCES)) / (max(DISTANCES) - min(DISTANCES)) * PLOT_WIDTH
@@ -128,7 +128,7 @@ def build_svg() -> str:
 
     parts.append(f'<line class="axis" x1="{LEFT}" y1="{TOP}" x2="{LEFT}" y2="{HEIGHT - BOTTOM}"/>')
     parts.append(f'<line class="axis" x1="{LEFT}" y1="{HEIGHT - BOTTOM}" x2="{WIDTH - RIGHT}" y2="{HEIGHT - BOTTOM}"/>')
-    parts.append(mixed_text(LEFT + PLOT_WIDTH / 2, HEIGHT - 30, "真实距离", " / m", text_anchor="middle"))
+    parts.append(mixed_text(LEFT + PLOT_WIDTH / 2, HEIGHT - 30, "真实距离", "(m)", text_anchor="middle"))
     parts.append(
         '<text transform="translate(31 {:.1f}) rotate(-90)" text-anchor="middle">'
         '<tspan class="cn">相对误差</tspan><tspan class="latin"> / %</tspan></text>'.format(TOP + PLOT_HEIGHT / 2)
