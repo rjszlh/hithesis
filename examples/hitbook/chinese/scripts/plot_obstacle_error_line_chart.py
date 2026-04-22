@@ -2,8 +2,8 @@
 """Generate the obstacle ranging relative-error line chart.
 
 The script intentionally avoids third-party plotting libraries so the figure can
-be regenerated on a clean TeX workstation. It writes an SVG source file and, when
-`rsvg-convert` is available, also exports a PDF used by the thesis.
+be regenerated on a clean TeX workstation. The thesis includes the generated PDF
+for stable compilation, while the SVG is kept as an editable source asset.
 """
 
 from __future__ import annotations
@@ -23,17 +23,18 @@ HEIGHT = 500
 LEFT = 90
 RIGHT = 35
 TOP = 35
-BOTTOM = 85
+BOTTOM = 68
 PLOT_WIDTH = WIDTH - LEFT - RIGHT
 PLOT_HEIGHT = HEIGHT - TOP - BOTTOM
 Y_MAX = 10
 # Match the thesis text width used by hithesisbook.cls.
-OUTPUT_WIDTH_MM = 150.0
+OUTPUT_WIDTH_MM = 114.0
 OUTPUT_HEIGHT_MM = OUTPUT_WIDTH_MM * HEIGHT / WIDTH
 
 # SVG absolute units are converted into viewBox user units before PDF export.
-# This source size renders as 10.5 pt after inserting the 800-unit-wide graphic
-# at 150 mm text width, i.e. the thesis "五号" size.
+# The figure is inserted at 0.76\textwidth in the thesis. Use a narrower source
+# width so that after LaTeX scales the graphic down, the visible font size still
+# matches the thesis "五号" target.
 FINAL_FONT_PT = 10.5
 SVG_FONT_PT = FINAL_FONT_PT * 25.4 * WIDTH / (96 * OUTPUT_WIDTH_MM)
 FONT_SIZE = f"{SVG_FONT_PT:.2f}pt"
@@ -128,7 +129,7 @@ def build_svg() -> str:
 
     parts.append(f'<line class="axis" x1="{LEFT}" y1="{TOP}" x2="{LEFT}" y2="{HEIGHT - BOTTOM}"/>')
     parts.append(f'<line class="axis" x1="{LEFT}" y1="{HEIGHT - BOTTOM}" x2="{WIDTH - RIGHT}" y2="{HEIGHT - BOTTOM}"/>')
-    parts.append(mixed_text(LEFT + PLOT_WIDTH / 2, HEIGHT - 30, "真实距离", "(m)", text_anchor="middle"))
+    parts.append(mixed_text(LEFT + PLOT_WIDTH / 2, HEIGHT - 18, "真实距离", "(m)", text_anchor="middle"))
     parts.append(
         '<text transform="translate(31 {:.1f}) rotate(-90)" text-anchor="middle">'
         '<tspan class="cn">相对误差</tspan><tspan class="latin"> / %</tspan></text>'.format(TOP + PLOT_HEIGHT / 2)
