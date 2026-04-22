@@ -100,7 +100,7 @@
 
 在设计乘坐空间时，参考《GB/T 10000-2023中国成年人人体尺寸》和《GB/T 3326—2016椅、凳类主要尺寸》，确定座椅有效宽度为$520\,\mathrm{mm}$、坐深$430\,\mathrm{mm}$、坐高$400\,\mathrm{mm}$，踏板长度不少于$250\,\mathrm{mm}$，以满足乘坐舒适性的基本要求。
 
-车体框架采用铝合金6061材料，车体框架设计使用的是三维设计软件Solidworks，这款软件具备直观的3D开发环境,可以对复杂的产品进行高效的建模,也支持将建好的移动机器人模型导入到Ansys中，方便后续对结构进行物理仿真。
+车体框架采用6061铝合金材料，并基于三维设计软件SolidWorks完成结构建模。该软件能够满足复杂产品的参数化建模需求，同时支持将所建立的移动机器人模型导入Ansys，以开展后续结构物理仿真分析。
 
 \subsection{稳定模块设计}
 
@@ -134,20 +134,23 @@ L = I_y \omega_y \mathbf{e}_y
 \tau = 2 I_y \omega_y \omega_z \mathbf{e}_x \cos\theta
 \label{eq:ch2-cmg-double}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $\theta$ & CMG倾角（$^\circ$）。\\
+\end{tabularx}\vspace{3.15bp}
 
 \begin{figure}[h]
   \centering
   \begin{minipage}[t]{0.35\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter02/陀螺力矩方向示意图.png}
-    \caption{陀螺力矩方向示意图}
+    \caption{陀螺力矩方向示意图\cite{YuFaChuanJiYuTuoLuoJinDongXiaoYingDeDuLunJiQiRenDeYanZhi2015}}
     \label{陀螺力矩方向示意图}
   \end{minipage}
   \centering
   \begin{minipage}[t]{0.47\textwidth}
     \centering
     \includegraphics[width=\textwidth]{figures/chapter02/双CMG结构示意图.png}
-    \caption{双CMG结构示意图}
+    \caption{双CMG结构示意图\cite{YuFaChuanJiYuTuoLuoJinDongXiaoYingDeDuLunJiQiRenDeYanZhi2015}}
     \label{双CMG结构示意图}
   \end{minipage}
 \end{figure}
@@ -187,6 +190,7 @@ T_G = m_c g h_c \sin\beta + m_p g h_p \sin\beta
 & $m_p$ & 人体质量（kg）；\\
 & $h_p$ & 人体乘坐时重心高度（m）；\\
 & $g$ & 重力加速度（$\mathrm{m/s^2}$）；\\
+& $\beta$ & 平衡车沿前后方向的倾斜角（$^\circ$）。\\
 \end{tabularx}\vspace{3.15bp}
 
 根据总体结构设计，估算$m_c=70\,\mathrm{kg}$，$h_c=0.42\,\mathrm{m}$，取$m_p=75\,\mathrm{kg}$，$h_p=0.85\,\mathrm{m}$，设计校核倾角取$\beta=20^\circ$。代入式~\eqref{eq:ch2-gravity-torque}可得$T_G=312.64\,\mathrm{N\cdot m}$，因此稳定模块输出控制力矩应不小于$312.64\,\mathrm{N\cdot m}$。
@@ -202,18 +206,30 @@ T_G = m_c g h_c \sin\beta + m_p g h_p \sin\beta
 P_{\alpha} = \frac{\omega_z^2 J_z}{2 t_{\alpha}}
 \label{eq:ch2-power-acc}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $P_{\alpha}$ & 进动加速功率（W）；\\
+& $J_z$ & 飞轮绕进动轴的转动惯量（kg$\cdot$m$^2$）；\\
+& $t_{\alpha}$ & 进动加速时间（s）。\\
+\end{tabularx}\vspace{3.15bp}
 
 考虑安全系数$S=0.3$，实际选择电机时额定功率$P$应满足：
 \begin{equation}
 P = P_{\alpha}(1 + S)
 \label{eq:ch2-power-rated}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $P$ & 进动电机额定功率（W）；\\
+& $S$ & 安全系数。\\
+\end{tabularx}\vspace{3.15bp}
 
 进动电机所需输出转矩$T$为：
 \begin{equation}
 T = \frac{J_z \omega_z}{t_{\alpha}}
 \label{eq:ch2-precession-torque}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $T$ & 进动电机所需输出转矩（N$\cdot$m）。\\
+\end{tabularx}\vspace{3.15bp}
 
 由式~\eqref{eq:ch2-power-acc}、式~\eqref{eq:ch2-power-rated}和式~\eqref{eq:ch2-precession-torque}计算得，进动电机额定功率应大于$34.82\,\mathrm{W}$，输出转矩应不小于$18.47\,\mathrm{N\cdot m}$。综上，进动电机需满足目标转速不低于$36\,\mathrm{r/min}$、输出转矩不小于$18.47\,\mathrm{N\cdot m}$、额定功率不小于$34.82\,\mathrm{W}$。
 
@@ -245,13 +261,15 @@ T = \frac{J_z \omega_z}{t_{\alpha}}
 
 （1）基础阻力计算
 
-平衡车在行驶中受到的阻力主要包括滚动阻力$F_r$、空气阻力$F_a$、坡道阻力$F_c$以及加速阻力$F_{ac}$。其中，滚动阻力作为各工况下均需考虑的基础阻力，按下式估算：
+平衡车在行驶中受到的阻力主要包括滚动阻力$F_r$、空气阻力$F_a$、坡道阻力$F_c$以及加速阻力$F_{ac}$。其中，滚动阻力按下式估算：
 \begin{equation}
 F_r = c_r m g
 \label{eq:ch2-fr}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $c_r$ & 滚动摩擦系数。\\
+式中& $F_r$ & 滚动阻力（N）；\\
+& $c_r$ & 滚动摩擦系数；\\
+& $m$ & 整车总质量（kg）。\\
 \end{tabularx}\vspace{3.15bp}
 
 不同路面上滚动摩擦系数不同，各种路面的摩擦系数如表\ref{各种路面滚动摩擦系数}所示。
@@ -274,13 +292,15 @@ F_r = c_r m g
   \end{thesistabular}
 \end{table}
 
-公园或社区路面通常为较平整的沥青或混凝土路面，由表\ref{各种路面滚动摩擦系数}取滚动摩擦系数$c_r=0.015$，重力加速度取$g=9.81\,\mathrm{N/kg}$。代入式~\eqref{eq:ch2-fr}可得滚动阻力$F_r=21.34\,\mathrm{N}$。
-
-坡道阻力$F_c$为：
+公园或社区路面通常为较平整的沥青或混凝土路面，由表\ref{各种路面滚动摩擦系数}取滚动摩擦系数$c_r=0.015$，重力加速度取$g=9.81\,\mathrm{N/kg}$。代入式~\eqref{eq:ch2-fr}可得滚动阻力$F_r=21.34\,\mathrm{N}$。坡道阻力$F_c$为：
 \begin{equation}
 F_c = m g \sin\theta
 \label{eq:ch2-fc}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $F_c$ & 坡道阻力（N）；\\
+& $\theta$ & 坡道坡角（$^\circ$）。\\
+\end{tabularx}\vspace{3.15bp}
 
 代入$m=145\,\mathrm{kg}$、$g=9.81\,\mathrm{N/kg}$、$\theta=15^\circ$，可得坡道阻力$F_c\approx365.16\,\mathrm{N}$。
 
@@ -289,6 +309,13 @@ F_c = m g \sin\theta
 F_a = \frac{1}{2}\rho C_d A V_{\max}^2
 \label{eq:ch2-fa}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $F_a$ & 空气阻力（N）；\\
+& $\rho$ & 空气密度（kg/m$^3$）；\\
+& $C_d$ & 空气阻力系数；\\
+& $A$ & 迎风面积（m$^2$）；\\
+& $V_{\max}$ & 整车最高速度（m/s）。\\
+\end{tabularx}\vspace{3.15bp}
 
 空气密度取常温常压下值$\rho=1.225\,\mathrm{kg/m^3}$，空气阻力系数取$C_d=1.0$，迎风面积由设计估算约为$A=0.73\,\mathrm{m^2}$，最大速度$V_{\max}\approx4.17\,\mathrm{m/s}$，由式~\eqref{eq:ch2-fa}计算得空气阻力$F_a=7.78\,\mathrm{N}$。
 
@@ -297,6 +324,10 @@ F_a = \frac{1}{2}\rho C_d A V_{\max}^2
 F_{ac} = m a
 \label{eq:ch2-fac}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $F_{ac}$ & 加速阻力（N）；\\
+& $a$ & 整车加速度（m/s$^2$）。\\
+\end{tabularx}\vspace{3.15bp}
 
 代入最大加速度$a=2\,\mathrm{m/s^2}$，可得加速阻力$F_{ac}=290\,\mathrm{N}$。
 
@@ -311,6 +342,11 @@ F_2 &= F_r + F_a + F_{ac}
 F_3 &= F_r + F_a
 \label{eq:ch2-f3}
 \end{align}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $F_1$ & 最大爬坡工况下的总阻力（N）；\\
+& $F_2$ & 最大加速度工况下的总阻力（N）；\\
+& $F_3$ & 最高车速匀速行驶工况下的总阻力（N）。\\
+\end{tabularx}\vspace{3.15bp}
 
 代入前述基础阻力计算结果，可得最大爬坡工况总阻力$F_1=386.50\,\mathrm{N}$，最大加速度工况总阻力$F_2=319.12\,\mathrm{N}$，最高车速工况总阻力$F_3=29.12\,\mathrm{N}$。
 
@@ -322,7 +358,10 @@ F_3 &= F_r + F_a
 \label{eq:ch2-hub-torque}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $F$ & 对应工况下的整车总阻力（N）。\\
+式中& $\tau_n$ & 单侧轮毂电机扭矩需求（N$\cdot$m）；\\
+& $F$ & 对应工况下的整车总阻力（N）；\\
+& $r$ & 车轮半径（m）；\\
+& $\eta$ & 传动效率。\\
 \end{tabularx}\vspace{3.15bp}
 
 取安全系数$S=1.2$、传动效率$\eta=0.9$，代入$r=0.33\,\mathrm{m}$。由最大爬坡工况阻力$F_1$计算得$\tau_n\geq85.03\,\mathrm{N\cdot m}$；由最大加速度工况阻力$F_2$计算得$\tau_n\geq70.21\,\mathrm{N\cdot m}$。因此轮毂电机单侧输出扭矩应不小于$85.03\,\mathrm{N\cdot m}$。
@@ -332,6 +371,9 @@ F_3 &= F_r + F_a
 P_n \geq \frac{S F V_{\max}}{2 \eta}
 \label{eq:ch2-hub-power}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $P_n$ & 单侧轮毂电机功率需求（W）。\\
+\end{tabularx}\vspace{3.15bp}
 
 代入最大加速度工况阻力$F_2$可得$P_n\geq887.15\,\mathrm{W}$；代入最高车速工况阻力$F_3$可得$P_n\geq80.95\,\mathrm{W}$。因此轮毂电机单侧功率需求按较大值取$887.15\,\mathrm{W}$。
 
@@ -340,6 +382,9 @@ P_n \geq \frac{S F V_{\max}}{2 \eta}
 \omega = \frac{60 V_{\max}}{2 \pi r}
 \label{eq:ch2-hub-speed}
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $\omega$ & 轮毂电机转速（r/min）。\\
+\end{tabularx}\vspace{3.15bp}
 
 代入$V_{\max}=4.17\,\mathrm{m/s}$和$r=0.33\,\mathrm{m}$，可得轮毂电机转速$\omega\approx120.67\,\mathrm{r/min}$。
 
@@ -461,6 +506,13 @@ P_n \geq \frac{S F V_{\max}}{2 \eta}
   \label{控制系统方案}
 \end{figure}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/chapter02/控制系统信号电路连接.png}
+  \caption{控制系统信号电路连接}
+  \label{控制系统信号电路连接}
+\end{figure}
+
 \subsection{控制系统硬件设计}
 
 控制系统的信号转换及电路连接如图\ref{控制系统信号电路连接}所示。基于控制任务的实时性与多通道控制需求，本设计选用STM32系列单片机作为控制器，通过网口、UART串口、CAN通讯、PWM输出以及GPIO等多种接口与其他元器件建立连接。
@@ -468,13 +520,6 @@ P_n \geq \frac{S F V_{\max}}{2 \eta}
 单片机通过以UDP协议为基础的网口通信方式与上位机建立高速连接，实现实时数据交换，在提升传输速率的同时，有效降低通信延迟，满足实时控制策略下对数据更新频率的严格要求。通过UART串口与控制器及姿态传感器进行通信，其中UART1用于接收控制器指令，UART2用于采集姿态传感器数据，从而分别获得人工输入的控制指令及车辆姿态信息。
 
 为提升系统控制的总线统一性和抗干扰能力，除丝杠电机采用PWM方式进行控制外，其余电机驱动器均优先采用基于CAN总线的通信方式，以提高系统集成度并简化主控的通信负担，并通过GPIO接口接收光电开关的位置信号，实现对关键位置状态的快速响应与监测。
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.85\textwidth]{figures/chapter02/控制系统信号电路连接.png}
-  \caption{控制系统信号电路连接}
-  \label{控制系统信号电路连接}
-\end{figure}
 
 \subsection{控制系统硬件环境搭建}
 
@@ -503,14 +548,14 @@ P_n \geq \frac{S F V_{\max}}{2 \eta}
 
 为满足不同电机的驱动需求，系统依据性能参数选配匹配驱动器。轮毂电机采用中菱ZLAC8030L伺服驱动器，支持闭环控制和CAN通信，响应快速且抗干扰能力强；高速电机选用美固思MSSD-40LMA伺服驱动器，适配高速永磁同步电机，支持高频速度调节，也通过CAN总线通信；丝杠电机采用安川CA-4060M驱动器，采用PWM控制，支持多种模式及安全保护；进动电机为RobStride03一体式关节电机，内置驱动器，通过CAN总线直接与主控通信，简化布线并提升模块化。
 
-控制系统的供电电路设计如图\ref{控制系统供电电路连接}所示。整车供电系统采用统一的48V直流电池电源作为主供电源，以简化能源分配结构并降低能量转换损耗。电源输出首先连接至一组继电保护模块，其中串联连接遥控继电器与手动电动开关，分别用于实现远程通断控制与现场物理切断，增强系统在调试、运行及紧急状态下的安全可控性。在主供电路径中，48V直流电压一方面直接分配至各电机驱动器为其提供高压高功率的驱动能源。另一方面经由降压转换模块变换后，输出24V直流电压供给单片机使用。单片机在正常运行时，通过其集成的稳压模块进一步输出5V直流电压，为系统中的姿态传感器、光电传感器和控制器提供稳定的低压电源。该分级供电设计有效隔离高低压系统，提升了电气系统的可靠性与抗干扰能力，亦为系统的维护与扩展提供了良好的电源接口基础。
-
 \begin{figure}[h]
   \centering
   \includesvg[width=0.75\textwidth]{figures/chapter02/控制系统供电电路连接}
   \caption{控制系统供电电路连接}
   \label{控制系统供电电路连接}
 \end{figure}
+
+控制系统的供电电路设计如图\ref{控制系统供电电路连接}所示。整车供电系统采用统一的48V直流电池电源作为主供电源，以简化能源分配结构并降低能量转换损耗。电源输出首先连接至一组继电保护模块，其中串联连接遥控继电器与手动电动开关，分别用于实现远程通断控制与现场物理切断，增强系统在调试、运行及紧急状态下的安全可控性。在主供电路径中，48V直流电压一方面直接分配至各电机驱动器为其提供高压高功率的驱动能源。另一方面经由降压转换模块变换后，输出24V直流电压供给单片机使用。单片机在正常运行时，通过其集成的稳压模块进一步输出5V直流电压，为系统中的姿态传感器、光电传感器和控制器提供稳定的低压电源。该分级供电设计有效隔离高低压系统，提升了电气系统的可靠性与抗干扰能力，亦为系统的维护与扩展提供了良好的电源接口基础。
 
 搭建完成的控制系统主要部分电路如图\ref{控制系统连接实物图}所示，由于安装需要，惯性测量单元（IMU）和FS-iA10B接收模块在车体内部。
 
@@ -549,10 +594,6 @@ P_n \geq \frac{S F V_{\max}}{2 \eta}
 
 其中，FreeRTOS为多任务运行提供基础调度与同步支撑，STM32 HAL库则为底层外设访问提供统一接口；同时，系统基于STM32CubeIDE完成硬件配置、代码生成与在线调试，从而提高开发效率并增强软件的可移植性与可维护性。
 
-（2）软件系统总体框架
-
-控制系统的软件架构如图\ref{控制系统软件架构}所示，采用自上而下的分层设计，包括应用程序层、操作系统层、功能模块层和硬件驱动层。应用程序层主要承载整车控制逻辑；操作系统层基于FreeRTOS实现任务调度、定时管理以及任务间通信，并通过消息队列、信号量等机制完成各线程之间的数据交互与资源协调；功能模块层根据各类设备接口完成功能封装，为上层提供统一调用入口；硬件驱动层则运行于STM32平台之上，基于HAL库访问GPIO、PWM、ADC、串口、CAN等外设资源，实现与传感器、执行机构及通信设备的底层交互。
-
 \begin{figure}[h]
   \centering
   \includesvg[width=0.95\textwidth]{figures/chapter02/控制系统软件架构}
@@ -560,17 +601,15 @@ P_n \geq \frac{S F V_{\max}}{2 \eta}
   \label{控制系统软件架构}
 \end{figure}
 
+（2）软件系统总体框架
+
+控制系统的软件架构如图\ref{控制系统软件架构}所示，采用自上而下的分层设计，包括应用程序层、操作系统层、功能模块层和硬件驱动层。应用程序层主要承载整车控制逻辑；操作系统层基于FreeRTOS实现任务调度、定时管理以及任务间通信，并通过消息队列、信号量等机制完成各线程之间的数据交互与资源协调；功能模块层根据各类设备接口完成功能封装，为上层提供统一调用入口；硬件驱动层则运行于STM32平台之上，基于HAL库访问GPIO、PWM、ADC、串口、CAN等外设资源，实现与传感器、执行机构及通信设备的底层交互。
+
 \subsection{控制系统软件框架搭建}
 
 （1）软件系统工作流程
 
 控制系统的整体流程如图\ref{控制系统总体工作流程图}所示，其主要可分为初始化阶段和线程调度阶段两个部分。
-
-在初始化阶段，系统上电后首先进行STM32底层硬件初始化，包括时钟系统配置、GPIO配置、DMA配置以及串口、CAN、以太网等片上外设的基础驱动加载，为后续任务调度与设备通信提供运行环境；随后进行FreeRTOS初始化，包括任务创建、优先级分配、消息队列与信号量建立等配置，使各功能线程具备并发执行与同步通信的基础条件；最后进行外部设备初始化。
-
-外部设备初始化主要包括外设通信配置和电机初始化等内容，其中串口和CAN通信的中断需在初始化阶段手动开启，而以太网通信由驱动程序自动管理，无需人工干预；电机的初始化通过CAN总线完成，主要包括设置各电机的控制模式、目标位置以及执行回零操作，其中轮毂电机与进动电机采用力矩控制模式，丝杠电机采用脉冲控制模式，高速电机采用位置控制模式。此外，IMU（惯性测量单元）的滤波参数与输出配置由上位机完成设置，各电机的CAN通信地址同样由上位机下发设定；系统在初始化开始和结束时通过蜂鸣器发出提示音，以提示操作人员当前状态。
-
-完成上述初始化后，系统进入周期性调度运行阶段。设备通信、数据处理与运动控制等功能线程按照设定的中断触发方式和运行周期协同执行，完成状态感知、控制量计算与执行机构驱动等任务。
 
 \begin{figure}[h]
   \centering
@@ -579,6 +618,12 @@ P_n \geq \frac{S F V_{\max}}{2 \eta}
   \caption{控制系统总体工作流程图}
   \label{控制系统总体工作流程图}
 \end{figure}
+
+在初始化阶段，系统上电后首先进行STM32底层硬件初始化，包括时钟系统配置、GPIO配置、DMA配置以及串口、CAN、以太网等片上外设的基础驱动加载，为后续任务调度与设备通信提供运行环境；随后进行FreeRTOS初始化，包括任务创建、优先级分配、消息队列与信号量建立等配置，使各功能线程具备并发执行与同步通信的基础条件；最后进行外部设备初始化。
+
+外部设备初始化主要包括外设通信配置和电机初始化等内容，其中串口和CAN通信的中断需在初始化阶段手动开启，而以太网通信由驱动程序自动管理，无需人工干预；电机的初始化通过CAN总线完成，主要包括设置各电机的控制模式、目标位置以及执行回零操作，其中轮毂电机与进动电机采用力矩控制模式，丝杠电机采用脉冲控制模式，高速电机采用位置控制模式。此外，IMU（惯性测量单元）的滤波参数与输出配置由上位机完成设置，各电机的CAN通信地址同样由上位机下发设定；系统在初始化开始和结束时通过蜂鸣器发出提示音，以提示操作人员当前状态。
+
+完成上述初始化后，系统进入周期性调度运行阶段。设备通信、数据处理与运动控制等功能线程按照设定的中断触发方式和运行周期协同执行，完成状态感知、控制量计算与执行机构驱动等任务。
 
 （2）设备通信
 
@@ -593,7 +638,7 @@ P_n \geq \frac{S F V_{\max}}{2 \eta}
 
 串口接收数据时，采用DMA（Direct Memory Access，直接存储器访问）方式将数据自动搬运至预设的内存缓冲区，无需CPU干预，从而显著减轻了处理负担并提升了搬运效率。当DMA正在接收数据过程中，若在设定的超时时间内未收到新的字节，即判定一帧数据接收完成，串口将触发空闲中断。中断服务程序在此时将DMA缓冲区中有效数据打包，并发送至对应的消息队列，供后台线程进一步解析处理。最后，清除中断标志，完成本次中断处理流程。
 
-CAN通信主要用于与轮毂电机、高速电机和进动电机等部件之间的数据交互。系统启动后进入接收状态，当接收到来自电机的CAN数据帧时，将触发CAN接收中断。中断服务程序从接收缓冲区中读取数据帧内容，提取帧ID用以识别对应电机设备类型，并将数据发送至相应的数据处理消息队列，由后台线程异步完成后续解析与处理。最后，系统清除中断标志，完成本次中断处理流程。
+CAN通信主要用于与轮毂电机、高速电机和进动电机等部件之间的数据交互。系统启动后进入接收状态，当接收到来自电机的CAN数据帧时，将触发CAN接收中断。中断服务程序从接收缓冲区中读取数据帧，提取帧ID以识别对应电机设备类型，并将数据发送至相应的数据处理消息队列，由后台线程异步完成后续解析与处理。最后，系统清除中断标志，完成本次中断处理流程。
 
 UDP通信主要负责与自主导航系统之间的数据交互。当系统接收到来自导航系统的UDP数据报时，将立即触发相应的处理流程：首先将接收到的消息内容转发至指定的数据处理消息队列，供后台线程进行解析处理；然后根据解析结果生成系统状态反馈报文并发送回上位机，完成此次UDP通信处理。
 
@@ -632,8 +677,6 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
 
 控制系统的设备数据处理流程如图\ref{控制系统设备数据处理流程}所示，主要功能是对各类外设传入的数据进行解析与管理。系统依次处理来自IMU、轮毂电机、高速电机、进动电机、控制器以及上位机的数据，按设定顺序从各数据队列获取数据并按照各设备的通信协议进行解析校验。
 
-其中，IMU、轮毂电机、高速电机及进动电机的数据与车辆姿态平衡密切相关，对运行安全性影响较大。为保障系统的实时性与可靠性，若在解析过程中检测到上述关键设备的数据队列中无新数据，则系统将触发蜂鸣器报警，并记录对应的异常信息以供后续诊断。
-
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.9\textwidth]{figures/chapter02/设备数据处理流程图.png}
@@ -641,6 +684,8 @@ UDP通信主要负责与自主导航系统之间的数据交互。当系统接�
   \label{控制系统设备数据处理流程}
 \end{figure}
 \FloatBarrier
+
+其中，IMU、轮毂电机、高速电机及进动电机的数据与车辆姿态平衡密切相关，对运行安全性影响较大。为保障系统的实时性与可靠性，若在解析过程中检测到上述关键设备的数据队列中无新数据，则系统将触发蜂鸣器报警，并记录对应的异常信息以供后续诊断。
 
 （4）运动控制
 

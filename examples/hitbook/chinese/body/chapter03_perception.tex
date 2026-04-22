@@ -2,7 +2,7 @@
 % !TeX root = ../thesis.tex
 
 \chapter{基于双目视觉的感知技术研究}
-环境感知一直以来是自动行驶的重点与难点。现有方法中，基于激光雷达的感知手段虽然精度较高，但其设备成本昂贵；而基于单目视觉的深度估计则存在精度不足和稳定性差的问题。另一方面，仅依赖基于目标识别的环境感知方法容易受到漏检和误检的影响，难以满足高可靠性的自动行驶感知需求。根据环境感知的需求，研究基于深度学习的立体匹配算法，在保证处理速度的前提下获取高质量的视差图，并通过双目相机参数计算得到深度图；训练基于深度学习的目标检测算法，并设计算法将深度图与目标检测结果结合，对障碍物目标的空间定位。最终实现对环境的有效感知。
+环境感知是两轮平衡车实现自动行驶的关键环节，其性能直接影响障碍物识别、距离估计与避障决策的可靠性。为提升车辆在实际场景中的环境理解能力，需要构建兼顾深度恢复与目标定位的感知方法。本章围绕双目视觉环境感知方法展开研究，面向模型轻量化与部署需求，研究兼顾精度与实时性的基于深度学习的立体匹配算法，以获取高质量视差图并恢复场景深度信息，为障碍物测距、空间定位及后续环境理解提供基础；研究基于深度学习的目标检测算法，并结合深度图实现障碍物目标的识别与空间定位，从而为后续导航与避障提供更加可靠的环境感知信息。
 
 \section{基于深度学习的立体匹配技术研究}
 
@@ -23,7 +23,7 @@ Z=\frac{fB}{d}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.65\textwidth]{figures/chapter03/理想双目模型.png}
+  \includesvg[width=0.45\textwidth]{figures/chapter03/理想双目模型}
   \caption{理想双目模型}
   \label{理想双目模型}
 \end{figure}
@@ -44,7 +44,9 @@ Z=\frac{fB}{d}
 \tilde{p}_u=\mathcal{D}^{-1}(\tilde{p}_d)
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $\mathcal{D}^{-1}(\cdot)$ & 由标定获得的畸变参数确定的去畸变映射。\\
+式中& $\tilde{p}_u$ & 去畸变像素点的齐次坐标；\\
+& $\tilde{p}_d$ & 畸变像素点的齐次坐标；\\
+& $\mathcal{D}^{-1}(\cdot)$ & 由标定获得的畸变参数确定的去畸变映射。\\
 \end{tabularx}\vspace{3.15bp}
 
 在此基础上，根据双目标定得到的相对旋转矩阵$R$与平移向量$t$进行立体校正。取双目基线方向为校正坐标系的$x$轴，并以左相机光轴单位向量$z=[0,0,1]^T$为辅助方向，则校正坐标基$r$可表示为式~\eqref{eq:ch3-stereo-rectify-basis}：
@@ -57,6 +59,8 @@ r_3=r_1\times r_2
 式中& $r_1$ & 校正坐标系$x$轴方向单位向量；\\
 & $r_2$ & 校正坐标系$y$轴方向单位向量；\\
 & $r_3$ & 校正坐标系$z$轴方向单位向量。\\
+& $t$ & 双目系统的平移向量；\\
+& $z$ & 左相机光轴方向单位向量。\\
 \end{tabularx}\vspace{3.15bp}
 
 进而，左右相机的立体校正旋转矩阵$R_{rect}$可表示为式~\eqref{eq:ch3-stereo-rectify-lr}：
@@ -69,6 +73,11 @@ r_3^T
 \end{bmatrix},\quad
 R_{rect,r}=R_{rect,l}R
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $R_{rect,l}$ & 左相机的立体校正旋转矩阵；\\
+& $R_{rect,r}$ & 右相机的立体校正旋转矩阵；\\
+& $R$ & 双目系统的相对旋转矩阵。\\
+\end{tabularx}\vspace{3.15bp}
 
 对去畸变后的图像，校正映射可表示为式~\eqref{eq:ch3-rectify}：
 \begin{equation}\label{eq:ch3-rectify}
@@ -81,7 +90,7 @@ R_{rect,r}=R_{rect,l}R
 & $K$ & 校正前的相机内参矩阵。\\
 \end{tabularx}\vspace{3.15bp}
 
-对左右相机分别代入相应的内参与立体校正旋转矩阵，即可完成对去畸变图像的重映射，使双目图像统一到同一校正坐标系中。校正后，同一空间点在左右图像中的投影满足$y_l' \approx y_r'$，从而可将对应点匹配由二维搜索简化为沿水平方向的一维搜索，进而提高视差估计的稳定性。校正效果如图\ref{图像校正处理结果}所示，校正后的图像可稳定用于视差估计与深度计算，为后续障碍物检测与测距算法提供可靠的几何基础。
+将左右相机的内参与立体校正旋转矩阵分别代入，可将去畸变图像重映射到统一的校正坐标系中。校正后，同一空间点满足$y_l' \approx y_r'$，对应点匹配可由二维搜索简化为沿水平方向的一维搜索，从而提高视差估计的稳定性。校正效果如图\ref{图像校正处理结果}所示，校正后的图像可用于后续视差估计、深度计算以及障碍物检测与测距。
 
 \begin{figure}[!htbp]
   \centering
@@ -113,6 +122,7 @@ A=\exp\left(-\frac{(d_{\text{coarse}}-\mu)^2}{2\sigma^2}\right)
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $A$ & 分层注意力先验权重；\\
+& $d_{\text{coarse}}$ & 粗尺度视差先验；\\
 & $\mu$ & 以粗尺度先验为中心的局部均值；\\
 & $\sigma$ & 尺度相关的平滑系数。\\
 \end{tabularx}\vspace{3.15bp}
@@ -123,6 +133,8 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $C'_{\text{fine}}$ & 融合后的细尺度代价体；\\
+& $C_{\text{fine}}$ & 细尺度代价体；\\
+& $\Delta C$ & 由轻量级卷积分支提取的残差信息；\\
 & $\odot$ & 逐通道逐元素乘法。\\
 \end{tabularx}\vspace{3.15bp}
 
@@ -143,34 +155,56 @@ C'_{\text{fine}}=C_{\text{fine}}+A\odot\Delta C
 \begin{equation}\label{eq:ch3-conv1}
 X_1=DWConv_{7\times 7}(X)
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $X$ & 输入代价体；\\
+& $X_1$ & 深度卷积后的特征；\\
+& DWConv & 深度卷积操作。\\
+\end{tabularx}\vspace{3.15bp}
 
 随后对特征施加二维层归一化$LN$以稳定训练过程，如式~\eqref{eq:ch3-ln}所示：
 \begin{equation}\label{eq:ch3-ln}
 X_2=LN(X_1)
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $X_2$ & 经层归一化后的特征；\\
+& $LN$ & 二维层归一化操作。\\
+\end{tabularx}\vspace{3.15bp}
 
 在此基础上，采用逐点卷积$W_1$进行通道扩张，并引入 GELU 非线性激活，如式~\eqref{eq:ch3-gelu}所示：
 \begin{equation}\label{eq:ch3-gelu}
 X_3=GELU(W_1*X_2)
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $X_3$ & 经通道扩张和非线性激活后的特征；\\
+& $W_1$ & 逐点卷积权重，用于通道扩张；\\
+& GELU & 高斯误差线性单元激活函数。\\
+\end{tabularx}\vspace{3.15bp}
 
 为进一步调节通道维度上的全局响应，引入 Global Response Normalization（GRN）模块，如式~\eqref{eq:ch3-grn}所示：
 \begin{equation}\label{eq:ch3-grn}
 X_4=GRN(X_3)
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $X_4$ & 经全局响应归一化后的特征；\\
+& GRN & 全局响应归一化操作。\\
+\end{tabularx}\vspace{3.15bp}
 
 随后通过另一个卷积将通道数映射回原始维度，如式~\eqref{eq:ch3-conv2}所示：
 \begin{equation}\label{eq:ch3-conv2}
 X_5=W_2*X_4
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $W_2$ & 投影卷积权重，用于将通道数映射回原始维度。\\
+式中& $X_5$ & 投影卷积后的输出特征；\\
+& $W_2$ & 投影卷积权重，用于将通道数映射回原始维度。\\
 \end{tabularx}\vspace{3.15bp}
 
 当输入与输出特征维度一致时，引入残差连接以缓解梯度消失并增强特征复用能力，如式~\eqref{eq:ch3-res}所示：
 \begin{equation}\label{eq:ch3-res}
 Y=X+X_5
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $Y$ & 残差融合后的输出特征。\\
+\end{tabularx}\vspace{3.15bp}
 
 该ConvNeXtV2风格残差块通过大核深度卷积、通道扩张、归一化与残差融合的组合设计，在维持轻量化特性的同时显著增强了模型对平面区域与边界纹理的建模能力，适用于对精度与算力均有约束的嵌入式立体匹配场景。对比实验结果表明，该结构在综合性能上优于ShuffleNet-V2、GhostNet\cite{hanGhostnetMoreFeatures2020a}及MobileNet-V2\cite{sandlerMobilenetv2InvertedResiduals2018}等常见轻量残差块。
 
@@ -190,6 +224,7 @@ C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $C(x,y,d)$ & 像素$(x,y)$在视差$d$处的匹配代价值；\\
+& $F_l,\,F_r$ & 左右图像对应尺度下的特征图；\\
 & $\left\langle \cdot,\cdot \right\rangle$ & 两个特征向量的内积运算；\\
 & $N_s$ & 特征通道数。\\
 \end{tabularx}\vspace{3.15bp}
@@ -216,13 +251,18 @@ C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
 p(d\mid x,y)=\frac{\exp[-C(x,y,d)]}{\sum_{k=0}^{D_{\max}-1}\exp[-C(x,y,k)]}
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $k$ & 视差求和索引。\\
+式中& $p(d\mid x,y)$ & 像素$(x,y)$处视差为$d$的概率；\\
+& $D_{\max}$ & 最大搜索视差；\\
+& $k$ & 视差求和索引。\\
 \end{tabularx}\vspace{3.15bp}
 
 然后对离散视差值按该概率分布加权求和，得到像素$(x,y)$处的视差回归值$d(x,y)$，如式~\eqref{eq:ch3-disp-reg}所示：
 \begin{equation}\label{eq:ch3-disp-reg}
 d(x,y)=\sum_{k=0}^{D_{\max}-1} k\cdot p(k\mid x,y)
 \end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $d(x,y)$ & 像素$(x,y)$处的视差回归值。\\
+\end{tabularx}\vspace{3.15bp}
 
 5）损失函数
 
@@ -231,7 +271,10 @@ d(x,y)=\sum_{k=0}^{D_{\max}-1} k\cdot p(k\mid x,y)
 L(d,d^*)=\frac{1}{N}\sum_{i=1}^{N}\mathrm{SmoothL1}(d_i-d_i^*)
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $N$ & 有效像素总数；\\
+式中& $L(d,d^*)$ & 单尺度视差监督损失；\\
+& $d$ & 预测视差；\\
+& $d^*$ & 真实视差；\\
+& $N$ & 有效像素总数；\\
 & $d_i$ & 第$i$个像素的预测视差；\\
 & $d_i^*$ & 第$i$个像素的真实视差。\\
 \end{tabularx}\vspace{3.15bp}
@@ -252,16 +295,17 @@ L_{\text{total}}=L(d,d^*)+\lambda L(d_{\text{coarse}},d^*)
 
 \subsection{立体匹配模型的训练及评价指标}
 
-为验证上述轻量化立体匹配模型的有效性与泛化能力，本文采用“合成数据预训练+真实数据微调”的两阶段训练策略，并结合主流评价指标对模型性能进行定量分析。相关训练配置与评价标准不仅用于考察模型的匹配性能，也作为后文消融实验、对比实验及嵌入式部署分析的统一实验依据。
+为验证上述轻量化立体匹配模型的有效性与泛化能力，本文采用“合成数据预训练+真实数据微调”的两阶段训练策略，并结合主流评价指标对模型性能进行定量分析。相关训练配置与评价标准不仅用于考察模型的匹配性能，也作为后文消融实验、对比实验及嵌入式部署分析的统一实验依据。模型训练与测试均在统一软硬件环境下进行，实验平台为Windows 11操作系统、NVIDIA GeForce RTX 4090显卡和Intel Core i5-9600KF处理器，深度学习框架为PyTorch 1.9，编程语言为Python 3.8。
 
 （1）预训练阶段
 
-模型首先在 SceneFlow 数据集\cite{mayerLargeDatasetTrain2016}上进行预训练。SceneFlow 是面向视差、光流与场景流估计的大规模合成双目数据集，具有稠密、精确的像素级视差真值，可为模型提供充分的几何监督，因此常用于立体匹配网络的初始参数学习。预训练阶段采用端点误差（End-Point Error, EPE）作为主要评价指标，其定义如式~\eqref{eq:ch3-epe}所示：
+模型首先在 SceneFlow 数据集\cite{mayerLargeDatasetTrain2016}上进行预训练。SceneFlow 是面向视差、光流与场景流估计的大规模合成双目数据集，具有稠密、精确的像素级视差真值，可为模型提供充分的几何监督，常用于立体匹配网络的预训练。预训练阶段采用端点误差（End-Point Error, EPE）为主要评价指标，其定义如式~\eqref{eq:ch3-epe}所示：
 \begin{equation}\label{eq:ch3-epe}
 \mathrm{EPE}=\frac{1}{N}\sum_{i=1}^{N}\left|d_i^{pred}-d_i^{gt}\right|
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $N$ & 有效像素总数；\\
+式中& $\mathrm{EPE}$ & 端点误差评价指标；\\
+& $N$ & 有效像素总数；\\
 & $d_i^{pred}$ & 第$i$个像素的预测视差；\\
 & $d_i^{gt}$ & 第$i$个像素对应的真实视差。\\
 \end{tabularx}\vspace{3.15bp}
@@ -285,11 +329,21 @@ D1-all反映大误差像素比例，能够更有效评估模型在遮挡、弱�
 
 微调阶段训练500个轮次，批量大小设为2，继续采用OneCycleLR调度策略。同时引入颜色抖动、随机擦除、随机缩放与随机裁剪等数据增强方法，以提升模型对复杂真实环境的适应能力。
 
-通过上述评价指标与分阶段训练策略，可系统分析模型在精度、鲁棒性及真实场景泛化能力方面的表现，并为后续消融实验和方法对比验证提供依据。
+为统一衡量模型的计算复杂度，本文采用单次前向传播中的浮点运算次数（FLOPs）作为复杂度指标。对于卷积层，其计算方式定义如式~\eqref{eq:ch3-flops}所示：
+\begin{equation}\label{eq:ch3-flops}
+\mathrm{FLOPs}=2\times H\times W\times C_{\mathrm{in}}\times C_{\mathrm{out}}\times \frac{k_h\times k_w}{\mathrm{groups}}
+\end{equation}
+\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
+式中& $\mathrm{FLOPs}$ & 单次前向传播中的浮点运算次数；\\
+& $H, W$ & 输出特征图的空间高度与宽度；\\
+& $C_{\mathrm{in}}, C_{\mathrm{out}}$ & 输入与输出通道数；\\
+& $k_h, k_w$ & 卷积核的高度与宽度；\\
+& $\mathrm{groups}$ & 分组卷积的组数。\\
+\end{tabularx}\vspace{3.15bp}
 
 \subsection{立体匹配模型实验结果与分析}
 
-为评估所提出立体匹配模型在精度与计算复杂度之间的折中性能，本节从轻量化卷积块选择、HAGV模块有效性以及与主流方法对比三个方面进行实验分析。
+为评估所提出立体匹配模型的精度--复杂度权衡性能，本节从轻量化卷积块选择、HAGV模块有效性及与主流方法对比三个方面展开实验分析。
 
 （1）卷积块消融实验
 
@@ -311,10 +365,11 @@ D1-all反映大误差像素比例，能够更有效评估模型在遮挡、弱�
     \bottomrule
   \end{thesistabular}
 \end{table}
+\FloatBarrier
 
 （2）HAGV模块消融实验
 
-为验证所提出分层注意力引导代价体（HAGV）模块的有效性，在采用ConvNeXtV2作为基本卷积单元的基础上引入HAGV及不同粗尺度设置进行了消融实验，结果如表\ref{HAGV模块在SceneFlow数据集上的消融实验}所示。在基线模型中，仅利用1/4分辨率特征进行代价建模，其在SceneFlow数据集上的EPE为0.7644。引入HAGV后，模型匹配精度得到提升：当粗尺度分支设置为1/16时，EPE降至0.7612；进一步采用1/8分辨率作为粗尺度，EPE降至0.7415，而FLOPs仅由19.58G增至20.08G，计算开销增加有限。实验结果表明，HAGV通过引入粗尺度几何先验对细尺度代价体进行调制，可有效提升代价体的几何一致性与匹配稳定性；同时，粗尺度分支的分辨率对先验质量具有显著影响，其中1/8分辨率在稳定性与细节保留之间取得了更优折中。
+为验证分层注意力引导代价体（HAGV）模块的有效性，本文在以ConvNeXtV2为基本卷积单元的基础上，对是否引入HAGV及不同粗尺度设置进行了消融实验，结果如表\ref{HAGV模块在SceneFlow数据集上的消融实验}所示。基线模型仅利用1/4分辨率特征进行代价建模，其EPE为0.7644。引入HAGV后，模型精度进一步提升：当粗尺度分支设为1/16时，EPE降至0.7612；当粗尺度分支设为1/8时，EPE进一步降至0.7415，而FLOPs仅由19.58G增至20.08G。结果表明，HAGV通过引入粗尺度几何先验增强了代价体的几何一致性与匹配稳定性，其中1/8分辨率粗尺度分支取得了更优的精度--复杂度折中。
 
 \begin{table}[htbp]
   \centering
@@ -445,33 +500,15 @@ YOLO11n的整体结构如图\ref{YOLO11n整体结构}所示，主要包括以下
 
 在本系统中，YOLO11n输出的二维边界框信息将作为后续深度ROI提取与目标距离估计的空间约束基础。通过与双目立体匹配得到的深度图进行融合，系统能够完成目标检测、候选区域筛选和距离估计，从而为微型移动载具提供稳定、可部署的障碍物检测与测距能力。
 
-\subsection{目标检测模型的训练及评价指标}
+\subsection{目标检测模型的训练}
 
-为验证所选YOLO11n目标检测模型在本文障碍物识别任务中的检测性能，并为后续目标空间定位与测距融合提供可靠的前端感知结果，本文对目标检测模型的训练过程及评价指标进行统一说明。模型训练与对比实验均在相同软硬件环境下完成，具体包括：Win10操作系统、NVIDIA GeForce RTX 4090显卡、Intel Core i5-9600KF处理器，深度学习框架采用PyTorch 1.9，编程语言为Python 3.8。
+本文采用“预训练+微调”的方式完成目标检测模型训练。具体而言，首先采用在COCO数据集上预训练的YOLO11n权重作为模型初始化参数，在此基础上再结合本文应用场景数据进行进一步微调，以提高模型对实际障碍物目标的识别能力。
 
-在目标检测任务中，常用评价指标包括精确率（Precision）、召回率（Recall）和平均精度均值（mAP）。其中，精确率表示预测为正样本的目标中真正为正样本的比例，如式~\eqref{eq:ch3-precision}所示：
-\begin{equation}\label{eq:ch3-precision}
-\mathrm{Precision}=\frac{TP}{TP+FP}
-\end{equation}
+COCO数据集是目标检测领域广泛采用的通用数据集，包含丰富的日常场景目标类别，可为模型提供较好的基础视觉特征表达能力\cite{linMicrosoftCOCOCommon2014}。通过引入COCO预训练权重，模型能够先学习常见目标的纹理、轮廓与语义信息，为后续面向具体场景的训练提供较好的参数初始化。
 
-召回率表示正样本中被分类正确的比例，如式~\eqref{eq:ch3-recall}所示。
-\begin{equation}\label{eq:ch3-recall}
-\mathrm{Recall}=\frac{TP}{TP+FN}
-\end{equation}
+在完成预训练权重初始化后，本文采用VIDVIP数据集进行进一步微调\cite{babaVidvipDatasetObject2021b}。VIDVIP数据集面向人行道通行过程中的目标检测任务，包含行人、车辆、路侧障碍物等与移动平台通行安全密切相关的目标类别，其场景特征与本文面向园区道路环境的障碍物检测需求具有较高一致性。
 
-在式~\eqref{eq:ch3-precision}和式~\eqref{eq:ch3-recall}中使用的符号说明如下。mAP表示各类别平均精度（Average Precision, AP）的均值，用于综合评价模型在多类别检测任务中的整体性能，如式~\eqref{eq:ch3-map}所示。
-\begin{equation}\label{eq:ch3-map}
-\mathrm{mAP}=\frac{1}{N}\sum_{c=1}^{N} \mathrm{AP}_c
-\end{equation}
-\begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
-式中& $TP$ & 将正样本预测为正样本的数量；\\
-& $FP$ & 将负样本预测为正样本的数量；\\
-& $FN$ & 将正样本预测为负样本的数量；\\
-& $N$ & 类别总数；\\
-& $\mathrm{AP}_c$ & 第$c$类在Precision-Recall曲线下的面积。\\
-\end{tabularx}\vspace{3.15bp}
-
-上述评价指标可从检测准确性、召回能力及整体识别性能三个方面对YOLO11n进行量化分析，并为后续目标空间定位提供前端感知质量依据。
+目标检测模型的训练环境与第3.2.3节一致。经上述训练后，YOLO11n模型能够满足本文园区道路环境下对行人、车辆及路侧障碍物等目标的检测需求。
 
 \section{基于双目视觉的目标空间定位算法研究}
 
@@ -537,6 +574,7 @@ Z_i=\hat{Z}_i
 \end{equation}
 \begin{tabularx}{\textwidth}{@{}l@{\quad}r@{———}X@{}}
 式中& $X_i,Y_i,Z_i$ & 第$i$个目标在相机坐标系下的三维坐标；\\
+& $(u_i,v_i)$ & 第$i$个目标中心的像素坐标；\\
 & $(c_x,c_y)$ & 相机主点坐标。\\
 \end{tabularx}\vspace{3.15bp}
 

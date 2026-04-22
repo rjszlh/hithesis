@@ -30,9 +30,9 @@
   % cassosupervisor={某某某教授}, % 副指导老师
   % ccosupervisor={某某某教授}, % 联合指导老师
   % 如果是第一封面的日期要手动设置，需要取消注释下一行，并将内容改为“规范”中要求的封面第一页最下方的日期
-  % firstpagecdate={2022年6月},
+  firstpagecdate={2026年5月},
   % 日期自动使用当前时间，若需指定按如下方式修改：
-  % cdate={超新星纪元},
+  cdate={2026年5月},
   cstudentid={9527},
   cstudenttype={专业学位论文}, %非全日制教育申请学位者
   cnumber={no9527}, %编号
@@ -72,7 +72,7 @@
 
 本文围绕两轮平衡车开展总体设计。在机械结构方面，采用对称双控制力矩陀螺布置与车轮倒立摆控制相结合的载人平衡方案，并对关键部件进行强度校核与有限元分析；在控制系统方面，以STM32F407单片机和FreeRTOS软件框架为基础，进行硬件线路设计与搭建软件环境。
 
-在环境感知方面围绕双目视觉感知开展研究。立体匹配部分提出轻量化HAGVNet模型用于视差估计，其中分层注意力引导代价体用于引入粗尺度几何先验并增强细尺度代价体构建过程中的几何一致性；采用ConvNeXtV2风格二维代价聚合模块，提升代价聚合阶段的特征表达能力；目标检测部分采用YOLO11n模型识别典型障碍物，并结合深度图信息实现障碍物检测、测距与空间定位，同时完成立体匹配与目标检测模型的TensorRT加速部署。
+在环境感知方面围绕双目视觉感知开展研究。立体匹配部分提出轻量化HAGVNet模型用于视差估计，其中分层注意力引导代价体用于引入粗尺度几何先验并增强细尺度代价体构建过程中的几何一致性，采用ConvNeXtV2风格二维代价聚合模块提升代价聚合阶段的特征表达能力；目标检测部分采用YOLO11n模型识别典型障碍物，并结合深度图信息实现障碍物检测、测距与空间定位，同时完成立体匹配与目标检测模型的TensorRT加速部署。
 
 基于ROS构建两轮平衡车自主导航系统。定位部分采用卡尔曼滤波融合GPS、IMU和轮速计信息进行位姿估计；导航部分采用Dijkstra算法进行全局路径规划，采用TEB算法进行局部轨迹优化与动态避障；感知部分基于人工势场中斥力场的思想，将障碍物列表映射至局部代价地图并参与路径规划。
 
@@ -86,7 +86,7 @@ Traditional two-wheeled self-balancing vehicles mainly rely on the inverted-pend
 
 This thesis carries out the overall design of a two-wheeled self-balancing vehicle. In terms of mechanical structure, a manned balancing scheme combining a symmetric dual control moment gyroscope configuration with wheel inverted-pendulum control is adopted, and strength checking and finite-element analysis are performed for key components. In terms of the control system, hardware circuit design and software environment development are completed based on the STM32F407 microcontroller and the FreeRTOS software framework.
 
-In environmental perception, research is conducted on stereo-vision-based perception. For stereo matching, a lightweight HAGVNet model is proposed for disparity estimation, in which the hierarchical attention-guided cost volume introduces coarse-scale geometric priors and enhances the geometric consistency of fine-scale cost volume construction, while the ConvNeXtV2-style 2D cost aggregation module improves feature representation in the cost aggregation stage. For target detection, YOLO11n is used to recognize typical obstacles, and obstacle detection, ranging, and spatial localization are achieved by combining the detection results with depth information. TensorRT acceleration deployment is further completed for the stereo matching and target detection models.
+In environmental perception, research is conducted on stereo-vision-based perception. For stereo matching, a lightweight HAGVNet model is proposed for disparity estimation, in which the hierarchical attention-guided cost volume introduces coarse-scale geometric priors and enhances the geometric consistency of fine-scale cost volume construction, and the ConvNeXtV2-style 2D cost aggregation module improves feature representation in the cost aggregation stage; for target detection, YOLO11n is used to recognize typical obstacles, and obstacle detection, ranging, and spatial localization are achieved by combining the detection results with depth information, while TensorRT-accelerated deployment is completed for both the stereo matching and target detection models.
 
 In autonomous navigation, a ROS-based navigation system for the two-wheeled self-balancing vehicle is constructed. The localization module adopts Kalman-filter-based fusion of GPS, IMU, and wheel-speed information for pose estimation. The navigation module uses the Dijkstra algorithm for global path planning and the TEB algorithm for local trajectory optimization and dynamic obstacle avoidance. In the perception-related part, obstacle lists are mapped to the local costmap according to the repulsive-field concept in the artificial potential field method and then incorporated into path planning.
 
