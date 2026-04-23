@@ -27,6 +27,7 @@ dist
 *.doc
 *.pdf
 !empty-resolution.pdf
+!examples/hitbook/chinese/back/原创性声明和使用权限.pdf
 *.toe
 *.xdv
 *.zip
