@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the obstacle ranging relative-error line chart.
-
-The script intentionally avoids third-party plotting libraries so the figure can
-be regenerated on a clean TeX workstation. The thesis includes the generated PDF
-for stable compilation, while the SVG is kept as an editable source asset.
-"""
+"""Generate the obstacle ranging relative-error line chart as SVG and PDF."""
 
 from __future__ import annotations
 
@@ -176,12 +171,13 @@ def build_legend() -> list[str]:
 def main() -> None:
     FIGURE_DIR.mkdir(parents=True, exist_ok=True)
     SVG_PATH.write_text(build_svg(), encoding="utf-8")
-
+    print("wrote", SVG_PATH)
     converter = shutil.which("rsvg-convert")
     if converter:
         subprocess.run([converter, "-f", "pdf", "-o", str(PDF_PATH), str(SVG_PATH)], check=True)
+        print("wrote", PDF_PATH)
     else:
-        print("rsvg-convert not found; wrote SVG only:", SVG_PATH)
+        print("rsvg-convert not found; skipped PDF:", PDF_PATH)
 
 
 if __name__ == "__main__":
