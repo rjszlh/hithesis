@@ -42,11 +42,14 @@ VALIDATION_PATH = DATA_DIR / "dynamic_obstacle_refined_validation.csv"
 SVG_PATH = FIGURE_DIR / "动态避障反推分析四联图.svg"
 PDF_PATH = FIGURE_DIR / "动态避障反推分析四联图.pdf"
 SINGLE_PANEL_WIDTH_MM = 80.0
+FIGURE_CONTENT_SCALE = 1.0
+FULL_FIGURE_TOP_CROP = 16.0
+FULL_FIGURE_BOTTOM_CROP = 12.0
 PANEL_SVG_OUTPUTS = [
-    ("trajectory", FIGURE_DIR / "动态避障反推分析_a_车辆行驶轨迹.svg", (20.0, 18.0, 435.0, 402.0)),
-    ("distance", FIGURE_DIR / "动态避障反推分析_b_相对距离.svg", (492.0, 18.0, 435.0, 402.0)),
-    ("speed", FIGURE_DIR / "动态避障反推分析_c_速度变化.svg", (20.0, 426.0, 435.0, 402.0)),
-    ("heading", FIGURE_DIR / "动态避障反推分析_d_速度偏向角.svg", (492.0, 426.0, 435.0, 402.0)),
+    ("trajectory", FIGURE_DIR / "动态避障反推分析_a_车辆行驶轨迹.svg", (18.0, 12.0, 450.0, 365.0)),
+    ("distance", FIGURE_DIR / "动态避障反推分析_b_相对距离.svg", (488.0, 12.0, 442.0, 365.0)),
+    ("speed", FIGURE_DIR / "动态避障反推分析_c_速度变化.svg", (18.0, 392.0, 450.0, 365.0)),
+    ("heading", FIGURE_DIR / "动态避障反推分析_d_速度偏向角.svg", (488.0, 392.0, 442.0, 365.0)),
 ]
 
 SAMPLE_COUNT = 180
@@ -710,49 +713,55 @@ def build_legend(x: float, y: float, items: list[tuple[str, str, str]], width: f
         f'<rect x="{x:.1f}" y="{y:.1f}" width="{width:.1f}" height="{height:.1f}" fill="white" stroke="#666" opacity="0.94"/>'
     ]
     for index, (label, color, kind) in enumerate(items):
-        yy = y + 18 + index * 24
+        yy = y + 17 + index * 22
         if kind == "circle":
             parts.append(f'<circle cx="{x + 18:.1f}" cy="{yy - 4:.1f}" r="3.8" fill="{color}"/>')
         elif kind == "arrow":
             parts.append(build_arrow(x + 9, yy - 4, x + 34, yy - 4, color, 2.0, "arrowhead-black" if color == "#111" else "arrowhead-red"))
         else:
             parts.append(build_arrow(x + 9, yy - 4, x + 34, yy - 4, color, 2.4))
-        parts.append(text(x + 42, yy + 1, label, "cn", "start"))
+        parts.append(text(x + 42, yy + 1, label, "cn legend", "start"))
     return parts
 
 
 def build_svg(samples: list[Sample], distance_rows: list[tuple[int, float, float]]) -> str:
     width = 940
-    height = 835
-    plot_w = 365
-    plot_h = 282
+    height = 790
+    plot_w = 370
+    plot_h = 275
     boxes = [
-        PlotBox(78, 36, plot_w, plot_h),
-        PlotBox(550, 36, plot_w, plot_h),
-        PlotBox(78, 445, plot_w, plot_h),
-        PlotBox(550, 445, plot_w, plot_h),
+        PlotBox(76, 28, plot_w, plot_h),
+        PlotBox(548, 28, plot_w, plot_h),
+        PlotBox(76, 410, plot_w, plot_h),
+        PlotBox(548, 410, plot_w, plot_h),
     ]
 
     output_width_mm = 160.0
-    output_height_mm = output_width_mm * height / width
-    svg_font_pt = 16.0
+    cropped_height = height - FULL_FIGURE_TOP_CROP - FULL_FIGURE_BOTTOM_CROP
+    output_height_mm = output_width_mm * cropped_height / width
+    viewbox_width = width / FIGURE_CONTENT_SCALE
+    viewbox_height = cropped_height / FIGURE_CONTENT_SCALE
+    viewbox_x = (width - viewbox_width) / 2
+    viewbox_y = FULL_FIGURE_TOP_CROP + (cropped_height - viewbox_height) / 2
+    svg_font_pt = 17.5
 
     parts = [
         (
             f'<svg xmlns="http://www.w3.org/2000/svg" width="{output_width_mm}mm" '
-            f'height="{output_height_mm:.3f}mm" viewBox="0 0 {width} {height}">'
+            f'height="{output_height_mm:.3f}mm" viewBox="{viewbox_x:.1f} {viewbox_y:.1f} {viewbox_width:.1f} {viewbox_height:.1f}">'
         ),
         '<defs>',
         '<marker id="arrowhead-red" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#e11"/></marker>',
         '<marker id="arrowhead-black" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#111"/></marker>',
         '</defs>',
-        '<rect width="100%" height="100%" fill="white"/>',
+        f'<rect x="{viewbox_x:.1f}" y="{viewbox_y:.1f}" width="{viewbox_width:.1f}" height="{viewbox_height:.1f}" fill="white"/>',
         (
             "<style>"
             f"text{{font-size:{svg_font_pt:.2f}pt;fill:#111;}}"
             '.cn{font-family:SimSun, "宋体", serif;}'
             '.latin,.num{font-family:"Times New Roman", Times, serif;}'
             '.caption{font-family:SimSun, "宋体", serif;}'
+            ".legend{font-size:15.2pt;}"
             ".frame{fill:none;stroke:#111;stroke-width:1.2;}"
             ".axis{stroke:#111;stroke-width:1.0;}"
             ".grid{stroke:#c7c7c7;stroke-width:0.8;}"
@@ -796,11 +805,11 @@ def build_svg(samples: list[Sample], distance_rows: list[tuple[int, float, float
     parts.append(build_arrow(*obs_arrow_a, *obs_arrow_b, "#111", 2.0, "arrowhead-black"))
     parts.extend(
         build_legend(
-            boxes[0].x + boxes[0].width - 221.5,
+            boxes[0].x + boxes[0].width - 216,
             boxes[0].y + 10,
             [("车辆", "#e11", "circle"), ("车辆移动方向", "#e11", "arrow"), ("障碍物移动方向", "#111", "arrow")],
-            211.5,
-            75,
+            216,
+            72,
         )
     )
 
@@ -821,7 +830,7 @@ def build_svg(samples: list[Sample], distance_rows: list[tuple[int, float, float
     anno_end = distance_axes.point(time_axis_max * 0.48, SAFETY_DISTANCE_M + 0.02)
     parts.append(mixed_text(anno_start[0], anno_start[1], f"距离阈值 {SAFETY_DISTANCE_M:.1f}", "start"))
     parts.append(build_arrow(anno_start[0] - 4, anno_start[1] - 8, anno_end[0], anno_end[1], "#111", 1.6, "arrowhead-black"))
-    parts.extend(build_legend(boxes[1].x + 12, boxes[1].y + 8, [("距离", "#04f", "line")], 87, 31.5))
+    parts.extend(build_legend(boxes[1].x + 12, boxes[1].y + 8, [("距离", "#04f", "line")], 82, 29))
 
     parts.extend(
         draw_axes(
@@ -834,7 +843,7 @@ def build_svg(samples: list[Sample], distance_rows: list[tuple[int, float, float
     )
     speed_points = [speed_axes.point(sample.time_s, sample.speed_m_s) for sample in samples]
     parts.append(polyline(speed_points, "#04f", 2.4))
-    parts.extend(build_legend(boxes[2].x + boxes[2].width - 97, boxes[2].y + boxes[2].height - 43.5, [("速度", "#04f", "line")], 87, 31.5))
+    parts.extend(build_legend(boxes[2].x + boxes[2].width - 92, boxes[2].y + boxes[2].height - 40, [("速度", "#04f", "line")], 82, 29))
 
     parts.extend(
         draw_axes(
@@ -847,7 +856,7 @@ def build_svg(samples: list[Sample], distance_rows: list[tuple[int, float, float
     )
     heading_points = [heading_axes.point(sample.time_s, sample.heading_angle_deg) for sample in samples]
     parts.append(polyline(heading_points, "#04f", 2.4))
-    parts.extend(build_legend(boxes[3].x + boxes[3].width - 167.5, boxes[3].y + 8, [("速度偏向角", "#04f", "line")], 157.5, 31.5))
+    parts.extend(build_legend(boxes[3].x + boxes[3].width - 154, boxes[3].y + 8, [("速度偏向角", "#04f", "line")], 144, 29))
 
     captions = [
         (boxes[0], "（a）车辆行驶轨迹"),
@@ -856,7 +865,7 @@ def build_svg(samples: list[Sample], distance_rows: list[tuple[int, float, float
         (boxes[3], "（d）车辆速度偏向角变化"),
     ]
     for box, caption in captions:
-        parts.append(text(box.x + box.width / 2, box.y + box.height + 88, caption, "caption"))
+        parts.append(text(box.x + box.width / 2, box.y + box.height + 75, caption, "caption"))
 
     parts.append("</svg>")
     return "\n".join(parts)
@@ -864,6 +873,12 @@ def build_svg(samples: list[Sample], distance_rows: list[tuple[int, float, float
 
 def crop_svg(full_svg: str, crop: tuple[float, float, float, float]) -> str:
     crop_x, crop_y, crop_width, crop_height = crop
+    crop_center_x = crop_x + crop_width / 2
+    crop_center_y = crop_y + crop_height / 2
+    crop_width = crop_width / FIGURE_CONTENT_SCALE
+    crop_height = crop_height / FIGURE_CONTENT_SCALE
+    crop_x = crop_center_x - crop_width / 2
+    crop_y = crop_center_y - crop_height / 2
     inner_start = full_svg.find(">") + 1
     inner_end = full_svg.rfind("</svg>")
     if inner_start <= 0 or inner_end <= inner_start:

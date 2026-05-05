@@ -354,9 +354,9 @@ TEB算法将路径表示为带时间约束的弹性带，通过优化路径点�
 \textbf{参数} & \textbf{含义} & \textbf{值} \\
 \midrule
 base\_local\_planner & 局部规划器插件 & TebLocalPlannerROS \\
-max\_vel\_x / acc\_lim\_x & 最大前进速度 / 加速度 & 15 / 2.0 \\
+max\_vel\_x / acc\_lim\_x & 最大前进速度 / 加速度 & 1.0 / 2.0 \\
 max\_vel\_theta / acc\_lim\_theta & 最大角速度 / 加速度 & 1.0 / 2.0 \\
-min\_obstacle\_dist & 与障碍物最小距离 & 0.3 \\
+min\_obstacle\_dist & 与障碍物最小距离 & 1.0 \\
 global\_plan\_overwrite\_orientation & 是否沿用全局路径方向作为参考 & true \\
 include\_costmap\_obstacles & 是否纳入代价地图障碍物信息 & true \\
 \bottomrule
