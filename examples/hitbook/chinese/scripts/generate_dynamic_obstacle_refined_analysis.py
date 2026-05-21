@@ -901,10 +901,13 @@ def crop_svg(full_svg: str, crop: tuple[float, float, float, float]) -> str:
 
 def convert_svg_to_pdf(svg_path: Path) -> Path | None:
     converter = shutil.which("rsvg-convert")
-    if not converter:
-        return None
     pdf_path = PDF_PATH if svg_path == SVG_PATH else svg_path.with_suffix(".pdf")
-    subprocess.run([converter, "-f", "pdf", "-o", str(pdf_path), str(svg_path)], check=True)
+    if converter:
+        subprocess.run([converter, "-f", "pdf", "-o", str(pdf_path), str(svg_path)], check=True)
+    elif inkscape := shutil.which("inkscape"):
+        subprocess.run([inkscape, str(svg_path), "--export-type=pdf", f"--export-filename={pdf_path}"], check=True)
+    else:
+        return None
     return pdf_path
 
 

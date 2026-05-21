@@ -176,8 +176,11 @@ def main() -> None:
     if converter:
         subprocess.run([converter, "-f", "pdf", "-o", str(PDF_PATH), str(SVG_PATH)], check=True)
         print("wrote", PDF_PATH)
+    elif inkscape := shutil.which("inkscape"):
+        subprocess.run([inkscape, str(SVG_PATH), "--export-type=pdf", f"--export-filename={PDF_PATH}"], check=True)
+        print("wrote", PDF_PATH)
     else:
-        print("rsvg-convert not found; skipped PDF:", PDF_PATH)
+        print("rsvg-convert and inkscape not found; skipped PDF:", PDF_PATH)
 
 
 if __name__ == "__main__":
