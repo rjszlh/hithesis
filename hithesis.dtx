@@ -8427,7 +8427,7 @@ delim_1 "\\hspace*{\\fill}"
 % \changes{v3.1d}{2025/03/03}{按照 \issue[215] 将哈尔滨硕博毕业论文的参考文献序号也改为全角。}
 %    \begin{macrocode}
 \ifboolexpr{ bool {hit@shenzhen} or (bool {hit@harbin} and (bool {hit@master} or bool {hit@doctor}))}
-  {\def\@biblabel#1{\mbox{［#1］}}}{}
+  {\def\@biblabel#1{\mbox{[#1]}}}{}
 %    \end{macrocode}
 % \end{macro}
 % 
@@ -8447,6 +8447,7 @@ delim_1 "\\hspace*{\\fill}"
   \ifhit@openright\cleardoublepage\else\clearpage\fi\phantomsection%
   \hit@appendix@chapter*{\bibname}[\hit@bibname@etitle]
   \normalsize
+  \rmfamily
   \list{\@biblabel{\@arabic\c@enumiv}}{%
     \str_if_eq:VnT \g_bib_labelalign_str {left} {
       \RenewDocumentCommand\makelabel{m}{##1\hfill}

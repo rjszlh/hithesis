@@ -198,12 +198,12 @@ FUNCTION {citation.et.al}
   if$
 }
 
-FUNCTION {bbl.colon} { "：" }
+FUNCTION {bbl.colon} { ": " }
 
 FUNCTION {bbl.pages.colon}
 { space.before.pages
-    { "：" }
-    { "：\allowbreak " }
+    { ": " }
+    { ": \allowbreak " }
   if$
 }
 
@@ -213,22 +213,22 @@ FUNCTION {bbl.slash} { ". " }
 
 FUNCTION {bbl.sine.loco}
 { entry.lang lang.zh =
-    { "［出版地不详］" }
-    { "［S.l.］" }
+    { "[出版地不详]" }
+    { "[S.l.]" }
   if$
 }
 
 FUNCTION {bbl.sine.nomine}
 { entry.lang lang.zh =
-    { "［出版者不详］" }
-    { "［s.n.］" }
+    { "[出版者不详]" }
+    { "[s.n.]" }
   if$
 }
 
 FUNCTION {bbl.sine.loco.sine.nomine}
 { entry.lang lang.zh =
-    { "［出版地不详: 出版者不详］" }
-    { "［S.l.：s.n.］" }
+    { "[出版地不详: 出版者不详]" }
+    { "[S.l.: s.n.]" }
   if$
 }
 
@@ -282,7 +282,7 @@ FUNCTION {period}
 FUNCTION {output.nonnull}
 { 's :=
   output.state mid.sentence =
-    { "，" * write$ }
+    { ", " * write$ }
     { output.state after.block =
         { period write$
           newline$
@@ -623,14 +623,14 @@ FUNCTION {format.names}
     { namesleft #0 > }
     { s nameptr format.name bbl.et.al =
       numnames bibliography.et.al.min #1 - > nameptr bibliography.et.al.use.first > and or
-        { "，" *
+        { ", " *
           bbl.et.al *
           #1 'namesleft :=
         }
         { nameptr #1 >
             { namesleft #1 = bbl.and "" = not and
                 { bbl.and * }
-                { "，" * }
+                { ", " * }
               if$
             }
             'skip$
@@ -674,7 +674,7 @@ FUNCTION {format.translators}
       entry.lang lang.zh =
         { translator num.names$ #3 >
             { "译" * }
-            { "，译" * }
+            { ", 译" * }
           if$
         }
         'skip$
@@ -698,10 +698,10 @@ FUNCTION {format.full.names}
       nameptr #1 >
         {
           namesleft #1 >
-            { "，" * t * }
+            { ", " * t * }
             {
               numnames #2 >
-                { "，" * }
+                { ", " * }
                 'skip$
               if$
               t "others" =
@@ -797,11 +797,11 @@ FUNCTION {format.title}
         { bbl.colon *
           type$ "patent" = show.patent.country and
             { address empty$ not
-                { address * "，" * }
+                { address * ", " * }
                 { location empty$ not
-                    { location * "，" * }
+                    { location * ", " * }
                     { entry.lang lang.zh =
-                        { "中国" * "，" * }
+                        { "中国" * ", " * }
                         'skip$
                       if$
                     }
@@ -1104,7 +1104,7 @@ FUNCTION {format.mark}
         { " " }
         { "\allowbreak" }
       if$
-      "［" * entry.mark * "］" *
+      "[" * entry.mark * "]" *
     }
     { "" }
   if$
@@ -1304,7 +1304,7 @@ FUNCTION {format.year}
             'skip$
           if$
           urldate empty$ not
-            { "［" urldate extract.before.dash * extra.label * "］" * }
+            { "[" urldate extract.before.dash * extra.label * "]" * }
             { "" }
           if$
         }
@@ -1327,7 +1327,7 @@ FUNCTION {format.periodical.year}
         { date extract.before.dash }
         { "empty year in " cite$ * warning$
           urldate empty$ not
-            { "［" urldate extract.before.dash * "］" * }
+            { "[" urldate extract.before.dash * "]" * }
             { "" }
           if$
         }
@@ -1361,7 +1361,7 @@ FUNCTION {format.date}
 
 FUNCTION {format.editdate}
 { date empty$ not
-    { "\allowbreak （" date * "）" * }
+    { "\allowbreak (" date * ")" * }
     { "" }
   if$
 }
@@ -1370,7 +1370,7 @@ FUNCTION {format.urldate}
 { show.urldate show.url and entry.url empty$ not and
   is.pure.electronic or
   urldate empty$ not and
-    { "\allowbreak ［" urldate * "］" * }
+    { "\allowbreak [" urldate * "]" * }
     { "" }
   if$
 }
@@ -1428,7 +1428,7 @@ FUNCTION {format.journal.volume}
 
 FUNCTION {format.journal.number}
 { number empty$ not
-    { "\allowbreak （" number * "）" * }
+    { "\allowbreak (" number * ")" * }
     { "" }
   if$
 }
@@ -1446,11 +1446,11 @@ FUNCTION {format.periodical.year.volume.number}
     { "empty year in periodical " cite$ * warning$ }
   if$
   volume empty$ not
-    { "，" * volume extract.before.dash * }
+    { ", " * volume extract.before.dash * }
     'skip$
   if$
   number empty$ not
-    { "\allowbreak （" * number extract.before.dash * "）" * }
+    { "\allowbreak (" * number extract.before.dash * ")" * }
     'skip$
   if$
   "--" *
@@ -1462,11 +1462,11 @@ FUNCTION {format.periodical.year.volume.number}
         { year extract.before.slash * }
       if$
       volume empty$ not
-        { "，" * volume extract.after.dash * }
+        { ", " * volume extract.after.dash * }
         'skip$
       if$
       number empty$ not
-        { "\allowbreak （" * number extract.after.dash * "）" * }
+        { "\allowbreak (" * number extract.after.dash * ")" * }
         'skip$
       if$
     }
@@ -1558,8 +1558,8 @@ FUNCTION {format.doi}
                 'skip$
                 { numnames #1 + 'numnames :=
                   numnames #1 >
-                    { "，" * }
-                    { "DOI：" * }
+                    { ", " * }
+                    { "DOI: " * }
                   if$
                   "\doi{" s * "}" * *
                 }
@@ -1616,7 +1616,7 @@ FUNCTION {format.eprint}
   if$
   's :=
   s empty$ not
-    { s "：\eprint{" *
+    { s ": \eprint{" *
       url empty$ not
         { url }
         { "https://" s "l" change.case$ * ".org/abs/" * eprint * }
@@ -1648,9 +1648,9 @@ FUNCTION {output.translation}
 { show.english.translation entry.lang lang.zh = and
     { translation empty$ not
         { translation }
-        { "［English translation missing!］" }
+        { "[English translation missing!]" }
       if$
-      " (in Chinese）" * output
+      " (in Chinese)" * output
       write$
       format.doi duplicate$ empty$ not
         { newline$
@@ -2196,7 +2196,7 @@ FUNCTION {format.lab.names}
         { nameptr #1 >
             { namesleft #1 = citation.and "" = not and
                 { citation.and * }
-                { "，" * }
+                { ", " * }
               if$
             }
             'skip$
@@ -2293,7 +2293,7 @@ FUNCTION {calc.short.authors}
 
 FUNCTION {calc.label}
 { calc.short.authors
-  short.list "］" contains
+  short.list "]" contains
     { "{" short.list * "}" * }
     { short.list }
   if$
@@ -2304,7 +2304,7 @@ FUNCTION {calc.label}
      { pop$ "" }
      'skip$
   if$
-  duplicate$ "］" contains
+  duplicate$ "]" contains
     { "{" swap$ * "}" * }
     'skip$
   if$
