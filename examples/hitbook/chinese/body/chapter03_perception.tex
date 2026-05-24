@@ -28,7 +28,7 @@ Z=\frac{fB}{d}
   \label{理想双目模型}
 \end{figure}
 
-实际双目系统受镜头畸变与安装误差影响，因此在利用式~\eqref{eq:ch3-geometry}进行测距前，需先完成双目标定、去畸变与立体校正。本文采用张正友标定方法，利用MATLAB的Stereo Camera Calibrator采集多组棋盘格图像进行双目标定，标定过程界面如图\ref{双目标定过程界面}所示。标定后可获得左右相机的内参矩阵$K_l,K_r$、畸变参数$D_l,D_r$以及双目系统的相对位姿$R,t$。
+实际双目系统受镜头畸变与安装误差影响，因此在利用式~\eqref{eq:ch3-geometry}进行测距前，需先完成双目标定、去畸变与立体校正。本文采用张正友标定方法，利用MATLAB的Stereo Camera Calibrator采集多组棋盘格图像进行双目标定，标定过程界面如图\ref{双目标定过程界面}所示。标定后可获得左右相机的内参矩阵$K_l,K_r$、畸变参数$D_l,D_r$以及双目系统的相对位姿$R,t$，为后续图像校正、极线约束建立和深度计算提供几何参数基础。
 
 \begin{figure}[h]
   \centering
@@ -229,7 +229,7 @@ C(x,y,d)=\frac{1}{N_s}\left\langle F_l(x,y),F_r(x-d,y)\right\rangle
 & $N_s$ & 特征通道数。\\
 \end{tabularx}\vspace{3.15bp}
 
-利用1/4分辨率特征构建细尺度代价体，利用1/8分辨率特征构建粗尺度代价体。
+利用1/4分辨率特征构建细尺度代价体，利用1/8分辨率特征构建粗尺度代价体。粗尺度代价体用于提供更大感受野下的全局匹配先验，细尺度代价体则保留更多边缘和局部结构信息，二者互补以提升复杂区域的匹配稳定性。
 
 最后应用3.1节所述的分层注意力引导代价机制构建融合后的代价体。
 
@@ -411,7 +411,38 @@ D1-all反映大误差像素比例，能够更有效评估模型在遮挡、弱�
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.99\textwidth]{figures/chapter03/HAGVNet在KITTI2015部分结果对比.png}
+  \begin{minipage}[b]{0.245\textwidth}
+    \centering
+    \includegraphics[width=\linewidth,height=0.16\textheight,keepaspectratio]{figures/chapter03/Qualitative_comparison/Qualitative_comparison1_1}
+    \vspace{2mm}
+    \includegraphics[width=\linewidth,height=0.16\textheight,keepaspectratio]{figures/chapter03/Qualitative_comparison/Qualitative_comparison1_2}
+    \vspace{2mm}
+    \small (a) 左图
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.245\textwidth}
+    \centering
+    \includegraphics[width=\linewidth,height=0.16\textheight,keepaspectratio]{figures/chapter03/Qualitative_comparison/Qualitative_comparison2_1}
+    \vspace{2mm}
+    \includegraphics[width=\linewidth,height=0.16\textheight,keepaspectratio]{figures/chapter03/Qualitative_comparison/Qualitative_comparison2_2}
+    \vspace{2mm}
+    \small (b) HAGVNet（本文）
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.245\textwidth}
+    \centering
+    \includegraphics[width=\linewidth,height=0.16\textheight,keepaspectratio]{figures/chapter03/Qualitative_comparison/Qualitative_comparison3_1}
+    \vspace{2mm}
+    \includegraphics[width=\linewidth,height=0.16\textheight,keepaspectratio]{figures/chapter03/Qualitative_comparison/Qualitative_comparison3_2}
+    \vspace{2mm}
+    \small (c) MobileStereoNet-2D
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.245\textwidth}
+    \centering
+    \includegraphics[width=\linewidth,height=0.16\textheight,keepaspectratio]{figures/chapter03/Qualitative_comparison/Qualitative_comparison4_1}
+    \vspace{2mm}
+    \includegraphics[width=\linewidth,height=0.16\textheight,keepaspectratio]{figures/chapter03/Qualitative_comparison/Qualitative_comparison4_2}
+    \vspace{2mm}
+    \small (d) HITNet
+  \end{minipage}
   \caption{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
   \label{HAGVNet与多种主流方法在KITTI数据集上的部分表现}
 \end{figure}
@@ -489,9 +520,11 @@ YOLO（You Only Look Once）是一类基于单阶段检测框架的目标检测�
   \label{YOLO11与其他主流网络在COCO数据集的性能对比}
 \end{figure}
 
-在YOLOv11系列的不同规模模型中，YOLO11n（nano版本）在精度与推理时间之间取得了较优折中。根据Ultralytics官方在COCO数据集上的检测模型指标\cite{jocherUltralyticsYOLO112024}，在输入尺寸为$640\times640$时，YOLO11n的mAP@0.5:0.95为$39.5\%$，参数量为$2.6\,\mathrm{M}$，计算量为$6.5\,\mathrm{B}$ FLOPs；其在CPU ONNX平台上的推理延迟为$56.1\pm0.8\,\mathrm{ms}$，在NVIDIA T4 TensorRT10平台上的推理延迟为$1.5\pm0.0\,\mathrm{ms}$。因此，YOLO11n能够在保持较低模型规模和毫秒级GPU推理延迟的同时提供可接受的检测精度，适合嵌入式视觉系统中作为实时目标检测前端。综合工程可部署性与系统整体算力预算，最终选定YOLO11n作为本系统的目标检测模型。
+在YOLOv11系列的不同规模模型中，YOLO11n（nano版本）在精度与推理时间之间取得了较优折中。根据Ultralytics官方在COCO数据集上的检测模型指标\cite{jocherUltralyticsYOLO112024}，在输入尺寸为$640\times640$时，YOLO11n的mAP@0.5:0.95为$39.5\%$，参数量为$2.6\,\mathrm{M}$，计算量为$6.5\,\mathrm{B}$ FLOPs；其在CPU ONNX平台上的推理延迟为$56.1\pm0.8\,\mathrm{ms}$，在NVIDIA T4 TensorRT10平台上的推理延迟为$1.5\pm0.0\,\mathrm{ms}$。因此，综合检测精度、模型规模、推理延迟与工程可部署性，最终选定YOLO11n作为本系统的目标检测模型。
 
 YOLO11n的整体结构如图\ref{YOLO11n整体结构}所示，主要包括以下三个部分：1、Backbone（主干网络）用于提取输入图像的多尺度特征表示。通过轻量化卷积模块与跨层连接结构，提高特征表达能力的同时控制参数规模和计算复杂度；2、Neck（特征融合网络）采用改进的特征金字塔结构（FPN/PAN类结构），实现不同尺度特征之间的自顶向下与自底向上融合，增强对小目标与远距离目标的检测能力；3、Head（检测头）负责输出边界框回归参数、目标置信度及类别概率。检测头通常采用解耦设计，将分类分支与回归分支分离，以提高收敛稳定性与定位精度。
+
+在本系统中，YOLO11n输出的二维边界框信息将作为后续深度ROI提取与目标距离估计的空间约束基础。通过与双目立体匹配得到的深度图进行融合，系统能够完成目标检测、候选区域筛选和距离估计，从而为微型移动载具提供稳定、可部署的障碍物检测与测距能力。
 
 \begin{figure}[h]
   \centering
@@ -499,8 +532,6 @@ YOLO11n的整体结构如图\ref{YOLO11n整体结构}所示，主要包括以下
   \caption{YOLO11n整体结构\cite{jocherUltralyticsYOLO112024}}
   \label{YOLO11n整体结构}
 \end{figure}
-
-在本系统中，YOLO11n输出的二维边界框信息将作为后续深度ROI提取与目标距离估计的空间约束基础。通过与双目立体匹配得到的深度图进行融合，系统能够完成目标检测、候选区域筛选和距离估计，从而为微型移动载具提供稳定、可部署的障碍物检测与测距能力。
 
 \subsection{目标检测模型的训练}
 
